@@ -4,21 +4,26 @@ import java.util.List;
 
 public class Game {
 	private List<Pit> storeList = new ArrayList<>();
+	private int currentPlayer;
+
 	
 	public Game() {
-		for (int i = 0; i < 6; i++) {
-			Pit pit = new Pit();
-			storeList.add(pit);
-		}
-		storeList.add(new Pit());
-		for (int i = 0; i < 6; i++) {
-			Pit pit = new Pit();
-			storeList.add(pit);
-		}
-		storeList.add(new Pit());
+		currentPlayer = 0;
+		resetBoard();
 	}
 	
-	public void move(int selectedPitIndex) {
+	public boolean move(int selectedPitIndex) {
+		// to see if the player gets another move
+		int currentPlayerScore;
+		boolean getsAnotherMove = false;
+		if (currentPlayer == 0) {
+			currentPlayerScore = storeList.get(6).getMarbleCount();
+		} else {
+			currentPlayerScore = storeList.get(13).getMarbleCount();
+		}
+		
+		
+		
 		Pit selectedPit = storeList.get(selectedPitIndex);
 		int marbleCount = selectedPit.getMarbleCount();
 		// Marbles can only be moved if there is at least 1 marble in the selected pit
@@ -40,5 +45,85 @@ public class Game {
 				}
 			}
 		}
+		
+		// gets another move
+		if (currentPlayer == 0) {
+			getsAnotherMove = storeList.get(6).getMarbleCount() > currentPlayerScore;
+		} else {
+			getsAnotherMove = storeList.get(13).getMarbleCount() > currentPlayerScore;
+		}
+		return getsAnotherMove;
+		
 	}
+	
+	private boolean hasWinner() {
+		// check the first side of the board for a winner
+		for (int i = 0; i < 6; i++) {
+			if (storeList.get(i).getMarbleCount() != 0) {
+				return false;
+			}
+		}
+		// check the second side of the board for a winner
+		for (int i = 7; i < 13; i++) {
+			if (storeList.get(i).getMarbleCount() != 0) {
+				return false;
+			}
+		} return true;
+	}
+	
+
+	
+	private void switchPlayer() {
+		// if the current player is 0, switch it
+		if (currentPlayer == 0) {
+			currentPlayer = 1;
+		} 
+		// if the current player is 1, switch it
+		else if (currentPlayer == 1) {
+			currentPlayer = 0;
+		}
+		// add an error exception here
+		
+	}
+	
+	private void endGame() {
+		System.out.println("player" + getWinner() + "won the game!");
+		resetBoard();
+	}
+	
+	private void resetBoard() {
+		// reset the first 6 pits
+		for (int i = 0; i < 6; i++) {
+			Pit pit = new Pit();
+			storeList.add(pit);
+		}
+		// reset the first store at index 6
+		storeList.add(new Pit());
+		// reset the second 6 pits
+		for (int i = 0; i < 6; i++) {
+			Pit pit = new Pit();
+			storeList.add(pit);
+		}
+		// reset the second store at index 13
+		storeList.add(new Pit());
+	}
+	
+	private int getWinner() {
+		// compare the stores of each player
+		if (hasWinner()) {
+			// if player 0 has a greater amount in their store, return 0
+			if (storeList.get(6).getMarbleCount() > storeList.get(13).getMarbleCount()) {
+				return 0;
+			}
+			// otherwise, return player 1
+		} return 1;
+		
+	}
+	
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+
+	}
+	
 }
+
