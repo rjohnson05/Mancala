@@ -12,18 +12,27 @@ public class Game {
 		resetBoard();
 	}
 	
-	public boolean move(int selectedPitIndex) {
-		// to see if the player gets another move
-		int currentPlayerScore;
-		boolean getsAnotherMove = false;
-		if (currentPlayer == 0) {
-			currentPlayerScore = storeList.get(6).getMarbleCount();
-		} else {
-			currentPlayerScore = storeList.get(13).getMarbleCount();
+	public boolean getsAnotherMove(int selectedPitIndex) {
+		Pit selectedPit = storeList.get(selectedPitIndex);
+		// checking if the marbles get to the end of the list and will loop around
+		int endPit = selectedPit.getMarbleCount() + selectedPitIndex;
+		if (endPit > 13) {
+			endPit -= 13;
 		}
 		
-		
-		
+		// checking which store to check
+		if (currentPlayer == 0) {
+			if (endPit == 6) {
+				return true;
+			}
+		} else {
+			if (endPit == 13) {
+				return true;
+			}
+		} return false;
+	}
+	
+	public void move(int selectedPitIndex) {
 		Pit selectedPit = storeList.get(selectedPitIndex);
 		int marbleCount = selectedPit.getMarbleCount();
 		// Marbles can only be moved if there is at least 1 marble in the selected pit
@@ -45,16 +54,8 @@ public class Game {
 				}
 			}
 		}
-		
-		// gets another move
-		if (currentPlayer == 0) {
-			getsAnotherMove = storeList.get(6).getMarbleCount() > currentPlayerScore;
-		} else {
-			getsAnotherMove = storeList.get(13).getMarbleCount() > currentPlayerScore;
-		}
-		return getsAnotherMove;
-		
 	}
+		
 	
 	private boolean hasWinner() {
 		// check the first side of the board for a winner
