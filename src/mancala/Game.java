@@ -1,6 +1,9 @@
 package mancala;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;  // Import the Scanner class
+import java.util.Iterator;
+
 
 public class Game {
 	private List<Pit> storeList = new ArrayList<>();
@@ -12,7 +15,7 @@ public class Game {
 		resetBoard();
 	}
 	
-	public boolean getsAnotherMove(int selectedPitIndex) {
+	private boolean getsAnotherMove(int selectedPitIndex) {
 		Pit selectedPit = storeList.get(selectedPitIndex);
 		// checking if the marbles get to the end of the list and will loop around
 		int endPit = selectedPit.getMarbleCount() + selectedPitIndex;
@@ -32,29 +35,40 @@ public class Game {
 		} return false;
 	}
 	
-	public void move(int selectedPitIndex) {
+	private void move(int selectedPitIndex) {
 		Pit selectedPit = storeList.get(selectedPitIndex);
 		int marbleCount = selectedPit.getMarbleCount();
 		// Marbles can only be moved if there is at least 1 marble in the selected pit
 		if (marbleCount > 0) {
 			int currentPitIndex = selectedPitIndex;
 			// Move each marble in the selected pit to another pit
-			for (Marble marble : selectedPit.getMarbles()) {
-				selectedPit.removeMarble(marble);
+			for (int i = 0; i < selectedPit.getMarbleCount(); i++) {
 				int nextPitIndex = currentPitIndex + 1;
+				// Makes sure the pit index loops around if at the end of the list
 				if (nextPitIndex < storeList.size()) {
 					// Moves the marble to the next pit on the board
+					Marble removedMarble = selectedPit.removeMarble(storeList.get(selectedPitIndex).getMarbleList().get(selectedPitIndex+i));
 					Pit nextPit = storeList.get(nextPitIndex);
-					nextPit.addMarble(marble);
+					System.out.println("Next pit = " + nextPit.getMarbleCount());
+					nextPit.addMarble(removedMarble);
+					System.out.println("After add = " + nextPit.getMarbleCount());
 				} else {
 					// After reaching the end of the list of pits, the marble is placed in the first pit,
 					// creating a wrap-around effect
+					Marble removedMarble = selectedPit.removeMarble(storeList.get(selectedPitIndex).getMarbleList().get(selectedPitIndex+i));
 					Pit nextPit = storeList.get(0);
-					nextPit.addMarble(marble);
+					nextPit.addMarble(removedMarble);
 				}
+				currentPitIndex = nextPitIndex;
 			}
+			// Clears all marbles from the selected pit
+			selectedPit.getMarbleList().clear();
+			selectedPit.setMarbleCount(0);
 		}
 	}
+	
+
+
 		
 	
 	private boolean hasWinner() {
@@ -121,8 +135,28 @@ public class Game {
 		
 	}
 	
+	
+	
+	
+	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		Game g = new Game();
+		int getSelectedIndex;
+		Scanner s = new Scanner(System.in);
+		while (!g.hasWinner()) {
+		    System.out.println("Enter selected pit you want to move");
+			getSelectedIndex = s.nextInt();
+			g.move(getSelectedIndex);
+			System.out.println("Moved");
+			System.out.println((g.storeList.toString()));
+			while(g.getsAnotherMove(getSelectedIndex)) {
+			    System.out.println("Enter selected pit you want to move");
+				getSelectedIndex = s.nextInt();
+				g.move(getSelectedIndex);
+			}
+			g.switchPlayer();
+		}
+		g.endGame();
 
 	}
 	
