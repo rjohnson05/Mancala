@@ -57,7 +57,7 @@ public class Game {
 	}
 		
 	
-	private boolean hasWinner() {
+	public boolean hasWinner() {
 		// check the first side of the board for a winner
 		for (int i = 0; i < 6; i++) {
 			if (storeList.get(i).getMarbleCount() != 0) {
@@ -74,7 +74,7 @@ public class Game {
 	
 
 	
-	private void switchPlayer() {
+	public void switchPlayer() {
 		// if the current player is 0, switch it
 		if (currentPlayer == 0) {
 			currentPlayer = 1;
@@ -87,12 +87,12 @@ public class Game {
 		
 	}
 	
-	private void endGame() {
+	public void endGame() {
 		System.out.println("player" + getWinner() + "won the game!");
 		resetBoard();
 	}
 	
-	private void resetBoard() {
+	public void resetBoard() {
 		// reset the first 6 pits
 		for (int i = 0; i < 6; i++) {
 			Pit pit = new Pit();
@@ -109,7 +109,7 @@ public class Game {
 		storeList.add(new Pit());
 	}
 	
-	private int getWinner() {
+	public int getWinner() {
 		// compare the stores of each player
 		if (hasWinner()) {
 			// if player 0 has a greater amount in their store, return 0
@@ -121,9 +121,18 @@ public class Game {
 		
 	}
 	
+	public List<Pit> getStoreList() {
+		return storeList;
+	}
+	
+	public int getCurrentPlayer() {
+		return currentPlayer;
+	}
+	
+	
+	
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		
 	}
 	
 }

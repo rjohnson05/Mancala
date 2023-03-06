@@ -24,6 +24,10 @@ public class Pit {
 		return marblesContained;
 	}
 	
+	public void setMarbleCount(int newMarbleCount) {
+		marbleCount = newMarbleCount;
+	}
+	
 	public void addMarble(Marble marble) {
 		marblesContained.add(marble);
 	}
