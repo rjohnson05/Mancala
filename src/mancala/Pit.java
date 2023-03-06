@@ -4,12 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Pit {
-	private int marbleCount = 4;
+	private int marbleCount;
 	private List<Marble> marblesContained = new ArrayList<>();
 	private int boardSide;
 	
+	public Pit(int marbleCount) {
+		this.marbleCount = marbleCount;
+	}
+	
 	public Pit() {
-
+		this.marbleCount = 4;
 	}
 	
 	public int getMarbleCount() {
@@ -30,9 +34,11 @@ public class Pit {
 	
 	public void addMarble(Marble marble) {
 		marblesContained.add(marble);
+		marbleCount++;
 	}
 	
 	public void removeMarble(Marble marble) {
 		marblesContained.remove(marble);
+		marbleCount--;
 	}
 }

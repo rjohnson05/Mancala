@@ -59,17 +59,21 @@ public class Game {
 	
 	public boolean hasWinner() {
 		// check the first side of the board for a winner
+		boolean side1Empty = true;
 		for (int i = 0; i < 6; i++) {
 			if (storeList.get(i).getMarbleCount() != 0) {
-				return false;
+				side1Empty = false;
 			}
 		}
-		// check the second side of the board for a winner
+		// check the second side of the baord for a winner
+		boolean side2Empty = true;
 		for (int i = 7; i < 13; i++) {
 			if (storeList.get(i).getMarbleCount() != 0) {
-				return false;
+				side2Empty = false;
 			}
-		} return true;
+		}
+		
+		return (side1Empty || side2Empty);
 	}
 	
 
@@ -99,14 +103,14 @@ public class Game {
 			storeList.add(pit);
 		}
 		// reset the first store at index 6
-		storeList.add(new Pit());
+		storeList.add(new Pit(0));
 		// reset the second 6 pits
 		for (int i = 0; i < 6; i++) {
 			Pit pit = new Pit();
 			storeList.add(pit);
 		}
 		// reset the second store at index 13
-		storeList.add(new Pit());
+		storeList.add(new Pit(0));
 	}
 	
 	public int getWinner() {
