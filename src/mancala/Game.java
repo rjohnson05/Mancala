@@ -1,5 +1,6 @@
 package mancala;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Game {
@@ -39,9 +40,9 @@ public class Game {
 		if (marbleCount > 0) {
 			int currentPitIndex = selectedPitIndex;
 			// Move each marble in the selected pit to another pit
-			for (Marble marble : selectedPit.getMarbles()) {
-				selectedPit.removeMarble(marble);
+			for (Marble marble : selectedPit.getMarbleList()) {
 				int nextPitIndex = currentPitIndex + 1;
+				// Makes sure the pit index loops around if at the end of the list
 				if (nextPitIndex < storeList.size()) {
 					// Moves the marble to the next pit on the board
 					Pit nextPit = storeList.get(nextPitIndex);
@@ -52,7 +53,11 @@ public class Game {
 					Pit nextPit = storeList.get(0);
 					nextPit.addMarble(marble);
 				}
+				currentPitIndex = nextPitIndex;
 			}
+			// Clears all marbles from the selected pit
+			selectedPit.getMarbleList().clear();
+			selectedPit.setMarbleCount(0);
 		}
 	}
 		
