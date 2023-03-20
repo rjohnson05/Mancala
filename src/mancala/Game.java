@@ -17,6 +17,7 @@ public class Game {
 	public boolean getsAnotherMove(int selectedPitIndex) {
 		Pit selectedPit = storeList.get(selectedPitIndex);
 		int marbleCount = selectedPit.getMarbleCount();
+
 		
 		if (selectedPit.getMarbleCount() == 0) {
 			return false;
@@ -47,10 +48,12 @@ public class Game {
 			return false;
 		}
 		
+
 		if (storeList.get(selectedPitIndex).getMarbleCount() == 0) {
 			return false;
 		}
 		
+
 		Pit selectedPit = storeList.get(selectedPitIndex);
 		int marbleCount = selectedPit.getMarbleCount();
 		// Marbles can only be moved if there is at least 1 marble in the selected pit
@@ -58,6 +61,7 @@ public class Game {
 			int currentPitIndex = selectedPitIndex;
 			// Move each marble in the selected pit to another pit
 			for (Marble marble : selectedPit.getMarbleList()) {
+
 				// skip the other players store
 				if (currentPlayer == 0) {
 					if (currentPitIndex == 12) {
@@ -70,6 +74,7 @@ public class Game {
 						currentPitIndex++;
 					}
 				}
+
 				int nextPitIndex = currentPitIndex + 1;
 				// Makes sure the pit index loops around if at the end of the list
 				if (nextPitIndex < storeList.size()) {
@@ -161,17 +166,11 @@ public class Game {
 		
 	}
 	
-
-	
 	public boolean checkCapture(int selectedPitIndex) {
 		// get the selected pit
 		Pit selectedPit = storeList.get(selectedPitIndex);
 		//get the marble count of the selected pit
 		int marbleCount = selectedPit.getMarbleCount();
-		
-		if (marbleCount == 0) {
-			return false;
-		}
 		
 		// check if the end pit needs to loop around the board
 		int endPitIndex = selectedPitIndex + marbleCount;
@@ -191,9 +190,6 @@ public class Game {
 		if (endPit.getMarbleCount() == 0) {
 			int capturePitIndex = 12 - endPitIndex;
 			Pit capturePit = storeList.get(capturePitIndex);
-			if (capturePit.getMarbleCount() == 0) {
-				return false;
-			}
 			if (currentPlayer == 0) {
 				// then move the marbles to the correct store
 				int currentStore = storeList.get(6).getMarbleCount();
@@ -202,7 +198,7 @@ public class Game {
 			} else {
 				int currentStore = storeList.get(6).getMarbleCount();
 				storeList.get(13).setMarbleCount(currentStore + 1 + capturePit.getMarbleCount());
-
+				// 2, 3, 7, 0, 11, 4, 7, 3
 				
 			}
 			
@@ -234,13 +230,12 @@ public class Game {
 		    System.out.println("Enter selected pit you want to move");
 			getSelectedIndex = s.nextInt();
 			g.playerGetsAnotherMove = g.getsAnotherMove(getSelectedIndex);
-			g.checkCapture(getSelectedIndex);
+//			g.checkCapture(getSelectedIndex);
 			while(!g.move(getSelectedIndex)) {
 			    System.out.println("Select a valid pit!");
-				System.out.println((g.storeList.toString()));
 				getSelectedIndex = s.nextInt();
 				g.playerGetsAnotherMove = g.getsAnotherMove(getSelectedIndex);
-				g.checkCapture(getSelectedIndex);
+//				g.checkCapture(getSelectedIndex);
 			}
 			while(g.playerGetsAnotherMove) {
 				System.out.println("Nice! Player " + g.currentPlayer + " gets another turn.");
@@ -248,22 +243,21 @@ public class Game {
 			    System.out.println("Enter selected pit you want to move");
 				getSelectedIndex = s.nextInt();
 				g.playerGetsAnotherMove = g.getsAnotherMove(getSelectedIndex);
-				g.checkCapture(getSelectedIndex);
+//				g.checkCapture(getSelectedIndex);
 				while(!g.move(getSelectedIndex)) {
 				    System.out.println("Select a valid pit!");
-					System.out.println((g.storeList.toString()));
 					getSelectedIndex = s.nextInt();
 					g.playerGetsAnotherMove = g.getsAnotherMove(getSelectedIndex);
-					g.checkCapture(getSelectedIndex);
+//					g.checkCapture(getSelectedIndex);
 				}
 			}
 			g.switchPlayer();
-			System.out.println("____________________________");
+			System.out.println("______________________");
 		}
 		g.endGame();
 		s.close();
 
 	}
+
 	
 }
-
