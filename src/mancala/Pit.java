@@ -1,7 +1,6 @@
 package mancala;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 public class Pit {
@@ -9,7 +8,8 @@ public class Pit {
 	private List<Marble> marblesContained = new ArrayList<>();
 	private int boardSide;
 	
-	public Pit(int marbleCount) {
+	public Pit(int marbleCount, int boardSide) {
+		this.boardSide = boardSide;
 		for (int i = 0; i < marbleCount; i++) {
 			addMarble(new Marble());
 		}
@@ -46,4 +46,18 @@ public class Pit {
 		marblesContained.remove(marble);
 		marbleCount--;
 	}
+	
+	public String toString() {
+		return Integer.toString(getMarbleCount());
+	}
+	
+	public Marble[] toArray() {
+		Marble[] arr = new Marble[getMarbleCount()];
+		for (int i = 0; i < getMarbleCount(); i++) {
+			arr[i] = marblesContained.get(i);
+		}
+		return arr;
+	}
+
 }
+
