@@ -66,11 +66,10 @@ public class Game {
 			return false;
 		}
 		
-
+		
 		if (storeList.get(selectedPitIndex).getMarbleCount() == 0) {
 			return false;
 		}
-		
 		
 
 		Pit selectedPit = storeList.get(selectedPitIndex);
@@ -250,7 +249,7 @@ public class Game {
 			} else {
 				int currentStore = storeList.get(6).getMarbleCount();
 				storeList.get(13).setMarbleCount(currentStore + 1 + capturePit.getMarbleCount());
-				// 2, 3, 7, 0, 11, 4, 7, 3
+				// formula to check the capture 2, 3, 7, 0, 11, 4, 7, 3
 				
 			}
 			
