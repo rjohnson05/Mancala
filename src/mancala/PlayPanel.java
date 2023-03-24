@@ -188,12 +188,17 @@ public class PlayPanel extends JPanel implements MouseListener {
 		MouseListener buttonListener = new MouseListener() {
 			public void mouseClicked(MouseEvent e) {
 				RoundButton buttonClicked = (RoundButton) e.getSource();
+				Pit currentPit = game.getStoreList().get(buttonClicked.getPitNumber());
 				int selectedPitIndex = buttonClicked.getPitNumber();
-
-				if (movePit(selectedPitIndex)) {
-					game.switchPlayer();
+				
+				// Only allows player to choose a pit on their side of the board
+				if (currentPit.getSide() == game.getCurrentPlayer()) {
+					// After a player chooses a pit, play moves to the other player
+					if (movePit(selectedPitIndex)) {
+						game.switchPlayer();
+					}
+					repaint();
 				}
-				repaint();
 			}
 
 			@Override
@@ -206,10 +211,17 @@ public class PlayPanel extends JPanel implements MouseListener {
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
+				RoundButton buttonClicked = (RoundButton) e.getSource();
+				Pit currentPit = game.getStoreList().get(buttonClicked.getPitNumber());
+				
+				if (currentPit.getSide() == game.getCurrentPlayer()) {
+					setCursor(new Cursor(Cursor.HAND_CURSOR));
+				}				
 			}
 
 			@Override
 			public void mouseExited(MouseEvent e) {
+				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 		};
 
@@ -234,7 +246,8 @@ public class PlayPanel extends JPanel implements MouseListener {
 	 */
 	@Override
 	public void mouseEntered(MouseEvent e) {
-		this.setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+		
+		
 	}
 
 	/**
@@ -243,6 +256,6 @@ public class PlayPanel extends JPanel implements MouseListener {
 	 */
 	@Override
 	public void mouseExited(MouseEvent e) {
-		this.setCursor(new Cursor(Cursor.HAND_CURSOR));
+		
 	}
 }
