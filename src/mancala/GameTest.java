@@ -81,20 +81,6 @@ public class GameTest {
 		return true;
 	}
 	
-	private static boolean testGetsAnotherMove() {
-		Game newGame = new Game();
-		
-		// Test when last marble in store
-		newGame.move(2);
-		
-		
-		// Test when last marble in pit with marbles
-		
-		// Test when last marble in empty pit
-		
-		return true;
-	}
-	
 	private static boolean testHasWinner() {
 		Game newGame = new Game();
 		
@@ -205,12 +191,9 @@ public class GameTest {
 	}
 	
 	public static void main(String[] args) {
-		testGameInitialization();
-		testMove();
-		//testGetsAnotherMove();
-		testHasWinner();
-		testSwitchPlayer();
-		testResetBoard();
-		testGetWinner();
+		if (testGameInitialization() && testMove() && testHasWinner() && testSwitchPlayer() &&
+				testResetBoard() && testGetWinner()) {
+			System.out.println("SUCCESS: All test cases passed!");
+		}
 	}
 }

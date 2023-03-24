@@ -3,11 +3,15 @@ package mancala;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.JButton;
+
 public class Pit {
 	private int marbleCount;
 	private List<Marble> marblesContained = new ArrayList<>();
 	private int boardSide;
+	private JButton pitBoundary;
 	
+
 	public Pit(int marbleCount, int boardSide) {
 		this.boardSide = boardSide;
 		for (int i = 0; i < marbleCount; i++) {
@@ -15,7 +19,15 @@ public class Pit {
 		}
 	}
 	
+	public Pit(int boardSide) {
+		this.boardSide = boardSide;
+		for (int i = 0; i < 4; i++) {
+			addMarble(new Marble());
+		}
+	}
+	
 	public Pit() {
+		this.boardSide = 0;
 		for (int i = 0; i < 4; i++) {
 			addMarble(new Marble());
 		}
@@ -32,9 +44,17 @@ public class Pit {
 	public List<Marble> getMarbleList() {
 		return marblesContained;
 	}
-	
+
 	public void setMarbleCount(int newMarbleCount) {
 		marbleCount = newMarbleCount;
+	}
+	
+	public void setBoundary(JButton pitBoundary) {
+		this.pitBoundary = pitBoundary;
+	}
+	
+	public JButton getBoundary() {
+		return pitBoundary;
 	}
 	
 	public void addMarble(Marble marble) {
