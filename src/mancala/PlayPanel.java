@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import java.util.Random;
@@ -28,7 +29,7 @@ import javax.swing.JPanel;
  */
 public class PlayPanel extends JPanel implements MouseListener {
 
-	private Game game = new Game();
+	private Game game;
 	private Random rand = new Random();
 
 	public PlayPanel() {
@@ -43,7 +44,8 @@ public class PlayPanel extends JPanel implements MouseListener {
 	 * @description Renders the board and marbles to the screen
 	 */
 	public void paintComponent(Graphics graphics) {
-		Graphics2D g = (Graphics2D) graphics;
+		super.paintComponent(graphics);
+		final Graphics2D g = (Graphics2D) graphics;
 
 		try {
 			// Create the board image
@@ -61,6 +63,8 @@ public class PlayPanel extends JPanel implements MouseListener {
 					g.drawImage(marble.getMarbleImage(), marble.getXcord(), marble.getYcord(), null);
 				}
 			}
+		} catch (FileNotFoundException e) {
+			System.out.println("File Not Found");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -75,26 +79,28 @@ public class PlayPanel extends JPanel implements MouseListener {
 	 *              user to choose which pit to move by clicking on the desired pit.
 	 */
 	public void resetBoard() {
+		game = new Game();
 		// Assign coordinates to each of the pits for showing the marble images in the
 		// correct pits
 		List<Pit> storeList = game.getStoreList();
 		// Adds a circular button as a boundary for each pit, becoming an area to place
-		// all marbles
-		// images in the given pit. This also allows the user to click on individual
-		// pits.
+		// all marbles images in the given pit. This also allows the user to click on
+		// individual pits.
 		for (int i = 0; i < storeList.size(); i++) {
 			Pit currentPit = storeList.get(i);
 			if (i < 3) {
-				RoundButton pitButton = new RoundButton();
+				RoundButton pitButton = new RoundButton(i);
 				pitButton.setBounds(125 + (84 * i), 245 - (i), 73, 74);
 				currentPit.setBoundary(pitButton);
 				pitButton.setBorderPainted(false);
+				addButtonListeners(pitButton);
 				this.add(pitButton);
 			} else if (i < 6) {
-				RoundButton pitButton = new RoundButton();
+				RoundButton pitButton = new RoundButton(i);
 				pitButton.setBounds(427 + (83 * (i - 3)), 250 - (2 * i), 71, 70);
 				currentPit.setBoundary(pitButton);
 				pitButton.setBorderPainted(false);
+				addButtonListeners(pitButton);
 				this.add(pitButton);
 			} else if (i == 6) {
 				// This is a rectangular button instead of a circular button
@@ -105,18 +111,20 @@ public class PlayPanel extends JPanel implements MouseListener {
 				pitButton.setOpaque(false);
 				pitButton.setContentAreaFilled(false);
 				pitButton.setBorderPainted(false);
-				this.add(pitButton);
+				addButtonListeners(pitButton);
 			} else if (i > 6 && i < 10) {
-				RoundButton pitButton = new RoundButton();
+				RoundButton pitButton = new RoundButton(i);
 				pitButton.setBounds((584 - (-81 * (7 - i))), 133 + (-2 * (7 - i)), 69, 67);
 				currentPit.setBoundary(pitButton);
 				pitButton.setBorderPainted(false);
+				addButtonListeners(pitButton);
 				this.add(pitButton);
 			} else if (i < 13) {
-				RoundButton pitButton = new RoundButton();
+				RoundButton pitButton = new RoundButton(i);
 				pitButton.setBounds(294 - (-81 * (10 - i)), 135 + (-1 * (10 - i)), 70, 70);
 				currentPit.setBoundary(pitButton);
 				pitButton.setBorderPainted(false);
+				addButtonListeners(pitButton);
 				this.add(pitButton);
 			} else {
 				JButton pitButton = new JButton();
@@ -125,7 +133,7 @@ public class PlayPanel extends JPanel implements MouseListener {
 				pitButton.setOpaque(false);
 				pitButton.setContentAreaFilled(false);
 				pitButton.setBorderPainted(false);
-				this.add(pitButton);
+				addButtonListeners(pitButton);
 			}
 		}
 
@@ -145,9 +153,71 @@ public class PlayPanel extends JPanel implements MouseListener {
 		}
 	}
 
+	public boolean movePit(int selectedPitIndex) {
+		Pit selectedPit = game.getStoreList().get(selectedPitIndex);
+		int marbleCount = selectedPit.getMarbleList().size();
+		// Each marble within the selected pit is moved to the subsequent pits
+		for (int i = 1; i < marbleCount + 1; i++) {
+			Marble marble = selectedPit.getMarbleList().get(i - 1);
+			int nextPitIndex = selectedPitIndex + i;
+
+			// If the player selects a pit that places marbles beyond the end of the marble
+			// list,
+			// the marble will be placed into the pits at the beginning of the list
+			if (nextPitIndex > 13) {
+				nextPitIndex = Math.abs(13 - (nextPitIndex - 1));
+			}
+
+			// Changes the coordinates of each marble in the selected pit to a random
+			// coordinate
+			// within the pit the marble is being moved to
+			Pit nextPit = game.getStoreList().get(nextPitIndex);
+			marble.setXcord(rand.nextInt(((nextPit.getBoundary().getBounds().x + nextPit.getBoundary().getBounds().width
+					- marble.getMarbleImage().getWidth(getFocusCycleRootAncestor()) - 5))
+					- (nextPit.getBoundary().getBounds().x + 5)) + (nextPit.getBoundary().getBounds().x + 5));
+			marble.setYcord(
+					rand.nextInt(((nextPit.getBoundary().getBounds().y + nextPit.getBoundary().getBounds().height
+							- marble.getMarbleImage().getHeight(getFocusCycleRootAncestor()) - 5))
+							- (nextPit.getBoundary().getBounds().y + 5)) + (nextPit.getBoundary().getBounds().y + 5));
+		}
+
+		return game.move(selectedPitIndex);
+	}
+
+	public void addButtonListeners(JButton pitButton) {
+		MouseListener buttonListener = new MouseListener() {
+			public void mouseClicked(MouseEvent e) {
+				RoundButton buttonClicked = (RoundButton) e.getSource();
+				int selectedPitIndex = buttonClicked.getPitNumber();
+
+				if (movePit(selectedPitIndex)) {
+					game.switchPlayer();
+				}
+				repaint();
+			}
+
+			@Override
+			public void mousePressed(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseReleased(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseEntered(MouseEvent e) {
+			}
+
+			@Override
+			public void mouseExited(MouseEvent e) {
+			}
+		};
+
+		pitButton.addMouseListener(buttonListener);
+	}
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
-
 	}
 
 	@Override

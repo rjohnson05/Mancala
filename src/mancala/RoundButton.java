@@ -15,12 +15,20 @@ import javax.swing.JButton;
  *              https://cs.smu.ca/~porter/csc/465/code/misc/gui/RoundButton.java2html.
  */
 public class RoundButton extends JButton {
-	public RoundButton() {
+	private final int pitNumber;
+
+	public RoundButton(int pitNumber) {
+		this.pitNumber = pitNumber;
+
 		Dimension size = getPreferredSize();
 		size.width = size.height = Math.max(size.width, size.height);
 		setPreferredSize(size);
 
 		setContentAreaFilled(false);
+	}
+
+	public int getPitNumber() {
+		return pitNumber;
 	}
 
 //	  protected void paintBorder(Graphics g) {
