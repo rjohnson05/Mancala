@@ -3,16 +3,19 @@ package mancala;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 
- * @author hankrugg
- *
- */
+
+import javax.swing.JButton;
+
+
 public class Pit {
 	private int marbleCount;
 	private List<Marble> marblesContained = new ArrayList<>();
 	private int boardSide;
 	
+
+
+	private JButton pitBoundary;
+
 	/**
 	 * This is a the constructor for the pit class
 	 * 
@@ -25,15 +28,17 @@ public class Pit {
 			addMarble(new Marble());
 		}
 	}
-	/**
-	 * This is a constructor for the pit class
-	 * 
-	 */
-	public Pit() {
+
+
+
+	public Pit(int boardSide) {
+		this.boardSide = boardSide;
+
 		for (int i = 0; i < 4; i++) {
 			addMarble(new Marble());
 		}
 	}
+
 	/**
 	 * 
 	 * @return the amount of marbles in each pit
@@ -61,19 +66,32 @@ public class Pit {
 	 * 
 	 * @param newMarbleCount
 	 */
+
 	public void setMarbleCount(int newMarbleCount) {
 		
 		marbleCount = newMarbleCount;
 	}
+
 	/**
 	 * This method adds a marble to the pit
 	 * 
 	 * @param marble
 	 */
+
+
+	public void setBoundary(JButton pitBoundary) {
+		this.pitBoundary = pitBoundary;
+	}
+
+	public JButton getBoundary() {
+		return pitBoundary;
+	}
+
 	public void addMarble(Marble marble) {
 		marblesContained.add(marble);
 		marbleCount++;
 	}
+
 	/**
 	 * This method removes the specified marble from the pit
 	 * 
@@ -83,12 +101,14 @@ public class Pit {
 		marblesContained.remove(marble);
 		marbleCount--;
 	}
+
 	/**
 	 * 
 	 */
 	public String toString() {
 		return Integer.toString(getMarbleCount());
 	}
+
 	/**
 	 * This to array method takes the array list of marbles we have
 	 * and turns it into an array
@@ -103,4 +123,3 @@ public class Pit {
 	}
 
 }
-

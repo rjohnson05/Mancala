@@ -1,4 +1,5 @@
 package mancala;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -9,12 +10,12 @@ public class Game {
 	private boolean playerGetsAnotherMove;
 	private boolean capturedMarbles;
 
-	
 
 	public Game() {
 		currentPlayer = 0;
 		resetBoard();
 	}
+
 	
 	/**
 	 * Returns a boolean of whether or not the player gets another turn.
@@ -29,7 +30,6 @@ public class Game {
 		Pit selectedPit = storeList.get(selectedPitIndex);
 		int marbleCount = selectedPit.getMarbleCount();
 
-		
 		if (selectedPit.getMarbleCount() == 0) {
 			return false;
 		}
@@ -39,7 +39,7 @@ public class Game {
 		if (endPitIndex > 13) {
 			endPitIndex -= 13;
 		}
-		
+
 		// checking which store to check
 		if (currentPlayer == 0) {
 			if (endPitIndex == 6) {
@@ -49,8 +49,10 @@ public class Game {
 			if (endPitIndex == 13) {
 				return true;
 			}
-		} return false;
+		}
+		return false;
 	}
+
 	
 	
 	/**
@@ -65,12 +67,10 @@ public class Game {
 		if (storeList.get(selectedPitIndex).getSide() != currentPlayer) {
 			return false;
 		}
-		
-		
+
 		if (storeList.get(selectedPitIndex).getMarbleCount() == 0) {
 			return false;
 		}
-		
 
 		Pit selectedPit = storeList.get(selectedPitIndex);
 		int marbleCount = selectedPit.getMarbleCount();
@@ -100,7 +100,8 @@ public class Game {
 					Pit nextPit = storeList.get(nextPitIndex);
 					nextPit.addMarble(marble);
 				} else {
-					// After reaching the end of the list of pits, the marble is placed in the first pit,
+					// After reaching the end of the list of pits, the marble is placed in the first
+					// pit,
 					// creating a wrap-around effect
 					nextPitIndex = 0;
 					Pit nextPit = storeList.get(nextPitIndex);
@@ -114,7 +115,7 @@ public class Game {
 		}
 		return true;
 	}
-		
+
 	/**
 	 * The method checks each side of the board to see if the game is over.
 	 * The game is over when there are no marbles left on one or the other sides of the board
@@ -136,10 +137,10 @@ public class Game {
 				side2Empty = false;
 			}
 		}
-		
+
 		return (side1Empty || side2Empty);
 	}
-	
+
 
 	/**
 	 * This is a void method that switches the player.
@@ -149,11 +150,12 @@ public class Game {
 		// if the current player is 0, switch it
 		if (currentPlayer == 0) {
 			currentPlayer = 1;
-		} 
+		}
 		// if the current player is 1, switch it
 		else if (currentPlayer == 1) {
 			currentPlayer = 0;
 		}
+
 
 		
 	}
@@ -164,9 +166,12 @@ public class Game {
 	 * 
 	 */
 	public void endGame() {
-		System.out.println("player " + getWinner() + " won the game! The score was, Player 0: " + storeList.get(6).getMarbleCount() + " to Player 2:  " + storeList.get(13).getMarbleCount());
+		System.out.println("player " + getWinner() + " won the game! The score was, Player 0: "
+				+ storeList.get(6).getMarbleCount() + " to Player 2:  " + storeList.get(13).getMarbleCount());
 		resetBoard();
 	}
+
+
 	/**
 	 * This is a void method that resets the board. 
 	 * 
@@ -174,19 +179,20 @@ public class Game {
 	public void resetBoard() {
 		// reset the first 6 pits
 		for (int i = 0; i < 6; i++) {
-			Pit pit = new Pit(4,0);
+			Pit pit = new Pit(4, 0);
 			storeList.add(pit);
 		}
 		// reset the first store at index 6
 		storeList.add(new Pit(0, -1));
 		// reset the second 6 pits
 		for (int i = 0; i < 6; i++) {
-			Pit pit = new Pit(4,1);
+			Pit pit = new Pit(4, 1);
 			storeList.add(pit);
 		}
 		// reset the second store at index 13
 		storeList.add(new Pit(0, -1));
 	}
+
 	
 	/**
 	 * 
@@ -200,9 +206,11 @@ public class Game {
 				return 0;
 			}
 			// otherwise, return player 1
-		} return 1;
-		
+		}
+		return 1;
+
 	}
+
 	
 	/**
 	 * 
@@ -213,14 +221,16 @@ public class Game {
 	public boolean checkCapture(int selectedPitIndex) {
 		// get the selected pit
 		Pit selectedPit = storeList.get(selectedPitIndex);
-		//get the marble count of the selected pit
+		// get the marble count of the selected pit
 		int marbleCount = selectedPit.getMarbleCount();
+
 		
 		if(selectedPit.getMarbleCount() == 0) {
 			capturedMarbles = false;
 			return false;
 		}
 		
+
 		// check if the end pit needs to loop around the board
 		int endPitIndex = selectedPitIndex + marbleCount;
 		if (endPitIndex > 13) {
@@ -249,10 +259,12 @@ public class Game {
 			} else {
 				int currentStore = storeList.get(6).getMarbleCount();
 				storeList.get(13).setMarbleCount(currentStore + 1 + capturePit.getMarbleCount());
+
 				// formula to check the capture 2, 3, 7, 0, 11, 4, 7, 3
 				
+
 			}
-			
+
 			// set both of the pits to a marble count of 0
 			capturePit.setMarbleCount(0);
 			storeList.get(endPitIndex - 1).setMarbleCount(0);
@@ -260,6 +272,7 @@ public class Game {
 			System.out.println("You captured their marbles!");
 			capturedMarbles = true;
 			return true;
+
 			
 		} 
 		capturedMarbles = false;
@@ -274,6 +287,7 @@ public class Game {
 		return storeList;
 	}
 	
+	
 	/**
 	 * 
 	 * @return the current player
@@ -281,11 +295,11 @@ public class Game {
 	public int getCurrentPlayer() {
 		return currentPlayer;
 	}
-	
-	/**
-	 * 
-	 * @param args
-	 */
+
+
+
+
+
 	public static void main(String[] args) {
 		Game g = new Game();
 		int getSelectedIndex = -1;
@@ -293,7 +307,7 @@ public class Game {
 		while (!g.hasWinner()) {
 			System.out.println("Player " + g.currentPlayer + " is up.");
 			System.out.println((g.storeList.toString()));
-		    System.out.println("Enter selected pit you want to move");
+			System.out.println("Enter selected pit you want to move");
 			getSelectedIndex = s.nextInt();
 			g.playerGetsAnotherMove = g.getsAnotherMove(getSelectedIndex);
 			g.checkCapture(getSelectedIndex);
@@ -310,11 +324,13 @@ public class Game {
 
 
 			}
+
 			
 			while(g.playerGetsAnotherMove) {
+
 				System.out.println("Nice! Player " + g.currentPlayer + " gets another turn.");
 				System.out.println((g.storeList.toString()));
-			    System.out.println("Enter selected pit you want to move");
+				System.out.println("Enter selected pit you want to move");
 				getSelectedIndex = s.nextInt();
 				g.playerGetsAnotherMove = g.getsAnotherMove(getSelectedIndex);
 				g.checkCapture(getSelectedIndex);
@@ -326,6 +342,7 @@ public class Game {
 					}
 				    System.out.println("Select a valid pit!");
 					System.out.println((g.storeList.toString()));
+
 					getSelectedIndex = s.nextInt();
 					g.playerGetsAnotherMove = g.getsAnotherMove(getSelectedIndex);
 
@@ -341,5 +358,4 @@ public class Game {
 
 	}
 
-	
 }
