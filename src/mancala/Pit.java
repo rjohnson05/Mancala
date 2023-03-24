@@ -10,7 +10,6 @@ public class Pit {
 	private List<Marble> marblesContained = new ArrayList<>();
 	private int boardSide;
 	private JButton pitBoundary;
-	
 
 	public Pit(int marbleCount, int boardSide) {
 		this.boardSide = boardSide;
@@ -18,29 +17,29 @@ public class Pit {
 			addMarble(new Marble());
 		}
 	}
-	
+
 	public Pit(int boardSide) {
 		this.boardSide = boardSide;
 		for (int i = 0; i < 4; i++) {
 			addMarble(new Marble());
 		}
 	}
-	
+
 	public Pit() {
 		this.boardSide = 0;
 		for (int i = 0; i < 4; i++) {
 			addMarble(new Marble());
 		}
 	}
-	
+
 	public int getMarbleCount() {
 		return marbleCount;
 	}
-	
+
 	public int getSide() {
 		return boardSide;
 	}
-	
+
 	public List<Marble> getMarbleList() {
 		return marblesContained;
 	}
@@ -48,29 +47,29 @@ public class Pit {
 	public void setMarbleCount(int newMarbleCount) {
 		marbleCount = newMarbleCount;
 	}
-	
+
 	public void setBoundary(JButton pitBoundary) {
 		this.pitBoundary = pitBoundary;
 	}
-	
+
 	public JButton getBoundary() {
 		return pitBoundary;
 	}
-	
+
 	public void addMarble(Marble marble) {
 		marblesContained.add(marble);
 		marbleCount++;
 	}
-	
+
 	public void removeMarble(Marble marble) {
 		marblesContained.remove(marble);
 		marbleCount--;
 	}
-	
+
 	public String toString() {
 		return Integer.toString(getMarbleCount());
 	}
-	
+
 	public Marble[] toArray() {
 		Marble[] arr = new Marble[getMarbleCount()];
 		for (int i = 0; i < getMarbleCount(); i++) {
@@ -80,4 +79,3 @@ public class Pit {
 	}
 
 }
-

@@ -18,7 +18,6 @@ public class Game {
 		Pit selectedPit = storeList.get(selectedPitIndex);
 		int marbleCount = selectedPit.getMarbleCount();
 
-		
 		if (selectedPit.getMarbleCount() == 0) {
 			return false;
 		}
@@ -128,21 +127,22 @@ public class Game {
 	}
 
 	public void endGame() {
-		System.out.println("player " + getWinner() + " won the game! The score was, Player 0: " + storeList.get(6).getMarbleCount() + " to Player 2:  " + storeList.get(13).getMarbleCount());
+		System.out.println("player " + getWinner() + " won the game! The score was, Player 0: "
+				+ storeList.get(6).getMarbleCount() + " to Player 2:  " + storeList.get(13).getMarbleCount());
 		resetBoard();
 	}
 
 	public void resetBoard() {
 		// reset the first 6 pits
 		for (int i = 0; i < 6; i++) {
-			Pit pit = new Pit(4,0);
+			Pit pit = new Pit(4, 0);
 			storeList.add(pit);
 		}
 		// reset the first store at index 6
 		storeList.add(new Pit(0, -1));
 		// reset the second 6 pits
 		for (int i = 0; i < 6; i++) {
-			Pit pit = new Pit(4,1);
+			Pit pit = new Pit(4, 1);
 			storeList.add(pit);
 		}
 		// reset the second store at index 13
@@ -165,9 +165,9 @@ public class Game {
 	public boolean checkCapture(int selectedPitIndex) {
 		// get the selected pit
 		Pit selectedPit = storeList.get(selectedPitIndex);
-		//get the marble count of the selected pit
+		// get the marble count of the selected pit
 		int marbleCount = selectedPit.getMarbleCount();
-		
+
 		// check if the end pit needs to loop around the board
 		int endPitIndex = selectedPitIndex + marbleCount;
 		if (endPitIndex > 13) {
@@ -195,18 +195,19 @@ public class Game {
 				int currentStore = storeList.get(6).getMarbleCount();
 				storeList.get(13).setMarbleCount(currentStore + 1 + capturePit.getMarbleCount());
 				// 2, 3, 7, 0, 11, 4, 7, 3
-				
+
 			}
-			
+
 			// set both of the pits to a marble count of 0
 			capturePit.setMarbleCount(0);
 			storeList.get(endPitIndex - 1).setMarbleCount(0);
 
 			return true;
-			
-		} return false;
+
+		}
+		return false;
 	}
-	
+
 	public List<Pit> getStoreList() {
 		return storeList;
 	}
@@ -222,25 +223,25 @@ public class Game {
 		while (!g.hasWinner()) {
 			System.out.println("Player " + g.currentPlayer + " is up.");
 			System.out.println((g.storeList.toString()));
-		    System.out.println("Enter selected pit you want to move");
+			System.out.println("Enter selected pit you want to move");
 			getSelectedIndex = s.nextInt();
 			g.playerGetsAnotherMove = g.getsAnotherMove(getSelectedIndex);
 //			g.checkCapture(getSelectedIndex);
-			while(!g.move(getSelectedIndex)) {
-			    System.out.println("Select a valid pit!");
+			while (!g.move(getSelectedIndex)) {
+				System.out.println("Select a valid pit!");
 				getSelectedIndex = s.nextInt();
 				g.playerGetsAnotherMove = g.getsAnotherMove(getSelectedIndex);
 //				g.checkCapture(getSelectedIndex);
 			}
-			while(g.playerGetsAnotherMove) {
+			while (g.playerGetsAnotherMove) {
 				System.out.println("Nice! Player " + g.currentPlayer + " gets another turn.");
 				System.out.println((g.storeList.toString()));
-			    System.out.println("Enter selected pit you want to move");
+				System.out.println("Enter selected pit you want to move");
 				getSelectedIndex = s.nextInt();
 				g.playerGetsAnotherMove = g.getsAnotherMove(getSelectedIndex);
 //				g.checkCapture(getSelectedIndex);
-				while(!g.move(getSelectedIndex)) {
-				    System.out.println("Select a valid pit!");
+				while (!g.move(getSelectedIndex)) {
+					System.out.println("Select a valid pit!");
 					getSelectedIndex = s.nextInt();
 					g.playerGetsAnotherMove = g.getsAnotherMove(getSelectedIndex);
 //					g.checkCapture(getSelectedIndex);
@@ -254,5 +255,4 @@ public class Game {
 
 	}
 
-	
 }
