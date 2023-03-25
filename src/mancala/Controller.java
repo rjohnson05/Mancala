@@ -18,6 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.Border;
+import javax.swing.text.BadLocationException;
 
 /**
  * @title Controller.java
@@ -35,7 +36,7 @@ import javax.swing.border.Border;
 public class Controller extends JFrame {
 	private JPanel playPanel;
 
-	public Controller() throws IOException {
+	public Controller() throws IOException, BadLocationException {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocation(300, 100);
 
@@ -47,7 +48,7 @@ public class Controller extends JFrame {
 		this.setVisible(true);
 	}
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) throws IOException, BadLocationException {
 		new Controller();
 	}
 

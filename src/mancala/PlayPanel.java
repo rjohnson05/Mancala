@@ -1,7 +1,9 @@
 package mancala;
 
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -15,9 +17,18 @@ import java.util.List;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextPane;
+import javax.swing.border.Border;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.Style;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyledDocument;
 
 /**
  * @title PlayPanel.java
@@ -27,17 +38,61 @@ import javax.swing.JPanel;
  *              two stores). The user has the option to choose from which pit
  *              they move the marbles, which are moved to the subsequent pits.
  */
-public class PlayPanel extends JPanel implements MouseListener {
+public class PlayPanel extends JPanel {
 
 	private Game game;
 	private Random rand = new Random();
+	JTextPane instructionsPane = new JTextPane();
+	Style style = instructionsPane.addStyle("", null);
+	StyledDocument instructionsDoc = instructionsPane.getStyledDocument();
+	JLabel p1ScoreNumber = new JLabel("0");
+	JLabel p2ScoreNumber = new JLabel("0");
 
 	public PlayPanel() {
 		this.setPreferredSize(new Dimension(800, 500));
 		this.setLayout(null);
-		addMouseListener(this);
 
 		resetBoard();
+
+		// Create the instruction area underneath the game board
+		instructionsPane.setBounds(250, 360, 300, 70);
+		instructionsPane.setEditable(false);
+		// Changes the border around the instruction area
+		Border blackBorder = BorderFactory.createLineBorder(Color.black);
+		instructionsPane.setBorder(blackBorder);
+
+		// Centers the text
+		SimpleAttributeSet centeredAttribute = new SimpleAttributeSet();
+		StyleConstants.setAlignment(centeredAttribute, StyleConstants.ALIGN_CENTER);
+		instructionsPane.setParagraphAttributes(centeredAttribute, false);
+		// Sets the font for the text
+		Font instructionsFont = new Font("Serif", Font.BOLD, 20);
+		instructionsPane.setFont(instructionsFont);
+		StyleConstants.setForeground(style, Color.black); // Changes the color of the text
+
+		try {
+			instructionsDoc.insertString(instructionsDoc.getLength(), "You're up first, Player 1!\nChoose a pit.",
+					style);
+		} catch (BadLocationException e) {
+			e.printStackTrace();
+		}
+		this.add(instructionsPane);
+
+		// Creating each player's score label
+		JLabel p1ScoreLabel = new JLabel("Player 2 Score: ");
+		JLabel p2ScoreLabel = new JLabel("Player 1 Score: ");
+		p1ScoreLabel.setFont(new Font("DialogInput", Font.BOLD, 20));
+		p2ScoreLabel.setFont(new Font("DialogInput", Font.BOLD, 20));
+		p1ScoreNumber.setFont(new Font("DialogInput", Font.BOLD, 20));
+		p2ScoreNumber.setFont(new Font("DialogInput", Font.BOLD, 20));
+		p1ScoreLabel.setBounds(30, 460, 200, 25);
+		p2ScoreLabel.setBounds(560, 460, 200, 25);
+		p1ScoreNumber.setBounds(220, 460, 50, 25);
+		p2ScoreNumber.setBounds(750, 460, 50, 25);
+		this.add(p1ScoreLabel);
+		this.add(p2ScoreLabel);
+		this.add(p1ScoreNumber);
+		this.add(p2ScoreNumber);
 	}
 
 	/**
@@ -63,6 +118,15 @@ public class PlayPanel extends JPanel implements MouseListener {
 					g.drawImage(marble.getMarbleImage(), marble.getXcord(), marble.getYcord(), null);
 				}
 			}
+
+			// Create the Mancala title image
+			BufferedImage titleImage = ImageIO.read(new File("mancalaTitle.png"));
+			Image titleImageIcon = new ImageIcon(titleImage).getImage();
+			Image resizedTitleImage = titleImageIcon.getScaledInstance(400, 60, Image.SCALE_SMOOTH);
+			g.drawImage(resizedTitleImage, 200, 20, null);
+
+			// Set the background color
+			this.setBackground(new Color(228, 218, 199));
 		} catch (FileNotFoundException e) {
 			System.out.println("File Not Found");
 		} catch (IOException e) {
@@ -184,18 +248,49 @@ public class PlayPanel extends JPanel implements MouseListener {
 		return game.move(selectedPitIndex);
 	}
 
+	/**
+	 * 
+	 * @param selectedPitIndex An integer representing the index of the chosen pit
+	 *                         within storeList (the list of pits contained by the
+	 *                         board)
+	 * @description Changes the text in the instruction area, alerting the player to
+	 *              whose turn it is and when they receive an extra move, as well as
+	 *              the score labels for each player
+	 */
+	public void changeInstructionText(boolean getsAnotherTurn) {
+		if (getsAnotherTurn) {
+			if (game.getCurrentPlayer() == 0) {
+				instructionsPane.setText("Player 1 gets an extra move!\nChoose a pit.");
+			} else {
+				instructionsPane.setText("Player 2 gets an extra move!\nChoose a pit.");
+			}
+		} else if (game.getCurrentPlayer() == 0) {
+			instructionsPane.setText("Player 2, it's your turn.\nChoose a pit.");
+		} else {
+			instructionsPane.setText("Player 1, it's your turn.\nChoose a pit.");
+		}
+
+		p1ScoreNumber.setText(String.valueOf(game.getStoreList().get(13).getMarbleList().size()));
+		p2ScoreNumber.setText(String.valueOf(game.getStoreList().get(6).getMarbleList().size()));
+	}
+
 	public void addButtonListeners(JButton pitButton) {
 		MouseListener buttonListener = new MouseListener() {
 			public void mouseClicked(MouseEvent e) {
+				// On a mouse click, the marbles are moved and the player is changed
 				RoundButton buttonClicked = (RoundButton) e.getSource();
 				Pit currentPit = game.getStoreList().get(buttonClicked.getPitNumber());
 				int selectedPitIndex = buttonClicked.getPitNumber();
-				
+
 				// Only allows player to choose a pit on their side of the board
 				if (currentPit.getSide() == game.getCurrentPlayer()) {
 					// After a player chooses a pit, play moves to the other player
+					boolean getsAnotherTurn = game.getsAnotherMove(selectedPitIndex);
 					if (movePit(selectedPitIndex)) {
-						game.switchPlayer();
+						changeInstructionText(getsAnotherTurn);
+						if (!getsAnotherTurn) {
+							game.switchPlayer();
+						}
 					}
 					repaint();
 				}
@@ -211,12 +306,13 @@ public class PlayPanel extends JPanel implements MouseListener {
 
 			@Override
 			public void mouseEntered(MouseEvent e) {
+				// Changes the cursor to a hand if the mouse hovers over one of their pits
 				RoundButton buttonClicked = (RoundButton) e.getSource();
 				Pit currentPit = game.getStoreList().get(buttonClicked.getPitNumber());
-				
+
 				if (currentPit.getSide() == game.getCurrentPlayer()) {
 					setCursor(new Cursor(Cursor.HAND_CURSOR));
-				}				
+				}
 			}
 
 			@Override
@@ -226,36 +322,5 @@ public class PlayPanel extends JPanel implements MouseListener {
 		};
 
 		pitButton.addMouseListener(buttonListener);
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e) {
-	}
-
-	/**
-	 * @description Changes the shape of the cursor to a hand when a user hovers
-	 *              over a pit
-	 */
-	@Override
-	public void mouseEntered(MouseEvent e) {
-		
-		
-	}
-
-	/**
-	 * @description Changes the shape of the cursor to the default arrow when a user
-	 *              stops hovering over a pit
-	 */
-	@Override
-	public void mouseExited(MouseEvent e) {
-		
 	}
 }
