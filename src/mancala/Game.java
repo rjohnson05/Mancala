@@ -113,6 +113,7 @@ public class Game {
 			selectedPit.getMarbleList().clear();
 			selectedPit.setMarbleCount(0);
 		}
+
 		return true;
 	}
 
