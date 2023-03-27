@@ -31,15 +31,18 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 /**
- * Contains the graphics for the gameplay of Mancala. The game begins with four marbles in each pit 
- * of the board (excluding the two stores). The user has the option to choose which pit to move by
- * clicking on the desired pit. This pit must be on the player's side of the board. Clicking on a pit
- * from the other player's side of the board does not cause any movement. If the movement resulting
- * from a pit's movement results in a capture of the other player's marbles, the marbles are
- * automatically moved to the capturing player's store. Play alternates between Player 1 and Player 2,
- * with an instruction label indicating whose turn it is at all times throughout the game. Once there are
- * no marbles left on either side of the board, the program is changed to an EndGame JPanel.
- *              
+ * Contains the graphics for the gameplay of Mancala. The game begins with four
+ * marbles in each pit of the board (excluding the two stores). The user has the
+ * option to choose which pit to move by clicking on the desired pit. This pit
+ * must be on the player's side of the board. Clicking on a pit from the other
+ * player's side of the board does not cause any movement. If the movement
+ * resulting from a pit's movement results in a capture of the other player's
+ * marbles, the marbles are automatically moved to the capturing player's store.
+ * Play alternates between Player 1 and Player 2, with an instruction label
+ * indicating whose turn it is at all times throughout the game. Once there are
+ * no marbles left on either side of the board, the program is changed to an
+ * EndGame JPanel.
+ * 
  * @author Ryan Johnson, Hank Rugg
  */
 public class PlayPanel extends JPanel {
@@ -53,9 +56,11 @@ public class PlayPanel extends JPanel {
 	private JLabel p2ScoreNumber = new JLabel("0");
 
 	/**
-	 * Creates a new gameplay panel for the Mancala game. Once initialized, this panel is run until
-	 * either player has won the Mancala game. This initialization ensures that the game board is reset,
-	 * and that all score labels are created. The textbox for the game instruction text is also created.
+	 * Creates a new gameplay panel for the Mancala game. Once initialized, this
+	 * panel is run until either player has won the Mancala game. This
+	 * initialization ensures that the game board is reset, and that all score
+	 * labels are created. The textbox for the game instruction text is also
+	 * created.
 	 */
 	public PlayPanel() {
 		this.setPreferredSize(new Dimension(800, 500));
@@ -107,7 +112,8 @@ public class PlayPanel extends JPanel {
 	/**
 	 * Renders the game board and marbles to the screen.
 	 * 
-	 * @param graphics		a Graphics object that allows the board and marble images to be drawn onto the JPanel
+	 * @param graphics a Graphics object that allows the board and marble images to
+	 *                 be drawn onto the JPanel
 	 */
 	public void paintComponent(Graphics graphics) {
 		super.paintComponent(graphics);
@@ -146,11 +152,12 @@ public class PlayPanel extends JPanel {
 	}
 
 	/**
-	 * Resets the game board to the initial Mancala game state. Creates buttons for each pit on the 
-	 * board, acting as the boundary for the pit. These buttons allow for the determination of 
-	 * min/max x and y placement positions for each pit. The creation of these buttons also allows the user 
-	 * to choose which pit to move by clicking on the desired pit. The coordinates for each marble is set to
-	 * a random value within its starting pit.
+	 * Resets the game board to the initial Mancala game state. Creates buttons for
+	 * each pit on the board, acting as the boundary for the pit. These buttons
+	 * allow for the determination of min/max x and y placement positions for each
+	 * pit. The creation of these buttons also allows the user to choose which pit
+	 * to move by clicking on the desired pit. The coordinates for each marble is
+	 * set to a random value within its starting pit.
 	 */
 	public void resetBoard() {
 		game = new Game();
@@ -228,14 +235,15 @@ public class PlayPanel extends JPanel {
 	}
 
 	/**
-	 * Moves all of the marble images in a specified pit to the following pits. A single marble is placed
-	 * in the subsequent pit until there are no marbles left from the original pit. If the designated
-	 * pit is moved successfully, the boolean true is returned. Otherwise, false is returned.
+	 * Moves all of the marble images in a specified pit to the following pits. A
+	 * single marble is placed in the subsequent pit until there are no marbles left
+	 * from the original pit. If the designated pit is moved successfully, the
+	 * boolean true is returned. Otherwise, false is returned.
 	 * 
-	 * @param selectedPitIndex		an integer designating the index (within the game's list of pits)
-	 * 								of the pit to be moved
-	 * @return						the boolean true if the marbles images from the designated pit are 
-	 * 								moved successfully; false otherwise
+	 * @param selectedPitIndex an integer designating the index (within the game's
+	 *                         list of pits) of the pit to be moved
+	 * @return the boolean true if the marbles images from the designated pit are
+	 *         moved successfully; false otherwise
 	 */
 	public boolean movePit(int selectedPitIndex) {
 		Pit selectedPit = game.getStoreList().get(selectedPitIndex);
@@ -269,13 +277,14 @@ public class PlayPanel extends JPanel {
 	}
 
 	/**
-	 * Sets the coordinates of all marbles in a captured pit to random coordinates within the
-	 * capturing player's store. A pit is considered captured if it lies across from an empty pit 
-	 * that receives the last marble on a player's side of the board. All marbles from this captured 
-	 * pit are moved into the store of the player that most recently moved.
+	 * Sets the coordinates of all marbles in a captured pit to random coordinates
+	 * within the capturing player's store. A pit is considered captured if it lies
+	 * across from an empty pit that receives the last marble on a player's side of
+	 * the board. All marbles from this captured pit are moved into the store of the
+	 * player that most recently moved.
 	 * 
-	 * @param selectedPitIndex		an integer designating the index (within the game's list of pits)
-	 * 								of the pit to be moved
+	 * @param selectedPitIndex an integer designating the index (within the game's
+	 *                         list of pits) of the pit to be moved
 	 */
 	public void moveCapturedMarbles(int selectedPitIndex) {
 		int currentMarbleCount = game.getStoreList().get(selectedPitIndex).getMarbleList().size();
@@ -303,12 +312,13 @@ public class PlayPanel extends JPanel {
 	}
 
 	/**
-	 * Sets the coordinates of the marble in a capturing pit to random coordinates within the
-	 * capturing player's store. A capturing pit is an empty pit on a player's side of the board 
-	 * that receives the last marble after moving a pit and also lies across from a pit containing marbles.
+	 * Sets the coordinates of the marble in a capturing pit to random coordinates
+	 * within the capturing player's store. A capturing pit is an empty pit on a
+	 * player's side of the board that receives the last marble after moving a pit
+	 * and also lies across from a pit containing marbles.
 	 * 
-	 * @param selectedPitIndex		an integer designating the index (within the game's list of pits)
-	 * 								of the pit to be moved
+	 * @param selectedPitIndex an integer designating the index (within the game's
+	 *                         list of pits) of the pit to be moved
 	 */
 	public void moveCapturingMarbles(int selectePitIndex) {
 		Pit currentPit = game.getStoreList().get(selectePitIndex);
@@ -332,11 +342,13 @@ public class PlayPanel extends JPanel {
 	}
 
 	/**
-	 * Changes the text in the instruction area, alerting the player to whose turn it is and whether they 
-	 * receive an extra move, as well as the score labels for each player.
+	 * Changes the text in the instruction area, alerting the player to whose turn
+	 * it is and whether they receive an extra move, as well as the score labels for
+	 * each player.
 	 * 
-	 * @param getsAnotherTurn		a boolean indicating whether the player should be allowed another move
-	 * 								(true if receiving another turn; false otherwise)
+	 * @param getsAnotherTurn a boolean indicating whether the player should be
+	 *                        allowed another move (true if receiving another turn;
+	 *                        false otherwise)
 	 */
 	public void changeInstructionText(boolean getsAnotherTurn) {
 		if (getsAnotherTurn) {
@@ -356,18 +368,21 @@ public class PlayPanel extends JPanel {
 	}
 
 	/**
-	 * Adds a MouseListener to a button. This is used for the pit buttons to indicate when which pit
-	 * has been clicked on, as well as specifying a range of coordinates for a particular pit.
+	 * Adds a MouseListener to a button. This is used for the pit buttons to
+	 * indicate when which pit has been clicked on, as well as specifying a range of
+	 * coordinates for a particular pit.
 	 * 
-	 * @param pitButton		a JButton object that specifies which button the mouse listener should be added to
+	 * @param pitButton a JButton object that specifies which button the mouse
+	 *                  listener should be added to
 	 */
 	public void addButtonListeners(JButton pitButton) {
 		MouseListener buttonListener = new MouseListener() {
 			/**
-			 * Specifies the actions taken when a pit button is clicked. The button must lie on the
-			 * current player's side for the click to have an impact. If a pit button on the current
-			 * player's side is clicked, the marbles in the clicked pit are moved as necessary.
-			 * The panel is then repainted to show the updated positions of the moved marbles.
+			 * Specifies the actions taken when a pit button is clicked. The button must lie
+			 * on the current player's side for the click to have an impact. If a pit button
+			 * on the current player's side is clicked, the marbles in the clicked pit are
+			 * moved as necessary. The panel is then repainted to show the updated positions
+			 * of the moved marbles.
 			 */
 			public void mouseClicked(MouseEvent e) {
 				// On a mouse click, the marbles are moved and the player is changed
@@ -405,9 +420,9 @@ public class PlayPanel extends JPanel {
 			}
 
 			/**
-			 * Specifies the actions to be taken when the mouse hovers over a pit button. If the
-			 * pit is on the current player's side of the board, the mouse cursor is changed to indicate
-			 * that the pit is a valid move.
+			 * Specifies the actions to be taken when the mouse hovers over a pit button. If
+			 * the pit is on the current player's side of the board, the mouse cursor is
+			 * changed to indicate that the pit is a valid move.
 			 */
 			public void mouseEntered(MouseEvent e) {
 				// Changes the cursor to a hand if the mouse hovers over one of their pits
@@ -420,8 +435,8 @@ public class PlayPanel extends JPanel {
 			}
 
 			/**
-			 * Specifies the actions to be taken when the mouse stops hovering over a pit button. 
-			 * The mouse is changed back to the default pointer cursor.
+			 * Specifies the actions to be taken when the mouse stops hovering over a pit
+			 * button. The mouse is changed back to the default pointer cursor.
 			 */
 			public void mouseExited(MouseEvent e) {
 				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
