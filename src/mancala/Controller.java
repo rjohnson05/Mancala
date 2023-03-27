@@ -26,8 +26,8 @@ public class Controller extends JFrame {
 
 		// Add all panels to this frame
 		playPanel = new PlayPanel();
-		welcomePanel = new WelcomePanel();
-		//this.add(welcomePanel);
+		// welcomePanel = new WelcomePanel();
+		// this.add(welcomePanel);
 		this.add(playPanel);
 		this.pack();
 

@@ -3,16 +3,11 @@ package mancala;
 import java.util.ArrayList;
 import java.util.List;
 
-
 import javax.swing.JButton;
 
-
 public class Pit {
-	private int marbleCount;
 	private List<Marble> marblesContained = new ArrayList<>();
 	private int boardSide;
-	
-
 
 	private JButton pitBoundary;
 
@@ -29,8 +24,6 @@ public class Pit {
 		}
 	}
 
-
-
 	public Pit(int boardSide) {
 		this.boardSide = boardSide;
 
@@ -41,19 +34,13 @@ public class Pit {
 
 	/**
 	 * 
-	 * @return the amount of marbles in each pit
-	 */
-	public int getMarbleCount() {
-		return marbleCount;
-	}
-	/**
-	 * 
 	 * 
 	 * @return the side of the board the pit is on
 	 */
 	public int getSide() {
 		return boardSide;
 	}
+
 	/**
 	 * 
 	 * @return a list of the marbles contained in the pit
@@ -61,23 +48,6 @@ public class Pit {
 	public List<Marble> getMarbleList() {
 		return marblesContained;
 	}
-	/**
-	 * This method sets the amount of marbles in the pit
-	 * 
-	 * @param newMarbleCount
-	 */
-
-	public void setMarbleCount(int newMarbleCount) {
-		
-		marbleCount = newMarbleCount;
-	}
-
-	/**
-	 * This method adds a marble to the pit
-	 * 
-	 * @param marble
-	 */
-
 
 	public void setBoundary(JButton pitBoundary) {
 		this.pitBoundary = pitBoundary;
@@ -89,7 +59,6 @@ public class Pit {
 
 	public void addMarble(Marble marble) {
 		marblesContained.add(marble);
-		marbleCount++;
 	}
 
 	/**
@@ -99,24 +68,21 @@ public class Pit {
 	 */
 	public void removeMarble(Marble marble) {
 		marblesContained.remove(marble);
-		marbleCount--;
 	}
 
-	/**
-	 * 
-	 */
 	public String toString() {
-		return Integer.toString(getMarbleCount());
+		return String.valueOf(marblesContained.size());
 	}
 
 	/**
-	 * This to array method takes the array list of marbles we have
-	 * and turns it into an array
+	 * This to array method takes the array list of marbles we have and turns it
+	 * into an array
+	 * 
 	 * @return an array of Marbles
 	 */
 	public Marble[] toArray() {
-		Marble[] arr = new Marble[getMarbleCount()];
-		for (int i = 0; i < getMarbleCount(); i++) {
+		Marble[] arr = new Marble[getMarbleList().size()];
+		for (int i = 0; i < getMarbleList().size(); i++) {
 			arr[i] = marblesContained.get(i);
 		}
 		return arr;

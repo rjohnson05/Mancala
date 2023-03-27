@@ -20,13 +20,13 @@ public class GameTest {
 		for (int i = 0; i < newGame.getStoreList().size(); i++) {
 			if (i != 6 && i != 13) {
 				// Verifies there are four marbles in each pit
-				if (newGame.getStoreList().get(i).getMarbleCount() != 4) {
+				if (newGame.getStoreList().get(i).getMarbleList().size() != 4) {
 					System.out.println("FAIL: Not all pits have 4 marbles initially");
 					return false;
 				}
 			} else {
 				// Verifies there are zero marbles in each pit
-				if (newGame.getStoreList().get(i).getMarbleCount() != 0) {
+				if (newGame.getStoreList().get(i).getMarbleList().size() != 0) {
 					System.out.println("FAIL: The stores are not empty initially");
 					return false;
 				}
@@ -42,39 +42,40 @@ public class GameTest {
 
 		// Verify that the marbles from the indicated space were moved to the correct
 		// spaces
-		if (newGame.getStoreList().get(1).getMarbleCount() != 5) {
+		if (newGame.getStoreList().get(1).getMarbleList().size() != 5) {
 			System.out.println("FAIL: A marble was not moved to the next space");
 			return false;
 		}
-		if (newGame.getStoreList().get(2).getMarbleCount() != 5) {
+		if (newGame.getStoreList().get(2).getMarbleList().size() != 5) {
 			System.out.println("FAIL: A marble was not moved to the second space");
 			return false;
 		}
-		if (newGame.getStoreList().get(3).getMarbleCount() != 5) {
+		if (newGame.getStoreList().get(3).getMarbleList().size() != 5) {
 			System.out.println("FAIL: A marble was not moved to the third space");
 			return false;
 		}
-		if (newGame.getStoreList().get(4).getMarbleCount() != 5) {
+		if (newGame.getStoreList().get(4).getMarbleList().size() != 5) {
 			System.out.println("FAIL: A marble was not moved to the fourth space");
 			return false;
 		}
 
 		// Move a space containing 5 marbles
 		newGame.move(4);
-		if (newGame.getStoreList().get(5).getMarbleCount() != 5 || newGame.getStoreList().get(6).getMarbleCount() != 1
-				|| newGame.getStoreList().get(7).getMarbleCount() != 5
-				|| newGame.getStoreList().get(8).getMarbleCount() != 5
-				|| newGame.getStoreList().get(9).getMarbleCount() != 5) {
+		if (newGame.getStoreList().get(5).getMarbleList().size() != 5
+				|| newGame.getStoreList().get(6).getMarbleList().size() != 1
+				|| newGame.getStoreList().get(7).getMarbleList().size() != 5
+				|| newGame.getStoreList().get(8).getMarbleList().size() != 5
+				|| newGame.getStoreList().get(9).getMarbleList().size() != 5) {
 			System.out.println("FAIL: The marbles from a 5-marble pit were not moved correctly");
 			return false;
 		}
 
 		// Try moving an empty pit
 		newGame.move(0);
-		if (newGame.getStoreList().get(0).getMarbleCount() != 0
-				|| newGame.getStoreList().get(1).getMarbleCount() != 5) {
-			System.out.println(newGame.getStoreList().get(0).getMarbleCount());
-			System.out.println(newGame.getStoreList().get(1).getMarbleCount());
+		if (newGame.getStoreList().get(0).getMarbleList().size() != 0
+				|| newGame.getStoreList().get(1).getMarbleList().size() != 5) {
+			System.out.println(newGame.getStoreList().get(0).getMarbleList().size());
+			System.out.println(newGame.getStoreList().get(1).getMarbleList().size());
 			System.out.println("FAIL: An empty pit resulted in a marble-count change");
 			return false;
 		}
@@ -94,10 +95,10 @@ public class GameTest {
 
 		// Test when only end pits contain marbles
 		for (int i = 1; i < 5; i++) {
-			newGame.getStoreList().get(i).setMarbleCount(0);
+			newGame.getStoreList().get(i).getMarbleList().clear();
 		}
 		for (int i = 8; i < 12; i++) {
-			newGame.getStoreList().get(i).setMarbleCount(0);
+			newGame.getStoreList().get(i).getMarbleList().clear();
 		}
 		if (newGame.hasWinner()) {
 			System.out.println("FAIL: A winner is declared when both sides still have marbles in both end pits");
@@ -106,7 +107,7 @@ public class GameTest {
 
 		// Test when one side is empty
 		for (int i = 0; i < 6; i++) {
-			newGame.getStoreList().get(i).setMarbleCount(0);
+			newGame.getStoreList().get(i).getMarbleList().clear();
 		}
 		if (!newGame.hasWinner()) {
 			System.out.println("FAIL: A winner wasn't declared when one side of the board was empty");
@@ -115,7 +116,7 @@ public class GameTest {
 
 		// Test when both sides are empty
 		for (int i = 0; i < 13; i++) {
-			newGame.getStoreList().get(i).setMarbleCount(0);
+			newGame.getStoreList().get(i).getMarbleList().clear();
 		}
 		if (!newGame.hasWinner()) {
 			System.out.println("FAIL: A winner wasn't declared when both sides of the board was empty");
@@ -164,16 +165,21 @@ public class GameTest {
 
 		// Test if Player 1 wins
 		for (int i = 0; i < 6; i++) {
-			newGame.getStoreList().get(i).setMarbleCount(0);
+			newGame.getStoreList().get(i).getMarbleList().clear();
 		}
-		newGame.getStoreList().get(6).setMarbleCount(3);
+		Marble marble = new Marble();
+		for (int i = 0; i < 3; i++) {
+			newGame.getStoreList().get(6).getMarbleList().add(marble);
+		}
 		if (newGame.getWinner() != 0) {
 			System.out.println("FAIL: Player 1 wasn't recorded as the winner when it should have been");
 			return false;
 		}
 
 		// Test if Player 2 wins
-		newGame.getStoreList().get(13).setMarbleCount(5);
+		for (int i = 0; i < 6; i++) {
+			newGame.getStoreList().get(13).getMarbleList().add(marble);
+		}
 		if (newGame.getWinner() != 1) {
 			System.out.println("FAIL: Player 2 wasn't recorded as the winner when it should have been");
 			return false;
@@ -181,7 +187,7 @@ public class GameTest {
 
 		// Test if both player's sides are empty
 		for (int i = 7; i < 13; i++) {
-			newGame.getStoreList().get(i).setMarbleCount(0);
+			newGame.getStoreList().get(i).getMarbleList().clear();
 		}
 		if (newGame.getWinner() != 1) {
 			System.out.println("FAIL: Player 2 wasn't recorded as the winner when both sides of the board were empty");

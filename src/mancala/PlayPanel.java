@@ -247,26 +247,51 @@ public class PlayPanel extends JPanel {
 
 		return game.move(selectedPitIndex);
 	}
-	
-	public void moveCatpuredMarbles(int selectedPitIndex) {
+
+	public void moveCapturedMarbles(int selectedPitIndex) {
 		int currentMarbleCount = game.getStoreList().get(selectedPitIndex).getMarbleList().size();
-		Pit endPit = game.getStoreList().get(selectedPitIndex + currentMarbleCount);
-		if (game.getCurrentPlayer() == 0) {
-			// Move the marbles across from the captured pit into the player's store
-			Pit store = game.getStoreList().get(6);
-			for (Marble marble : endPit.getMarbleList()) {
-				marble.setXcord(rand.nextInt(((store.getBoundary().getBounds().x + store.getBoundary().getBounds().width
-						- marble.getMarbleImage().getWidth(getFocusCycleRootAncestor()) - 5))
-						- (store.getBoundary().getBounds().x + 5)) + (store.getBoundary().getBounds().x + 5));
-				marble.setYcord(
-						rand.nextInt(((store.getBoundary().getBounds().y + store.getBoundary().getBounds().height
-								- marble.getMarbleImage().getHeight(getFocusCycleRootAncestor()) - 5))
-								- (store.getBoundary().getBounds().y + 5)) + (store.getBoundary().getBounds().y + 5));
-			}
-			
-			// Move the marbles in the captured pit into the player's store
-			Pit capturedPit = game.getStoreList().get(selectedPitIndex);
+		int endPitIndex = selectedPitIndex + currentMarbleCount;
+
+		// Determine which store the marbles should be moved into
+		Pit store = game.getStoreList().get(6);
+		if (game.getCurrentPlayer() == 1) {
+			store = game.getStoreList().get(13);
 		}
+		System.out.println("End Pit: " + endPitIndex);
+
+		// Move the marbles in the captured pit into the player's store
+		System.out.println("Captured Pit: " + (12 - endPitIndex));
+		Pit capturedPit = game.getStoreList().get(12 - endPitIndex);
+		for (Marble marble : capturedPit.getMarbleList()) {
+			marble.setXcord(rand.nextInt(((store.getBoundary().getBounds().x + store.getBoundary().getBounds().width
+					- marble.getMarbleImage().getWidth(getFocusCycleRootAncestor()) - 5))
+					- (store.getBoundary().getBounds().x + 5)) + (store.getBoundary().getBounds().x + 5));
+			marble.setYcord(rand.nextInt(((store.getBoundary().getBounds().y + store.getBoundary().getBounds().height
+					- marble.getMarbleImage().getHeight(getFocusCycleRootAncestor()) - 5))
+					- (store.getBoundary().getBounds().y + 5)) + (store.getBoundary().getBounds().y + 5));
+		}
+
+	}
+
+	public void moveCapturingMarbles(int selectePitIndex) {
+		Pit currentPit = game.getStoreList().get(selectePitIndex);
+
+		// Determine which store the marbles should be moved into
+		Pit store = game.getStoreList().get(6);
+		if (game.getCurrentPlayer() == 1) {
+			store = game.getStoreList().get(13);
+		}
+
+		// Move the marbles across from the captured pit into the player's store
+		Marble capturingMarble = currentPit.getMarbleList().get(currentPit.getMarbleList().size() - 1);
+		capturingMarble
+				.setXcord(rand.nextInt(((store.getBoundary().getBounds().x + store.getBoundary().getBounds().width
+						- capturingMarble.getMarbleImage().getWidth(getFocusCycleRootAncestor()) - 5))
+						- (store.getBoundary().getBounds().x + 5)) + (store.getBoundary().getBounds().x + 5));
+		capturingMarble
+				.setYcord(rand.nextInt(((store.getBoundary().getBounds().y + store.getBoundary().getBounds().height
+						- capturingMarble.getMarbleImage().getHeight(getFocusCycleRootAncestor()) - 5))
+						- (store.getBoundary().getBounds().y + 5)) + (store.getBoundary().getBounds().y + 5));
 	}
 
 	/**
@@ -307,17 +332,22 @@ public class PlayPanel extends JPanel {
 				if (currentPit.getSide() == game.getCurrentPlayer()) {
 					// After a player chooses a pit, play moves to the other player
 					boolean getsAnotherTurn = game.getsAnotherMove(selectedPitIndex);
+					int endPitIndex = 0;
+					if (game.checkCapture(selectedPitIndex)) {
+						// Moves the marbles images on the GUI
+						moveCapturedMarbles(selectedPitIndex);
+						moveCapturingMarbles(endPitIndex);
+						// Moves the marbles in the data structures
+						game.moveCapturedMarbles(selectedPitIndex);
+					}
 					if (movePit(selectedPitIndex)) {
-//						if (game.checkCapture(selectedPitIndex)) {
-//							int currentPlayer = game.getCurrentPlayer();
-//							if (currentPlayer == 0) {
-//								
-//							}
-//						}
 						changeInstructionText(getsAnotherTurn);
 						if (!getsAnotherTurn) {
 							game.switchPlayer();
 						}
+					}
+					for (Pit pit : game.getStoreList()) {
+						System.out.println(pit.getMarbleList().size());
 					}
 					repaint();
 				}
