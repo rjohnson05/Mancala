@@ -8,6 +8,12 @@ import java.util.Random;
 
 import javax.imageio.ImageIO;
 
+
+/**
+ * Contains all information necessary for a marble in the Mancala game.
+ * 
+ * @author Ryan Johnson, Hank Rugg
+ */
 public class Marble {
 	private static Image[] MARBLE_IMAGES_LIST = new Image[6];
 	private final Image marbleImage;
@@ -16,10 +22,18 @@ public class Marble {
 	private int ycord;
 
 	/**
-	 * @description Splits the primary image (mancalaImages.png) into separate
-	 *              images used for the wooden Mancala board and each of the marble
-	 *              images. These images are resized from the original image sizes
-	 *              to properly fit the dimensions of the program.
+	 * Creates a new marble in the Mancala game. The location coordinates of this marble are randomly
+	 * assigned within its pit in @seePlayPanel.java. The marble is assigned a random color from the
+	 * list of marble images.
+	 */
+	public Marble() {
+		this.marbleImage = MARBLE_IMAGES_LIST[rand.nextInt(MARBLE_IMAGES_LIST.length)];
+	}
+	
+	/**
+	 * Splits the primary image (mancalaImages.png), containing all images necessary to the Mancala game, 
+	 * into separate images used for the wooden Mancala board and each of the marble images. These images 
+	 * are resized from the original image sizes to properly fit the dimensions of the program.
 	 */
 	static {
 		// Define the dimensions for each image from the original image file
@@ -50,10 +64,6 @@ public class Marble {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	}
-
-	public Marble() {
-		this.marbleImage = MARBLE_IMAGES_LIST[rand.nextInt(MARBLE_IMAGES_LIST.length)];
 	}
 
 	public Image getMarbleImage() {
