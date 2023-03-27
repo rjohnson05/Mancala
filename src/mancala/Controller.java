@@ -1,24 +1,7 @@
 package mancala;
 
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.geom.Line2D;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.util.List;
-import java.util.Random;
-
-import javax.imageio.ImageIO;
-import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.Border;
-import javax.swing.text.BadLocationException;
 
 /**
  * @title Controller.java
@@ -36,7 +19,7 @@ import javax.swing.text.BadLocationException;
 public class Controller extends JFrame {
 	private JPanel playPanel;
 
-	public Controller() throws IOException, BadLocationException {
+	public Controller() {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setLocation(300, 100);
 
@@ -48,7 +31,7 @@ public class Controller extends JFrame {
 		this.setVisible(true);
 	}
 
-	public static void main(String[] args) throws IOException, BadLocationException {
+	public static void main(String[] args) {
 		new Controller();
 	}
 
