@@ -54,6 +54,8 @@ public class PlayPanel extends JPanel {
 	private final StyledDocument instructionsDoc = instructionsPane.getStyledDocument();
 	private JLabel p1ScoreNumber = new JLabel("0");
 	private JLabel p2ScoreNumber = new JLabel("0");
+	private JLabel marbleCountDisplayLabel = new JLabel("Number of Marbles:");
+	private JLabel marbleCountLabel = new JLabel();
 
 	/**
 	 * Creates a new gameplay panel for the Mancala game. Once initialized, this
@@ -107,6 +109,10 @@ public class PlayPanel extends JPanel {
 		this.add(p2ScoreLabel);
 		this.add(p1ScoreNumber);
 		this.add(p2ScoreNumber);
+
+		// Add the marble count display box to the panel
+		this.add(marbleCountDisplayLabel);
+		this.add(marbleCountLabel);
 	}
 
 	/**
@@ -413,16 +419,11 @@ public class PlayPanel extends JPanel {
 				}
 			}
 
-			public void mousePressed(MouseEvent e) {
-			}
-
-			public void mouseReleased(MouseEvent e) {
-			}
-
 			/**
-			 * Specifies the actions to be taken when the mouse hovers over a pit button. If
-			 * the pit is on the current player's side of the board, the mouse cursor is
-			 * changed to indicate that the pit is a valid move.
+			 * Specifies the actions to be taken when the mouse hovers over a pit button.
+			 * When hovering over a pit, a pop up window is displayed, showing the number of
+			 * marbles in the pit. If the pit is on the current player's side of the board,
+			 * the mouse cursor is changed to indicate that the pit is a valid move.
 			 */
 			public void mouseEntered(MouseEvent e) {
 				// Changes the cursor to a hand if the mouse hovers over one of their pits
@@ -432,6 +433,10 @@ public class PlayPanel extends JPanel {
 				if (currentPit.getSide() == game.getCurrentPlayer()) {
 					setCursor(new Cursor(Cursor.HAND_CURSOR));
 				}
+
+				// Creates pop-up text to display the number of marbles in the pit being hovered
+				// over
+				buttonClicked.setToolTipText("Marble Count: " + currentPit.getMarbleList().size());
 			}
 
 			/**
@@ -440,6 +445,12 @@ public class PlayPanel extends JPanel {
 			 */
 			public void mouseExited(MouseEvent e) {
 				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			public void mousePressed(MouseEvent e) {
+			}
+
+			public void mouseReleased(MouseEvent e) {
 			}
 		};
 
