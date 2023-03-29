@@ -326,8 +326,8 @@ public class PlayPanel extends JPanel {
 	 * @param selectedPitIndex an integer designating the index (within the game's
 	 *                         list of pits) of the pit to be moved
 	 */
-	public void moveCapturingMarbles(int selectePitIndex) {
-		Pit currentPit = game.getStoreList().get(selectePitIndex);
+	public void moveCapturingMarbles(int selectedPitIndex) {
+		Pit currentPit = game.getStoreList().get(selectedPitIndex);
 
 		// Determine which store the marbles should be moved into
 		Pit store = game.getStoreList().get(6);
