@@ -9,6 +9,7 @@ public class Game {
 	private int currentPlayer;
 	private boolean playerGetsAnotherMove;
 	private boolean capturedMarbles;
+	private int winner;
 
 	public Game() {
 		currentPlayer = 0;
@@ -133,7 +134,6 @@ public class Game {
 				side2Empty = false;
 			}
 		}
-
 		return (side1Empty || side2Empty);
 	}
 
@@ -169,6 +169,9 @@ public class Game {
 	 * 
 	 */
 	public void resetBoard() {
+		currentPlayer = 0;
+		winner = -1;
+		storeList.clear();
 		// reset the first 6 pits
 		for (int i = 0; i < 6; i++) {
 			Pit pit = new Pit(4, 0);
@@ -189,17 +192,22 @@ public class Game {
 	 * 
 	 * @return the player that won as represented by an int
 	 */
-	public int getWinner() {
+	public void setWinner() {
 		// compare the stores of each player
-		if (hasWinner()) {
-			// if player 0 has a greater amount in their store, return 0
-			if (storeList.get(6).getMarbleList().size() > storeList.get(13).getMarbleList().size()) {
-				return 0;
-			}
+		// if player 0 has a greater amount in their store, return 0
+		if (storeList.get(6).getMarbleList().size() > storeList.get(13).getMarbleList().size()) {
+			winner = 0;
+			System.out.println("setWinner() return: " + winner);
+		} else {
 			// otherwise, return player 1
+			winner = 1;
+			System.out.println("setWinner() return: " + winner);
 		}
-		return 1;
-
+	}
+	
+	public int getWinner() {
+		System.out.println(winner);
+		return winner;
 	}
 
 	/**
@@ -209,7 +217,6 @@ public class Game {
 	 * @return a boolean on whether or not the player made a capture move
 	 */
 	public boolean checkCapture(int selectedPitIndex) {
-		System.out.println("Entered capture check");
 		// get the selected pit
 		Pit selectedPit = storeList.get(selectedPitIndex);
 		// get the marble count of the selected pit

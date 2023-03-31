@@ -15,7 +15,7 @@ public class Pit {
 	private List<Marble> marblesContained = new ArrayList<>();
 	private int boardSide;
 
-	private JButton pitBoundary;
+	private RoundButton pitBoundary;
 
 	/**
 	 * Creates a new pit for the Mancala game.
@@ -77,11 +77,11 @@ public class Pit {
 		return marblesContained;
 	}
 
-	public void setBoundary(JButton pitBoundary) {
-		this.pitBoundary = pitBoundary;
+	public void setBoundary(RoundButton pitButton) {
+		this.pitBoundary = pitButton;
 	}
 
-	public JButton getBoundary() {
+	public RoundButton getBoundary() {
 		return pitBoundary;
 	}
 
