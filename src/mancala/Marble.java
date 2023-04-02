@@ -66,22 +66,49 @@ public class Marble {
 		}
 	}
 
+	/**
+	 * Returns the image associated with this marble.
+	 * 
+	 * @return Image returns the image associated with this marble
+	 */
 	public Image getMarbleImage() {
 		return marbleImage;
 	}
 
+	/**
+	 * Returns the x-coordinate of the marble on the main gamplay panel.
+	 * 
+	 * @return int returns the x-coordinate of this marble on the main gamplay panel
+	 */
 	public int getXcord() {
 		return this.xcord;
 	}
 
+	/**
+	 * Sets the x-coordinate of this marble on the main gamplay panel.
+	 * 
+	 * @param x an int representing the x-coordinate of this marble on the main
+	 *          gamplay panel
+	 */
 	public void setXcord(int x) {
 		this.xcord = x;
 	}
 
+	/**
+	 * Returns the y-coordinate of the marble on the main gameplay panel.
+	 * 
+	 * @return int returns the y-coordinate of this marble on the main gamplay panel
+	 */
 	public int getYcord() {
 		return this.ycord;
 	}
 
+	/**
+	 * Sets the y-coordinate of this marble on the main gamplay panel.
+	 * 
+	 * @param y an int representing the y-coordinate of this marble on the main
+	 *          gamplay panel
+	 */
 	public void setYcord(int y) {
 		this.ycord = y;
 	}
