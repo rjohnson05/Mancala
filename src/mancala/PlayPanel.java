@@ -7,12 +7,15 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -31,28 +34,46 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 /**
- * @title PlayPanel.java
+ * Contains the graphics for the gameplay of Mancala.
+ * 
  * @author Ryan Johnson, Hank Rugg
- * @description Contains the graphics for the gameplay of Mancala. The game
- *              begins with four marbles in each pit of the board (excluding the
- *              two stores). The user has the option to choose from which pit
- *              they move the marbles, which are moved to the subsequent pits.
  */
 public class PlayPanel extends JPanel {
+	/*
+	 * The game begins with four marbles in each pit of the board (excluding the two
+	 * stores). The user has the option to choose which pit to move by clicking on
+	 * the desired pit. This pit must be on the player's side of the board. Clicking
+	 * on a pit from the other player's side of the board does not cause any
+	 * movement. If the movement resulting from a pit's movement results in a
+	 * capture of the other player's marbles, the marbles are automatically moved to
+	 * the capturing player's store. Play alternates between Player 1 and Player 2,
+	 * with an instruction label indicating whose turn it is at all times throughout
+	 * the game. Once there are no marbles left on either side of the board, the
+	 * program is changed to an EndGame JPanel.
+	 */
+	private Game game = new Game();
+	private final Random rand = new Random();
+	private final JTextPane instructionsPane = new JTextPane();
+	private final Style style = instructionsPane.addStyle("", null);
+	private final StyledDocument instructionsDoc = instructionsPane.getStyledDocument();
+	private JLabel p1ScoreNumber = new JLabel("0");
+	private JLabel p2ScoreNumber = new JLabel("0");
+	private JLabel marbleCountDisplayLabel = new JLabel("Number of Marbles:");
+	private JLabel marbleCountLabel = new JLabel();
+	private List<String> keysTyped = new ArrayList<String>();
 
-	private Game game;
-	private Random rand = new Random();
-	JTextPane instructionsPane = new JTextPane();
-	Style style = instructionsPane.addStyle("", null);
-	StyledDocument instructionsDoc = instructionsPane.getStyledDocument();
-	JLabel p1ScoreNumber = new JLabel("0");
-	JLabel p2ScoreNumber = new JLabel("0");
-
+	/**
+	 * Creates a new gameplay panel for the Mancala game.
+	 */
 	public PlayPanel() {
+		/*
+		 * Once initialized, this panel is run until either player has won the Mancala
+		 * game. This initialization ensures that the game board is reset, and that all
+		 * score labels are created. The textbox for the game instruction text is also
+		 * created.
+		 */
 		this.setPreferredSize(new Dimension(800, 500));
 		this.setLayout(null);
-
-		resetBoard();
 
 		// Create the instruction area underneath the game board
 		instructionsPane.setBounds(250, 360, 300, 70);
@@ -74,7 +95,7 @@ public class PlayPanel extends JPanel {
 			instructionsDoc.insertString(instructionsDoc.getLength(), "You're up first, Player 1!\nChoose a pit.",
 					style);
 		} catch (BadLocationException e) {
-			e.printStackTrace();
+			System.out.println("You input an invalid location for inserting a string into the instructions JTextPane");
 		}
 		this.add(instructionsPane);
 
@@ -93,10 +114,74 @@ public class PlayPanel extends JPanel {
 		this.add(p2ScoreLabel);
 		this.add(p1ScoreNumber);
 		this.add(p2ScoreNumber);
+
+		// Add the marble count display box to the panel
+		this.add(marbleCountDisplayLabel);
+		this.add(marbleCountLabel);
+
+		resetBoardGraphics();
+
+		KeyListener cheatListener = new KeyListener() {
+			public void keyPressed(KeyEvent e) {
+				String keyPressed = KeyEvent.getKeyText(e.getKeyCode());
+				// Remove the first recorded key if longer than 'cheat'
+				if (keysTyped.size() >= 5) {
+					keysTyped.remove(0);
+				}
+				// Add the pressed key to the list of pressed keys
+				keysTyped.add(keyPressed);
+
+				// Adds an extra miss is the word 'cheat' has been typed
+				String cheatWinArray = "[W, I, N, P, 1]";
+				if (keysTyped.toString().equals(cheatWinArray)) {
+					for (int i = 0; i < 6; i++) {
+						Pit pit = game.getStoreList().get(i);
+						for (Marble marble : pit.getMarbleList()) {
+							Pit store = game.getStoreList().get(6);
+							store.getMarbleList().add(marble);
+						}
+					}
+					for (int i = 0; i < 6; i++) {
+						Pit pit = game.getStoreList().get(i);
+						pit.getMarbleList().clear();
+					}
+				}
+
+				String cheatLoseArray = "[W, I, N, P, 2]";
+				if (keysTyped.toString().equals(cheatLoseArray)) {
+					for (int i = 0; i < 6; i++) {
+						Pit pit = game.getStoreList().get(i);
+						for (Marble marble : pit.getMarbleList()) {
+							Pit store = game.getStoreList().get(13);
+							store.getMarbleList().add(marble);
+						}
+					}
+					for (int i = 0; i < 6; i++) {
+						Pit pit = game.getStoreList().get(i);
+						pit.getMarbleList().clear();
+					}
+				}
+
+				if (game.hasWinner()) {
+					game.setWinner();
+				}
+			}
+
+			public void keyReleased(KeyEvent e) {
+			}
+
+			public void keyTyped(KeyEvent e) {
+			}
+		};
+		addKeyListener(cheatListener);
+		this.setFocusable(true);
 	}
 
 	/**
-	 * @description Renders the board and marbles to the screen
+	 * Renders the game board and marbles to the screen.
+	 * 
+	 * @param graphics a Graphics object that draws the board and marble images to
+	 *                 the JPanel
 	 */
 	public void paintComponent(Graphics graphics) {
 		super.paintComponent(graphics);
@@ -128,22 +213,25 @@ public class PlayPanel extends JPanel {
 			// Set the background color
 			this.setBackground(new Color(228, 218, 199));
 		} catch (FileNotFoundException e) {
-			System.out.println("File Not Found");
+			System.out.println("An specified image file cannot be found");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
 	/**
-	 * @description Creates buttons for each pit on the board, acting as the
-	 *              boundary for the pit. These buttons allow for the determination
-	 *              of min/max x and y placement positions for each pit. The marble
-	 *              images are placed within the min/max coordinates for its
-	 *              designated pit. The creation of these buttons also allows the
-	 *              user to choose which pit to move by clicking on the desired pit.
+	 * Resets the game board graphics to the initial Mancala game state.
 	 */
-	public void resetBoard() {
-		game = new Game();
+	public void resetBoardGraphics() {
+		/*
+		 * Creates buttons for each pit on the board, acting as the boundary for the
+		 * pit. These buttons allow for the determination of min/max x and y placement
+		 * positions for each pit. The creation of these buttons also allows the user to
+		 * choose which pit to move by clicking on the desired pit. The coordinates for
+		 * each marble is set to a random value within its starting pit.
+		 */
+		game.resetBoard();
+		changeInstructionText(false);
 		// Assign coordinates to each of the pits for showing the marble images in the
 		// correct pits
 		List<Pit> storeList = game.getStoreList();
@@ -158,6 +246,7 @@ public class PlayPanel extends JPanel {
 				currentPit.setBoundary(pitButton);
 				pitButton.setBorderPainted(false);
 				addButtonListeners(pitButton);
+				pitButton.setFocusable(false);
 				this.add(pitButton);
 			} else if (i < 6) {
 				RoundButton pitButton = new RoundButton(i);
@@ -165,11 +254,12 @@ public class PlayPanel extends JPanel {
 				currentPit.setBoundary(pitButton);
 				pitButton.setBorderPainted(false);
 				addButtonListeners(pitButton);
+				pitButton.setFocusable(false);
 				this.add(pitButton);
 			} else if (i == 6) {
 				// This is a rectangular button instead of a circular button
 				// This button still needs rotated for greater precision
-				JButton pitButton = new JButton();
+				RoundButton pitButton = new RoundButton(i);
 				pitButton.setBounds(666, 130, 84, 180);
 				currentPit.setBoundary(pitButton);
 				pitButton.setOpaque(false);
@@ -182,6 +272,7 @@ public class PlayPanel extends JPanel {
 				currentPit.setBoundary(pitButton);
 				pitButton.setBorderPainted(false);
 				addButtonListeners(pitButton);
+				pitButton.setFocusable(false);
 				this.add(pitButton);
 			} else if (i < 13) {
 				RoundButton pitButton = new RoundButton(i);
@@ -189,9 +280,10 @@ public class PlayPanel extends JPanel {
 				currentPit.setBoundary(pitButton);
 				pitButton.setBorderPainted(false);
 				addButtonListeners(pitButton);
+				pitButton.setFocusable(false);
 				this.add(pitButton);
 			} else {
-				JButton pitButton = new JButton();
+				RoundButton pitButton = new RoundButton(i);
 				pitButton.setBounds(43, 136, 75, 183);
 				currentPit.setBoundary(pitButton);
 				pitButton.setOpaque(false);
@@ -215,9 +307,24 @@ public class PlayPanel extends JPanel {
 						- (pitBounds.getBounds().y + 5)) + (pitBounds.getBounds().y + 5));
 			}
 		}
+
+		repaint();
 	}
 
+	/**
+	 * Moves all of the marble images in a specified pit to the following pits.
+	 * 
+	 * @param selectedPitIndex an integer designating the index (within the game's
+	 *                         list of pits) of the pit to be moved
+	 * @return the boolean true if the marbles images from the designated pit are
+	 *         moved successfully; false if there are no marbles in the pit to move
+	 */
 	public boolean movePit(int selectedPitIndex) {
+		/*
+		 * All marble images from a single pit are placed into the appropriate pits. If
+		 * the designated pit is moved successfully, the boolean true is returned. If
+		 * there are no marbles in the pit to move, false is returned
+		 */
 		Pit selectedPit = game.getStoreList().get(selectedPitIndex);
 		int marbleCount = selectedPit.getMarbleList().size();
 		// Each marble within the selected pit is moved to the subsequent pits
@@ -248,7 +355,20 @@ public class PlayPanel extends JPanel {
 		return game.move(selectedPitIndex);
 	}
 
+	/**
+	 * Sets the coordinates of all marbles in a captured pit to random coordinates
+	 * within the capturing player's store.
+	 * 
+	 * @param selectedPitIndex an integer designating the index (within the game's
+	 *                         list of pits) of the pit to be moved
+	 */
 	public void moveCapturedMarbles(int selectedPitIndex) {
+		/*
+		 * A pit is considered captured if it lies across from an empty pit that
+		 * receives the last marble on a player's side of the board. All marbles from
+		 * this captured pit are moved into the store of the player that most recently
+		 * moved.
+		 */
 		int currentMarbleCount = game.getStoreList().get(selectedPitIndex).getMarbleList().size();
 		int endPitIndex = selectedPitIndex + currentMarbleCount;
 
@@ -257,10 +377,8 @@ public class PlayPanel extends JPanel {
 		if (game.getCurrentPlayer() == 1) {
 			store = game.getStoreList().get(13);
 		}
-		System.out.println("End Pit: " + endPitIndex);
 
 		// Move the marbles in the captured pit into the player's store
-		System.out.println("Captured Pit: " + (12 - endPitIndex));
 		Pit capturedPit = game.getStoreList().get(12 - endPitIndex);
 		for (Marble marble : capturedPit.getMarbleList()) {
 			marble.setXcord(rand.nextInt(((store.getBoundary().getBounds().x + store.getBoundary().getBounds().width
@@ -273,8 +391,20 @@ public class PlayPanel extends JPanel {
 
 	}
 
-	public void moveCapturingMarbles(int selectePitIndex) {
-		Pit currentPit = game.getStoreList().get(selectePitIndex);
+	/**
+	 * Sets the coordinates of the marble in a capturing pit to random coordinates
+	 * within the capturing player's store.
+	 * 
+	 * @param selectedPitIndex an integer designating the index (within the game's
+	 *                         list of pits) of the pit to be moved
+	 */
+	public void moveCapturingMarbles(int selectedPitIndex) {
+		/*
+		 * A capturing pit is an empty pit on a player's side of the board that receives
+		 * the last marble after moving a pit and also lies across from a pit containing
+		 * marbles.
+		 */
+		Pit currentPit = game.getStoreList().get(selectedPitIndex);
 
 		// Determine which store the marbles should be moved into
 		Pit store = game.getStoreList().get(6);
@@ -295,13 +425,13 @@ public class PlayPanel extends JPanel {
 	}
 
 	/**
+	 * Changes the text in the instruction area, alerting the player to whose turn
+	 * it is and whether they receive an extra move, as well as the score labels for
+	 * each player.
 	 * 
-	 * @param selectedPitIndex An integer representing the index of the chosen pit
-	 *                         within storeList (the list of pits contained by the
-	 *                         board)
-	 * @description Changes the text in the instruction area, alerting the player to
-	 *              whose turn it is and when they receive an extra move, as well as
-	 *              the score labels for each player
+	 * @param getsAnotherTurn a boolean indicating whether the player should be
+	 *                        allowed another move (true if receiving another turn;
+	 *                        false otherwise)
 	 */
 	public void changeInstructionText(boolean getsAnotherTurn) {
 		if (getsAnotherTurn) {
@@ -310,7 +440,7 @@ public class PlayPanel extends JPanel {
 			} else {
 				instructionsPane.setText("Player 2 gets an extra move!\nChoose a pit.");
 			}
-		} else if (game.getCurrentPlayer() == 0) {
+		} else if (game.getCurrentPlayer() == 1) {
 			instructionsPane.setText("Player 2, it's your turn.\nChoose a pit.");
 		} else {
 			instructionsPane.setText("Player 1, it's your turn.\nChoose a pit.");
@@ -320,8 +450,32 @@ public class PlayPanel extends JPanel {
 		p2ScoreNumber.setText(String.valueOf(game.getStoreList().get(6).getMarbleList().size()));
 	}
 
+	/**
+	 * Returns an integer designating the winning player for the game.
+	 * 
+	 * @return int returns 0 if Player 1 won and 1 if Player 2 won
+	 */
+	public int getWinner() {
+		return game.getWinner();
+	}
+
+	/**
+	 * Adds a MouseListener to a button. This is used for the pit buttons to
+	 * indicate when which pit has been clicked on, as well as specifying a range of
+	 * coordinates for a particular pit.
+	 * 
+	 * @param pitButton a JButton object that specifies which button the mouse
+	 *                  listener should be added to
+	 */
 	public void addButtonListeners(JButton pitButton) {
 		MouseListener buttonListener = new MouseListener() {
+			/*
+			 * Specifies the actions taken when a pit button is clicked. The button must lie
+			 * on the current player's side for the click to have an impact. If a pit button
+			 * on the current player's side is clicked, the marbles in the clicked pit are
+			 * moved as necessary. The panel is then repainted to show the updated positions
+			 * of the moved marbles.
+			 */
 			public void mouseClicked(MouseEvent e) {
 				// On a mouse click, the marbles are moved and the player is changed
 				RoundButton buttonClicked = (RoundButton) e.getSource();
@@ -341,27 +495,25 @@ public class PlayPanel extends JPanel {
 						game.moveCapturedMarbles(selectedPitIndex);
 					}
 					if (movePit(selectedPitIndex)) {
-						changeInstructionText(getsAnotherTurn);
 						if (!getsAnotherTurn) {
 							game.switchPlayer();
 						}
+						changeInstructionText(getsAnotherTurn);
 					}
-					for (Pit pit : game.getStoreList()) {
-						System.out.println(pit.getMarbleList().size());
+
+					if (game.getWinner() != -1) {
+						game.setWinner();
 					}
 					repaint();
 				}
 			}
 
-			@Override
-			public void mousePressed(MouseEvent e) {
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-			}
-
-			@Override
+			/*
+			 * Specifies the actions to be taken when the mouse hovers over a pit button.
+			 * When hovering over a pit, a pop up window is displayed, showing the number of
+			 * marbles in the pit. If the pit is on the current player's side of the board,
+			 * the mouse cursor is changed to indicate that the pit is a valid move.
+			 */
 			public void mouseEntered(MouseEvent e) {
 				// Changes the cursor to a hand if the mouse hovers over one of their pits
 				RoundButton buttonClicked = (RoundButton) e.getSource();
@@ -370,11 +522,24 @@ public class PlayPanel extends JPanel {
 				if (currentPit.getSide() == game.getCurrentPlayer()) {
 					setCursor(new Cursor(Cursor.HAND_CURSOR));
 				}
+
+				// Creates pop-up text to display the number of marbles in the pit being hovered
+				// over
+				buttonClicked.setToolTipText("Marble Count: " + currentPit.getMarbleList().size());
 			}
 
-			@Override
+			/*
+			 * Specifies the actions to be taken when the mouse stops hovering over a pit
+			 * button. The mouse is changed back to the default pointer cursor.
+			 */
 			public void mouseExited(MouseEvent e) {
 				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+
+			public void mousePressed(MouseEvent e) {
+			}
+
+			public void mouseReleased(MouseEvent e) {
 			}
 		};
 

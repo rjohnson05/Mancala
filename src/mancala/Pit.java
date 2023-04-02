@@ -1,19 +1,16 @@
 package mancala;
 
 import java.util.ArrayList;
-
 import java.util.List;
 
 import javax.swing.JButton;
 
 /**
- * This class creates the pits that are used to store marbles in Mancala. 
- * Each pit has a side of the board it is on, and the number of marbles in the pit. 
+ * Contains all information necessary for a pit in the Mancala game, including
+ * the marbles contained within and the side of the board it lies on.
  * 
- * 
- * @author hankrugg
+ * @author Ryan Johnson, Hank Rugg
  */
-
 public class Pit {
 	private List<Marble> marblesContained = new ArrayList<>();
 	private int boardSide;
@@ -21,12 +18,12 @@ public class Pit {
 	private JButton pitBoundary;
 
 	/**
-	 * This is a the constructor for the pit class, it initializes the pit with 
-	 * the amount of marbles specified in marbleCount, and sets the board side of the pit
-	 * with boardSide. 
+	 * Creates a new pit for the Mancala game.
 	 * 
-	 * @param marbleCount is the amount of marbles
-	 * @param boardSide is the side of the board
+	 * @param marbleCount an integer detailing the number of marbles to be placed
+	 *                    into the pit
+	 * @param boardSide   an integer detailing the side of the board the pit is on
+	 *                    (0 for Player 1, 1 for Player 2)
 	 */
 	public Pit(int marbleCount, int boardSide) {
 		this.boardSide = boardSide;
@@ -34,10 +31,13 @@ public class Pit {
 			addMarble(new Marble());
 		}
 	}
+
 	/**
-	 * Constructor for a pit. This takes only the board side as a parameter.
+	 * Creates a new pit for the Mancala game. Without specifying the number of
+	 * marbles to be placed into the pit, the default marble count is 4.
 	 * 
-	 * @param boardSide is the side of the board
+	 * @param boardSide an integer detailing the side of the board the pit is on (0
+	 *                  for Player 1, 1 for Player 2)
 	 */
 	public Pit(int boardSide) {
 		this.boardSide = boardSide;
@@ -48,74 +48,18 @@ public class Pit {
 	}
 
 	/**
-	 * Returns the side of the board the pit is on. 
+	 * Removes the specified marble from the pit.
 	 * 
-	 * @return the side of the board the pit is on
-	 */
-	public int getSide() {
-		return boardSide;
-	}
-
-	/**
-	 * Returns a list of the marbles contained in the pit.
-	 * 
-	 * @return a list of the marbles contained in the pit
-	 */
-	public List<Marble> getMarbleList() {
-		return marblesContained;
-	}
-
-	/**
-	 * Sets the boundary for the pit button. Takes the pit boundary
-	 * as a parameter.
-	 * 
-	 * @param pitBoundary JButton that represents the pit
-	 */
-	public void setBoundary(JButton pitBoundary) {
-		this.pitBoundary = pitBoundary;
-	}
-
-	/**
-	 * Returns the pit boundary in the form of a JButton.
-	 * 
-	 * @param pitBoundary JButton that represents the pit
-	 */
-	public JButton getBoundary() {
-		return pitBoundary;
-	}
-
-	/**
-	 * Adds a marble to the pit. Takes a marble as a parameter.
-	 * 
-	 * @param marble that is going to be added
-	 */
-	public void addMarble(Marble marble) {
-		marblesContained.add(marble);
-	}
-
-	/**
-	 * This method removes the specified marble from the pit
-	 * 
-	 * @param marble that is going to be removed
+	 * @param marble the specified marble object to be removed from the pit
 	 */
 	public void removeMarble(Marble marble) {
 		marblesContained.remove(marble);
 	}
 
 	/**
-	 * To string method which returns the amount of marbles in the pit.
+	 * Takes the list of marbles contained by the pit and turns it into an array.
 	 * 
-	 * @return String of amount of marbles in the pit
-	 */
-	public String toString() {
-		return String.valueOf(marblesContained.size());
-	}
-
-	/**
-	 * This to array method takes the array list of marbles we have and turns it
-	 * into an array
-	 * 
-	 * @return an array of Marbles
+	 * @return arr an array of Marble objects
 	 */
 	public Marble[] toArray() {
 		Marble[] arr = new Marble[getMarbleList().size()];
@@ -123,6 +67,59 @@ public class Pit {
 			arr[i] = marblesContained.get(i);
 		}
 		return arr;
+	}
+
+	/**
+	 * Returns an integer representing the side of the board the pit belongs to.
+	 * 
+	 * @return int returns 0 if the pit is on Player 1's side and 1 if the pit is on
+	 *         Player 2's side
+	 */
+	public int getSide() {
+		return boardSide;
+	}
+
+	/**
+	 * Returns a list of all Marble objects held by the pit.
+	 * 
+	 * @return List<Marble> returns a list of all Marble objects held by the pit
+	 */
+	public List<Marble> getMarbleList() {
+		return marblesContained;
+	}
+
+	/**
+	 * Sets a JButton to the pit.
+	 * 
+	 * @param pitBoundary sets a JButton to the pit
+	 */
+	public void setBoundary(JButton pitBoundary) {
+		/*
+		 * The marbles within the pit are drawn within the coordinates of this JButton.
+		 */
+		this.pitBoundary = pitBoundary;
+	}
+
+	/**
+	 * Returns the JButton belonging to the pit.
+	 * 
+	 * @return JButton returns the JButton belonging to the pit
+	 */
+	public JButton getBoundary() {
+		return pitBoundary;
+	}
+
+	/**
+	 * Adds a Marble object to the pit.
+	 * 
+	 * @param marble the Marble object to be added to the list
+	 */
+	public void addMarble(Marble marble) {
+		marblesContained.add(marble);
+	}
+
+	public String toString() {
+		return String.valueOf(marblesContained.size());
 	}
 
 }
