@@ -13,6 +13,7 @@ public class Game {
 
 	public Game() {
 		currentPlayer = 0;
+		winner = -1;
 		resetBoard();
 	}
 
@@ -134,6 +135,7 @@ public class Game {
 				side2Empty = false;
 			}
 		}
+
 		return (side1Empty || side2Empty);
 	}
 
@@ -169,9 +171,9 @@ public class Game {
 	 * 
 	 */
 	public void resetBoard() {
+		storeList.clear();
 		currentPlayer = 0;
 		winner = -1;
-		storeList.clear();
 		// reset the first 6 pits
 		for (int i = 0; i < 6; i++) {
 			Pit pit = new Pit(4, 0);
@@ -188,26 +190,26 @@ public class Game {
 		storeList.add(new Pit(0, -1));
 	}
 
+	public void setWinner() {
+		// compare the stores of each player
+		if (hasWinner()) {
+			// if player 0 has a greater amount in their store, return 0
+			if (storeList.get(6).getMarbleList().size() > storeList.get(13).getMarbleList().size()) {
+				winner = 0;
+			} else {
+				// otherwise, return player 1
+				winner = 1;
+			}
+		} 
+	}
+	
 	/**
 	 * 
 	 * @return the player that won as represented by an int
 	 */
-	public void setWinner() {
-		// compare the stores of each player
-		// if player 0 has a greater amount in their store, return 0
-		if (storeList.get(6).getMarbleList().size() > storeList.get(13).getMarbleList().size()) {
-			winner = 0;
-			System.out.println("setWinner() return: " + winner);
-		} else {
-			// otherwise, return player 1
-			winner = 1;
-			System.out.println("setWinner() return: " + winner);
-		}
-	}
-	
 	public int getWinner() {
-		System.out.println(winner);
 		return winner;
+
 	}
 
 	/**
@@ -247,7 +249,6 @@ public class Game {
 		}
 		// if the end pit marble count is 0 then we have a capture
 		if (endPit.getMarbleList().size() == 0) {
-			System.out.println("Capture made");
 			int capturePitIndex = 12 - endPitIndex;
 			Pit capturePit = storeList.get(capturePitIndex);
 
@@ -258,7 +259,6 @@ public class Game {
 			// formula to check the capture 2, 3, 7, 0, 11, 4, 7, 3
 
 			// set both of the pits to a marble count of 0
-			System.out.println("You captured their marbles!");
 			capturedMarbles = true;
 			return true;
 
@@ -270,10 +270,14 @@ public class Game {
 	public void moveCapturedMarbles(int selectedPitIndex) {
 		Pit selectedPit = storeList.get(selectedPitIndex);
 		int marbleCount = selectedPit.getMarbleList().size();
-		Pit endPit = storeList.get(selectedPitIndex + marbleCount);
+		// check if the end pit needs to loop around the board
+		int endPitIndex = selectedPitIndex + marbleCount;
+		if (endPitIndex > 13) {
+			endPitIndex -= 13;
+		}
+		Pit endPit = storeList.get(endPitIndex);
 		if (endPit.getMarbleList().size() == 0) {
-			System.out.println("Capture made");
-			int capturePitIndex = 12 - (selectedPitIndex + marbleCount);
+			int capturePitIndex = 12 - endPitIndex;
 			Pit capturePit = storeList.get(capturePitIndex);
 
 			// Determining which store gets the captured marbles
