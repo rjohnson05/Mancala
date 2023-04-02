@@ -12,17 +12,21 @@ import javax.swing.JButton;
 
 /**
  * A class for creating elliptical buttons, rather than the default rectangular
- * JButton. This button is linked with a particular pit for the purpose of
- * determining which pit a user clicks on and setting the coordinates of the
- * marbles within the linked pit. This class was the RoundButton class found at
- * the location shown below.
- * 
- * @see <a href=
- *      "https://cs.smu.ca/~porter/csc/465/code/misc/gui/RoundButton.java2html">RoundButton.java</a>
+ * JButton.
  * 
  * @author Ryan Johnson, Hank Rugg
  */
 public class RoundButton extends JButton {
+	/*
+	 * This button is linked with a particular pit for the purpose of determining
+	 * which pit a user clicks on and setting the coordinates of the marbles within
+	 * the linked pit. This class is based off of the RoundButton class found at the
+	 * location shown below.
+	 * 
+	 * @see <a href=
+	 * "https://cs.smu.ca/~porter/csc/465/code/misc/gui/RoundButton.java2html">
+	 * RoundButton.java</a>
+	 */
 	private final int pitNumber;
 	private Shape shape;
 
@@ -76,5 +80,4 @@ public class RoundButton extends JButton {
 			  g.drawOval(0, 0, getSize().width-1, getSize().height-1);
 		}
 	}
-
 }

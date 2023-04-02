@@ -69,22 +69,51 @@ public class Pit {
 		return arr;
 	}
 
+	/**
+	 * Returns an integer representing the side of the board the pit belongs to.
+	 * 
+	 * @return int returns 0 if the pit is on Player 1's side and 1 if the pit is on
+	 *         Player 2's side
+	 */
 	public int getSide() {
 		return boardSide;
 	}
 
+	/**
+	 * Returns a list of all Marble objects held by the pit.
+	 * 
+	 * @return List<Marble> returns a list of all Marble objects held by the pit
+	 */
 	public List<Marble> getMarbleList() {
 		return marblesContained;
 	}
 
-	public void setBoundary(RoundButton pitButton) {
-		this.pitBoundary = pitButton;
+	/**
+	 * Sets a JButton to the pit.
+	 * 
+	 * @param pitBoundary sets a JButton to the pit
+	 */
+	public void setBoundary(JButton pitBoundary) {
+		/*
+		 * The marbles within the pit are drawn within the coordinates of this JButton.
+		 */
+		this.pitBoundary = pitBoundary;
 	}
 
-	public RoundButton getBoundary() {
+	/**
+	 * Returns the JButton belonging to the pit.
+	 * 
+	 * @return JButton returns the JButton belonging to the pit
+	 */
+	public JButton getBoundary() {
 		return pitBoundary;
 	}
 
+	/**
+	 * Adds a Marble object to the pit.
+	 * 
+	 * @param marble the Marble object to be added to the list
+	 */
 	public void addMarble(Marble marble) {
 		marblesContained.add(marble);
 	}

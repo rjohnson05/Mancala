@@ -398,6 +398,7 @@ public class PlayPanel extends JPanel {
 
 		// Move the marbles in the captured pit into the player's store
 		Pit capturedPit = game.getStoreList().get(Math.abs(12 - endPitIndex));
+
 		for (Marble marble : capturedPit.getMarbleList()) {
 			marble.setXcord(rand.nextInt(((store.getBoundary().getBounds().x + store.getBoundary().getBounds().width
 					- marble.getMarbleImage().getWidth(getFocusCycleRootAncestor()) - 5))
@@ -422,7 +423,7 @@ public class PlayPanel extends JPanel {
 		 * the last marble after moving a pit and also lies across from a pit containing
 		 * marbles.
 		 */
-		System.out.println("Moving capturing marble");
+
 		Pit currentPit = game.getStoreList().get(selectedPitIndex);
 
 		// Determine which store the marbles should be moved into

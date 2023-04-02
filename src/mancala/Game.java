@@ -3,7 +3,12 @@ package mancala;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
-
+/**
+ * The main class for the game Mancala.
+ * This contains the business logic for the game and additionally allows you to play the text based version. 
+ * 
+ * @author HankRugg, RyanJohnson
+ */
 public class Game {
 	private List<Pit> storeList = new ArrayList<>();
 	private int currentPlayer;
@@ -11,6 +16,11 @@ public class Game {
 	private boolean capturedMarbles;
 	private int winner;
 
+	
+	/**
+	 * The constructor for the game. It creates the board and sets the 
+	 * current player to player 0 (the first player)
+	 */
 	public Game() {
 		currentPlayer = 0;
 		winner = -1;
@@ -18,12 +28,10 @@ public class Game {
 	}
 
 	/**
-	 * Returns a boolean of whether or not the player gets another turn. This method
-	 * uses the number of marbles in the pit, and the distance from the store to see
-	 * if they get another turn. If the player selects a pit that, when moved, will
-	 * end in the store, then they get another turn.
+	 * Returns whether or not the player gets another turn. The 
+	 * player gets another turn if the last marble that they move ends in their store. 
 	 * 
-	 * @param selectedPitIndex, player input of the pit the player wants to move
+	 * @param selectedPitIndex index of the pit the player wants to move
 	 * @return boolean whether or not the player gets another move
 	 */
 	public boolean getsAnotherMove(int selectedPitIndex) {
@@ -56,10 +64,10 @@ public class Game {
 	/**
 	 * This method moves the marbles throughout the board. It takes the amount of
 	 * marbles in the selected pit, and distributes them to the sequential pits.
+	 * A valid pit is xxx
 	 * 
-	 * @param selectedPitIndex, player input of the pit the player wants to move
-	 * @return a boolean on whether or not the player chose to move marbles from a
-	 *         valid pit
+	 * @param selectedPitIndex index of the pit the player wants to move
+	 * @return boolean on whether or not the player selected a valid pit. True for valid, false otherwise
 	 */
 	public boolean move(int selectedPitIndex) {
 		if (storeList.get(selectedPitIndex).getSide() != currentPlayer) {
@@ -116,9 +124,9 @@ public class Game {
 
 	/**
 	 * The method checks each side of the board to see if the game is over. The game
-	 * is over when there are no marbles left on one or the other sides of the board
+	 * is over when there are no marbles left on one or the other sides of the board.
 	 * 
-	 * @return boolean on whether or not the game has a winner (is the game over)
+	 * @return boolean on whether or not the game has a winner. True if there is a winner, false otherwise.
 	 */
 	public boolean hasWinner() {
 		// check the first side of the board for a winner
@@ -135,12 +143,11 @@ public class Game {
 				side2Empty = false;
 			}
 		}
-
 		return (side1Empty || side2Empty);
 	}
-
+	
 	/**
-	 * This is a void method that switches the player.
+	 * This method changes the turn to the opposite player. 
 	 * 
 	 */
 	public void switchPlayer() {
@@ -153,10 +160,10 @@ public class Game {
 			currentPlayer = 0;
 		}
 	}
-
+	
 	/**
-	 * This is a void method prints when the game is done. It prints a sentence with
-	 * the winner and the score of the game.
+	 * This is called when the game is done. It outputs text containing 
+	 * the winner and the score of the game. 
 	 * 
 	 */
 	public void endGame() {
@@ -165,9 +172,12 @@ public class Game {
 				+ storeList.get(13).getMarbleList().size());
 		resetBoard();
 	}
-
+	
 	/**
-	 * This is a void method that resets the board.
+	 * Resets the game board. It adds 6 pits, each with 4 marbles in 
+	 * each pit for player 0's side of the board. It then creates the store
+	 * for player 0. Next, it creates 6 additional pits, each with 4 marbles in each pit for player 1's
+	 * side of the board. Finally, it creates the store for player 1.
 	 * 
 	 */
 	public void resetBoard() {
@@ -190,6 +200,7 @@ public class Game {
 		storeList.add(new Pit(0, -1));
 	}
 
+
 	public void setWinner() {
 		// compare the stores of each player
 		if (hasWinner()) {
@@ -203,20 +214,29 @@ public class Game {
 		} 
 	}
 	
+
 	/**
+	 * Returns the identifier of the player that wins the game. 
 	 * 
 	 * @return the player that won as represented by an int
 	 */
 	public int getWinner() {
 		return winner;
 
-	}
 
+	}
+	
 	/**
+	 * Checks to see if a capture play was made. A capture happens when a player
+	 * lands on an empty pit with their final marble, and the pit across from the board has
+	 * one or more marbles in it. If this scenario happens, the player that moved the marbles 
+	 * captures the one marble they moved and all the marbles in the opposite pit. These marbles
+	 * are then moved into the store of the player that moved. This method is paired with the
+	 * {@link moveCapturedMarbled()} method.
 	 * 
-	 * 
-	 * @param selectedPitIndex
-	 * @return a boolean on whether or not the player made a capture move
+	 * @param selectedPitIndex index of the pit the player wants to move
+	 * @return boolean on whether or not the player made a capture move
+	 * @see #moveCapturedMarbles(int)
 	 */
 	public boolean checkCapture(int selectedPitIndex) {
 		// get the selected pit
@@ -266,7 +286,14 @@ public class Game {
 		capturedMarbles = false;
 		return false;
 	}
-
+	
+	/**
+	 * Carries out the action of moving the captured marbles. Gets the selected pit from the selected pit index, and moves the marbles
+	 * to the correct pits. Paired with the checkCapture() method.
+	 * 
+	 * @param selectedPitIndex index of the pit the player wants to move
+	 * @see #checkCapture(int)
+	 */
 	public void moveCapturedMarbles(int selectedPitIndex) {
 		Pit selectedPit = storeList.get(selectedPitIndex);
 		int marbleCount = selectedPit.getMarbleList().size();
@@ -304,6 +331,7 @@ public class Game {
 	}
 
 	/**
+	 * Returns a list of pits that the board is made of.
 	 * 
 	 * @return a list of pits that the board is made of
 	 */
@@ -312,6 +340,7 @@ public class Game {
 	}
 
 	/**
+	 * Returns the current player.
 	 * 
 	 * @return the current player
 	 */
@@ -319,18 +348,23 @@ public class Game {
 		return currentPlayer;
 	}
 
+	/**
+	 * This method executes the text version game. 
+	 */
 	public void playGame() {
-
 		int getSelectedIndex = -1;
 		Scanner s = new Scanner(System.in);
+		// run the game until there is a winner
 		while (!hasWinner()) {
 			System.out.println("Player " + currentPlayer + " is up.");
 			System.out.println((storeList.toString()));
 			System.out.println("Enter selected pit you want to move");
+			// get the index of the pit they want to move the marbles from
 			getSelectedIndex = s.nextInt();
 			playerGetsAnotherMove = getsAnotherMove(getSelectedIndex);
 			checkCapture(getSelectedIndex);
 
+			// if that is not a valid move, get a valid move
 			while (!move(getSelectedIndex)) {
 				if (capturedMarbles) {
 					moveCapturedMarbles(getSelectedIndex);
@@ -343,8 +377,8 @@ public class Game {
 
 			}
 
+			// if they player gets another move, they get another chance to play
 			while (playerGetsAnotherMove) {
-
 				System.out.println("Nice! Player " + currentPlayer + " gets another turn.");
 				System.out.println((storeList.toString()));
 				System.out.println("Enter selected pit you want to move");
@@ -352,6 +386,7 @@ public class Game {
 				playerGetsAnotherMove = getsAnotherMove(getSelectedIndex);
 				checkCapture(getSelectedIndex);
 
+				// if that is not a valid move, get a valid move
 				while (!move(getSelectedIndex)) {
 					moveCapturedMarbles(getSelectedIndex);
 					if (capturedMarbles) {
@@ -372,7 +407,12 @@ public class Game {
 		s.close();
 
 	}
-
+	
+	/**
+	 * This method runs the text based game.
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		Game g = new Game();
 		g.playGame();
