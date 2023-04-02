@@ -19,6 +19,9 @@ import javax.swing.JPanel;
 public class Controller extends JFrame {
 	private JPanel playPanel;
 	private JPanel welcomePanel;
+	private JPanel instructionsPanel;
+	private JPanel settingsPanel;
+
 
 	public Controller() {
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -26,11 +29,14 @@ public class Controller extends JFrame {
 
 		// Add all panels to this frame
 		playPanel = new PlayPanel();
-		// welcomePanel = new WelcomePanel();
-		// this.add(welcomePanel);
-		this.add(playPanel);
+		welcomePanel = new WelcomePanel();
+		instructionsPanel = new InstructionsPanel();
+		settingsPanel = new SettingsPanel();
+//		this.add(welcomePanel);
+//		this.add(playPanel);
+//		this.add(settingsPanel);
+		this.add(instructionsPanel);
 		this.pack();
-
 		this.setVisible(true);
 	}
 
