@@ -93,7 +93,7 @@ public class Pit {
 	 * 
 	 * @param pitBoundary sets a JButton to the pit
 	 */
-	public void setBoundary(JButton pitBoundary) {
+	public void setBoundary(RoundButton pitBoundary) {
 		/*
 		 * The marbles within the pit are drawn within the coordinates of this JButton.
 		 */

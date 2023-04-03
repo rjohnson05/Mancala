@@ -49,9 +49,6 @@ public class Controller {
 //		this.add(welcomePanel);
 //		this.add(playPanel);
 //		this.add(settingsPanel);
-		this.add(instructionsPanel);
-		this.pack();
-		this.setVisible(true);
 	}
 
 	/**
