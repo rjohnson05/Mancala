@@ -9,8 +9,6 @@ import javax.swing.JPanel;
  * 
  * @author Ryan Johnson, Hank Rugg
  */
-
-
 public class Controller {
 	/*
 	 * Allows a user to play the Mancala program. The program begins with a main
