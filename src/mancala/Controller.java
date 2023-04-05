@@ -1,5 +1,7 @@
 package mancala;
 
+import java.awt.Component;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -9,8 +11,6 @@ import javax.swing.JPanel;
  * 
  * @author Ryan Johnson, Hank Rugg
  */
-
-
 public class Controller {
 	/*
 	 * Allows a user to play the Mancala program. The program begins with a main
@@ -22,16 +22,24 @@ public class Controller {
 	 * has ended, the user is given the option to play the game again or return to
 	 * the main screen.
 	 */
-	private JPanel welcomePanel;
-	private JPanel instructionsPanel;
-	private JPanel settingsPanel;
 	private JFrame playFrame;
+	private JFrame preGameFrame;
 	private JFrame endGameFrame;
 	private PlayPanel playPanel;
-	private EndGamePanel endGamePanel;
+//	private EndGamePanel endGamePanel;
+	private WelcomePanel welcomePanel;
+	private SettingsPanel settingsPanel;
+	private InstructionsPanel instructionsPanel;
+
 	private int winner;
 	private volatile int winnerState;
 	private volatile boolean playAgainState;
+	private volatile int showPage = 0;
+	boolean playGame = false;
+
+
+
+
 
 	/**
 	 * Creates a new controller for the Mancala program. This controller contains
@@ -41,17 +49,9 @@ public class Controller {
 	 * Each screen is created as a separate JPanel.
 	 */
 	public Controller() {
+		preGameFrame = new JFrame();
 		playFrame = new JFrame();
 		playPanel = new PlayPanel();
-		welcomePanel = new WelcomePanel();
-		instructionsPanel = new InstructionsPanel();
-		settingsPanel = new SettingsPanel();
-//		this.add(welcomePanel);
-//		this.add(playPanel);
-//		this.add(settingsPanel);
-		this.add(instructionsPanel);
-		this.pack();
-		this.setVisible(true);
 	}
 
 	/**
@@ -65,6 +65,21 @@ public class Controller {
 		playFrame.pack();
 		playFrame.setVisible(true);
 	}
+	
+	/**
+	 * Adds the main gameplay panel to the frame.
+	 */
+	public void createPreGameFrame() {
+		preGameFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		preGameFrame.setLocation(300, 100);
+
+		preGameFrame.pack();
+		preGameFrame.setVisible(true);
+	}
+	
+	public JFrame getPreGameFrame() {
+		return preGameFrame;
+	}
 
 	/**
 	 * Adds the end game panel to the frame, giving the player the option to replay
@@ -75,11 +90,54 @@ public class Controller {
 		endGameFrame.setLocation(500, 200);
 		winner = playPanel.getWinner();
 
-		endGamePanel = new EndGamePanel(winner);
-		endGameFrame.add(endGamePanel);
+//		endGamePanel = new EndGamePanel(winner);
+//		endGameFrame.add(endGamePanel);
 
 		endGameFrame.pack();
 		endGameFrame.setVisible(true);
+	}
+	
+	public WelcomePanel createWelcomePanel() {
+		welcomePanel = new WelcomePanel();
+		preGameFrame.add(welcomePanel);
+		preGameFrame.pack();
+		preGameFrame.setVisible(true);
+		return welcomePanel;
+
+	}
+	
+	public WelcomePanel getWelcomepanel() {
+		return welcomePanel;
+	}
+	
+	
+	public SettingsPanel createSettingsPanel() {
+		settingsPanel = new SettingsPanel();
+		preGameFrame.add(settingsPanel);
+		preGameFrame.pack();
+		preGameFrame.setVisible(true);
+		return settingsPanel;
+
+	}
+	
+	public SettingsPanel getSettingsPanel() {
+		return settingsPanel;
+	}
+
+	
+	public InstructionsPanel createInstructionsPanel() {
+		instructionsPanel = new InstructionsPanel();
+		preGameFrame.add(instructionsPanel);
+		preGameFrame.pack();
+		preGameFrame.setVisible(true);
+		return instructionsPanel;
+		
+
+	}
+
+	
+	public InstructionsPanel getInstructionsPanel() {
+		return instructionsPanel;
 	}
 
 	/**
@@ -96,9 +154,9 @@ public class Controller {
 	 * 
 	 * @return EndGamePanel a JPanel containing the end-game screen
 	 */
-	public EndGamePanel getEndGamePanel() {
-		return endGamePanel;
-	}
+//	public EndGamePanel getEndGamePanel() {
+//		return endGamePanel;
+//	}
 
 	/**
 	 * Sets the winner of the game.
@@ -141,25 +199,42 @@ public class Controller {
 	public boolean getPlayAgainState() {
 		return playAgainState;
 	}
+	
+	public void getCorrectPanelWelcome(WelcomePanel panel) {
+		showPage = panel.showPage;
+	}
+	
+	public void getCorrectPanelInstructions(InstructionsPanel panel) {
+		showPage = panel.showPage;
+	}
+	
+	public void getCorrectPanelSettings(SettingsPanel panel) {
+		showPage = panel.showPage;
+	}
+	
+
 
 	public static void main(String[] args) {
 		Controller controller = new Controller();
+		
+		Cardlayout c = new Cardlayout();
+		c.createCard();
 
-		controller.createPlayFrame();
-
-		while (controller.getPlayPanel().isVisible()) {
-			controller.setWinnerState(controller.getPlayPanel().getWinner());
-			if (controller.getWinnerState() != -1) {
-				controller.createEndGamePanel();
-				while (controller.getEndGamePanel().isVisible()) {
-					controller.setPlayAgainState(controller.getEndGamePanel().getPlayAgain());
-					if (controller.getPlayAgainState()) {
-						controller.getPlayPanel().resetBoardGraphics();
-						break;
-					}
-				}
-			}
+//		while (c.isVisible()) {
+//		controller.createPlayFrame();
+//		while (controller.getPlayPanel().isVisible()) {
+//			controller.setWinnerState(controller.getPlayPanel().getWinner());
+//			if (controller.getWinnerState() != -1) {
+//				controller.createEndGamePanel();
+////				while (controller.getEndGamePanel().isVisible()) {
+////					controller.setPlayAgainState(controller.getEndGamePanel().getPlayAgain());
+//					if (controller.getPlayAgainState()) {
+//						controller.getPlayPanel().resetBoardGraphics();
+//						break;
+//					}
+//			}
+//				}
+//			}
 		}
 	}
 
-}

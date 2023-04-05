@@ -28,6 +28,12 @@ public class SettingsPanel extends JPanel {
 
 	private Game game = new Game();
 	private Random rand = new Random();
+	public JButton home = new JButton("Home");
+	public JButton quitGame = new JButton("Quit");
+	public JButton singlePlayer = new JButton("Single Player");
+	public JButton twoPlayer = new JButton("Two Player");
+	
+	public int showPage;
 
 	public SettingsPanel() {
 		this.setPreferredSize(new Dimension(800, 500));
@@ -37,11 +43,7 @@ public class SettingsPanel extends JPanel {
 		this.setBackground(new Color(228, 218, 199));
 		
         
-		JButton home = new JButton("Home");
-        JButton quitGame = new JButton("Quit");
-        
-        JButton singlePlayer = new JButton("Single Player");
-        JButton twoPlayer = new JButton("Two Player");
+
 		JLabel welcomeLabel = new JLabel("Welcome to");
 		JLabel buttonDesc = new JLabel("Choose the amount of players:");
 
@@ -106,6 +108,21 @@ public class SettingsPanel extends JPanel {
 	public void addButtonListeners(JButton nextPage) {
 		MouseListener buttonListener = new MouseListener() {
 			public void mouseClicked(MouseEvent e) {
+
+				JButton buttonClicked = (JButton) e.getSource();
+				if (buttonClicked.getText() == "Play Game") {
+					showPage = 2;
+				}
+				
+				if (buttonClicked.getText() == "Home") {
+					showPage = 0;
+					
+				}
+				
+				if (buttonClicked.getText() == "Quit") {
+					System.exit(1);
+					
+				}
 
 			}
 

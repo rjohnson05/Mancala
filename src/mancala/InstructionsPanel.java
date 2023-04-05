@@ -26,7 +26,14 @@ public class InstructionsPanel extends JPanel {
 
 	private Game game = new Game();
 	private Random rand = new Random();
+	public JButton home = new JButton("Home");
+	public JButton playGame = new JButton("Play Game");
+	public JButton quitGame = new JButton("Quit");
 
+
+	public int showPage = 0;
+	
+	
 	public InstructionsPanel() {
 		this.setPreferredSize(new Dimension(800, 500));
 		this.setLayout(null);
@@ -35,9 +42,6 @@ public class InstructionsPanel extends JPanel {
 		this.setBackground(new Color(228, 218, 199));
 		
 		JLabel welcomeLabel = new JLabel("Welcome to");
-		JButton home = new JButton("Home");
-		JButton playGame = new JButton("Play Game");
-        JButton quitGame = new JButton("Quit");
 		JTextArea rules = new JTextArea("Rules:");
 		JTextArea rulesListed = new JTextArea("1. There are two players for the game, each with six of their own pits and one of their own store.\n"
 				+ "2. The player who is up selects one of the pits on their side. The marbles in that pit are then \n" 
@@ -88,6 +92,8 @@ public class InstructionsPanel extends JPanel {
 		addButtonListeners(home);
 
 	}
+	
+
 
 	/**
 	 * 
@@ -114,9 +120,27 @@ public class InstructionsPanel extends JPanel {
 
 	public void addButtonListeners(JButton nextPage) {
 		MouseListener buttonListener = new MouseListener() {
-			public void mouseClicked(MouseEvent e) {
-
+			public void mouseClicked(MouseEvent e) { 
+			JButton buttonClicked = (JButton) e.getSource();
+			if (buttonClicked.getText() == "Play Game") {
+//				System.out.println("clicked playGame");
+				showPage = 2;
 			}
+			
+			if (buttonClicked.getText() == "Home") {
+//				System.out.println("clicked home");
+				showPage = 0;
+				
+			}
+			
+			if (buttonClicked.getText() == "Quit") {
+				System.exit(1);
+				
+			}
+//			System.out.println(showPage);
+
+
+		}
 
 			@Override
 			public void mousePressed(MouseEvent e) {

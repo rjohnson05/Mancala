@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
+import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -26,8 +27,17 @@ public class WelcomePanel extends JPanel {
 
 	private Game game = new Game();
 	private Random rand = new Random();
+	public int showPage;
+	public JButton playGame = new JButton("Play Game");
+	public JButton quitGame = new JButton("Quit");
+	public JButton instructions = new JButton("Instructions");
+
+	
+	
+	
 
 	public WelcomePanel() {
+		
 		this.setPreferredSize(new Dimension(800, 500));
 		this.setLayout(null);
         JPanel panel=new JPanel();  
@@ -35,9 +45,8 @@ public class WelcomePanel extends JPanel {
 		this.setBackground(new Color(228, 218, 199));
 		
         
-		JButton instructions = new JButton("Instructions");
-		JButton playGame = new JButton("Play Game");
-        JButton quitGame = new JButton("Quit");
+
+
 		JLabel welcomeLabel = new JLabel("Welcome to");
 		JTextArea visionStatement = new JTextArea("Through the creation of a computer-based Mancala game, we are bringing one of the oldest\n"
 				+ "board games to the latest generation. Unlike many modern mindless computer games, this\n"
@@ -110,6 +119,23 @@ public class WelcomePanel extends JPanel {
 	public void addButtonListeners(JButton button) {
 		MouseListener buttonListener = new MouseListener() {
 			public void mouseClicked(MouseEvent e) {
+				JButton buttonClicked = (JButton) e.getSource();
+				if (buttonClicked.getText() == "Play Game") {
+//					System.out.println("clicked playgame");
+					showPage = 2;
+					
+				}
+				
+				if (buttonClicked.getText() == "Instructions") {
+//					System.out.println("clicked instructinos");
+					showPage = 1;
+					
+				}
+				
+				if (buttonClicked.getText() == "Quit") {
+					System.exit(1);
+					
+				}
 
 			}
 
