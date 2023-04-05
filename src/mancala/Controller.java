@@ -52,6 +52,10 @@ public class Controller {
 		preGameFrame = new JFrame();
 		playFrame = new JFrame();
 		playPanel = new PlayPanel();
+		welcomePanel = new WelcomePanel();
+		instructionsPanel = new InstructionsPanel();
+		settingsPanel = new SettingsPanel();
+
 	}
 
 	/**

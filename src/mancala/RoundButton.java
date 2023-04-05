@@ -1,9 +1,13 @@
 package mancala;
 
+import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
+import javax.swing.DefaultButtonModel;
+import javax.swing.Icon;
 import javax.swing.JButton;
 
 /**
@@ -68,5 +72,12 @@ public class RoundButton extends JButton {
 	 */
 	public int getPitNumber() {
 		return pitNumber;
+	}
+
+	protected void paintBorder(Graphics g) {
+		if (isBorderPainted()) {
+			g.setColor(getForeground());
+			  g.drawOval(0, 0, getSize().width-1, getSize().height-1);
+		}
 	}
 }
