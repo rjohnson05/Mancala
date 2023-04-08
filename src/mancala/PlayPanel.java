@@ -18,6 +18,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -164,6 +166,7 @@ public class PlayPanel extends JPanel {
 
 				if (game.hasWinner()) {
 					game.setWinner();
+					repaint();
 				}
 			}
 
@@ -344,8 +347,7 @@ public class PlayPanel extends JPanel {
 			if (nextPitIndex > 13) {
 				nextPitIndex = Math.abs(13 - (nextPitIndex - 1));
 			}
-			System.out.println("Next Pit: " + nextPitIndex);
-			// Changes the coordinates of each marble in the selected pit to a random
+			// Changes the coordinates of each marble in the selected pit to a randomwinp
 			// coordinate within the pit the marble is being moved to
 			Pit nextPit = game.getStoreList().get(nextPitIndex);
 			marble.setXcord(rand.nextInt(((nextPit.getBoundary().getBounds().x + nextPit.getBoundary().getBounds().width
@@ -358,7 +360,6 @@ public class PlayPanel extends JPanel {
 		}
 		
 		int endPitIndex = nextPitIndex;
-		System.out.println("End Pit Index: " + endPitIndex);
 		
 		game.move(selectedPitIndex);
 		
@@ -478,6 +479,29 @@ public class PlayPanel extends JPanel {
 	public int getWinner() {
 		return game.getWinner();
 	}
+	
+	public void playerMove(int selectedPitIndex) {
+		// After a player chooses a pit, play moves to the other player
+		game.setsAnotherMove(selectedPitIndex);
+		boolean getsAnotherTurn = game.getsAnotherMove();
+		int endPitIndex = movePit(selectedPitIndex);
+		if (endPitIndex != selectedPitIndex) {
+			if (game.checkCapture(endPitIndex)) {
+				moveCapturedMarbles(endPitIndex);
+				game.moveCapturedMarbles(endPitIndex);
+			}
+			if (!getsAnotherTurn) {
+				game.switchPlayer();
+			}
+			changeInstructionText(getsAnotherTurn);
+		}
+
+		if (game.hasWinner()) {
+			game.setWinner();
+			repaint();
+		}
+		repaint();
+	}
 
 	/**
 	 * Adds a MouseListener to a button. This is used for the pit buttons to
@@ -497,31 +521,43 @@ public class PlayPanel extends JPanel {
 			 * of the moved marbles.
 			 */
 			public void mouseClicked(MouseEvent e) {
-				// On a mouse click, the marbles are moved and the player is changed
-				RoundButton buttonClicked = (RoundButton) e.getSource();
-				Pit currentPit = game.getStoreList().get(buttonClicked.getPitNumber());
-				int selectedPitIndex = buttonClicked.getPitNumber();
-
-				// Only allows player to choose a pit on their side of the board
-				if (currentPit.getSide() == game.getCurrentPlayer()) {
-					// After a player chooses a pit, play moves to the other player
-					boolean getsAnotherTurn = game.getsAnotherMove(selectedPitIndex);
-					int endPitIndex = movePit(selectedPitIndex);
-					if (endPitIndex != selectedPitIndex) {
-						if (game.checkCapture(endPitIndex)) {
-							moveCapturedMarbles(endPitIndex);
-							game.moveCapturedMarbles(endPitIndex);
-						}
-						if (!getsAnotherTurn) {
-							game.switchPlayer();
-						}
-						changeInstructionText(getsAnotherTurn);
+				if (game.getCurrentPlayer() == 0) {
+					// On a mouse click, the marbles are moved and the player is changed
+					RoundButton buttonClicked = (RoundButton) e.getSource();
+					Pit currentPit = game.getStoreList().get(buttonClicked.getPitNumber());
+					int selectedPitIndex = buttonClicked.getPitNumber();
+					
+					
+					// Only allows player to choose a pit on their side of the board
+					if (currentPit.getSide() == game.getCurrentPlayer()) {
+						playerMove(selectedPitIndex);
 					}
-
-					if (game.hasWinner()) {
-						game.setWinner();
+					
+					/*
+					 * Sets a timer for moving the computer opponent. After 2 seconds, a random
+					 * pit index from its side of the board is chosen. If the selected pit is
+					 * empty, a new random pit is selected until a non-empty pit is selected.
+					 */
+					Timer timer = new Timer();
+					TimerTask action = new TimerTask() {
+						public void run() {
+							int randomIndex = rand.nextInt(13 - 7) + 7;
+							// Continue choosing random pits until a non-empty pit is selected
+							while (game.getStoreList().get(randomIndex).getMarbleList().size() == 0) {
+								randomIndex = rand.nextInt(13 - 7) + 7;
+							}
+							playerMove(randomIndex);
+							// If the computer opponent doesn't land in their store, the timer is
+							// stopped and prevented from moving the player again
+							if (!game.getsAnotherMove()) {
+								timer.cancel();
+							}
+						}
+					};
+					// The computer opponent's timer is started as soon as the human player has finished their turn
+					if (game.getCurrentPlayer() == 1) {
+						timer.schedule(action, 1500, 1500);
 					}
-					repaint();
 				}
 			}
 
