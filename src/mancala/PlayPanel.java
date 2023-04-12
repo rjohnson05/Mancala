@@ -61,6 +61,8 @@ public class PlayPanel extends JPanel {
 	private JLabel marbleCountDisplayLabel = new JLabel("Number of Marbles:");
 	private JLabel marbleCountLabel = new JLabel();
 	private List<String> keysTyped = new ArrayList<String>();
+	public RoundButton[] pitButtons = new RoundButton[14];
+	public static boolean singlePlayer = false;
 
 	/**
 	 * Creates a new gameplay panel for the Mancala game.
@@ -176,6 +178,8 @@ public class PlayPanel extends JPanel {
 		addKeyListener(cheatListener);
 		this.setFocusable(true);
 	}
+	
+
 
 	/**
 	 * Renders the game board and marbles to the screen.
@@ -242,54 +246,66 @@ public class PlayPanel extends JPanel {
 			Pit currentPit = storeList.get(i);
 			if (i < 3) {
 				RoundButton pitButton = new RoundButton(i);
+				pitButton.setText(" ");
 				pitButton.setBounds(125 + (84 * i), 245 - (i), 73, 74);
 				currentPit.setBoundary(pitButton);
 				pitButton.setBorderPainted(false);
 				addButtonListeners(pitButton);
 				pitButton.setFocusable(false);
 				this.add(pitButton);
+				pitButtons[i] = pitButton;
 			} else if (i < 6) {
 				RoundButton pitButton = new RoundButton(i);
+				pitButton.setText(" ");
 				pitButton.setBounds(427 + (83 * (i - 3)), 250 - (2 * i), 71, 70);
 				currentPit.setBoundary(pitButton);
 				pitButton.setBorderPainted(false);
 				addButtonListeners(pitButton);
 				pitButton.setFocusable(false);
 				this.add(pitButton);
+				pitButtons[i] = pitButton;
 			} else if (i == 6) {
 				// This is a rectangular button instead of a circular button
 				// This button still needs rotated for greater precision
 				RoundButton pitButton = new RoundButton(i);
+				pitButton.setText(" ");
 				pitButton.setBounds(666, 130, 84, 180);
 				currentPit.setBoundary(pitButton);
 				pitButton.setOpaque(false);
 				pitButton.setContentAreaFilled(false);
 				pitButton.setBorderPainted(false);
 				addButtonListeners(pitButton);
+				pitButtons[i] = pitButton;
 			} else if (i > 6 && i < 10) {
 				RoundButton pitButton = new RoundButton(i);
+				pitButton.setText(" ");
 				pitButton.setBounds((584 - (-81 * (7 - i))), 133 + (-2 * (7 - i)), 69, 67);
 				currentPit.setBoundary(pitButton);
 				pitButton.setBorderPainted(false);
 				addButtonListeners(pitButton);
 				pitButton.setFocusable(false);
 				this.add(pitButton);
+				pitButtons[i] = pitButton;
 			} else if (i < 13) {
 				RoundButton pitButton = new RoundButton(i);
+				pitButton.setText(" ");
 				pitButton.setBounds(294 - (-81 * (10 - i)), 135 + (-1 * (10 - i)), 70, 70);
 				currentPit.setBoundary(pitButton);
 				pitButton.setBorderPainted(false);
 				addButtonListeners(pitButton);
 				pitButton.setFocusable(false);
 				this.add(pitButton);
+				pitButtons[i] = pitButton;
 			} else {
 				RoundButton pitButton = new RoundButton(i);
+				pitButton.setText(" ");
 				pitButton.setBounds(43, 136, 75, 183);
 				currentPit.setBoundary(pitButton);
 				pitButton.setOpaque(false);
 				pitButton.setContentAreaFilled(false);
 				pitButton.setBorderPainted(false);
 				addButtonListeners(pitButton);
+				pitButtons[i] = pitButton;
 			}
 		}
 
@@ -325,10 +341,15 @@ public class PlayPanel extends JPanel {
 		 * the designated pit is moved successfully, the boolean true is returned. If
 		 * there are no marbles in the pit to move, false is returned
 		 */
+//		if (singlePlayer && game.getCurrentPlayer() == 1) {
+//			selectedPitIndex = 10;
+//		}
 		Pit selectedPit = game.getStoreList().get(selectedPitIndex);
 		int marbleCount = selectedPit.getMarbleList().size();
 		// Each marble within the selected pit is moved to the subsequent pits
 		int nextPitIndex = selectedPitIndex;
+		
+
 		for (int i = 0; i < marbleCount; i++) {
 			Marble marble = selectedPit.getMarbleList().get(i);
 			nextPitIndex = nextPitIndex + 1;
@@ -478,6 +499,7 @@ public class PlayPanel extends JPanel {
 	public int getWinner() {
 		return game.getWinner();
 	}
+	
 
 	/**
 	 * Adds a MouseListener to a button. This is used for the pit buttons to
@@ -512,15 +534,51 @@ public class PlayPanel extends JPanel {
 							moveCapturedMarbles(endPitIndex);
 							game.moveCapturedMarbles(endPitIndex);
 						}
+
+						
 						if (!getsAnotherTurn) {
+
 							game.switchPlayer();
+						
+							// logic for single player
+							if (singlePlayer) {
+
+							
+							
+						selectedPitIndex = game.getSinglePlayerIndex();
+
+						// After a player chooses a pit, play moves to the other player
+//						getsAnotherTurn = game.getsAnotherMove(selectedPitIndex);
+						endPitIndex = movePit(selectedPitIndex);
+						if (endPitIndex != selectedPitIndex) {
+							if (game.checkCapture(endPitIndex)) {
+								moveCapturedMarbles(endPitIndex);
+								game.moveCapturedMarbles(endPitIndex);
+
+							}
+
 						}
-						changeInstructionText(getsAnotherTurn);
+
+
+						game.switchPlayer();
+
+
+							}
+
+
+								
+							}
+
+
 					}
+					changeInstructionText(getsAnotherTurn);
+
+
 
 					if (game.hasWinner()) {
 						game.setWinner();
 					}
+
 					repaint();
 				}
 			}
@@ -554,6 +612,8 @@ public class PlayPanel extends JPanel {
 			}
 
 			public void mousePressed(MouseEvent e) {
+				
+				
 			}
 
 			public void mouseReleased(MouseEvent e) {
@@ -561,5 +621,9 @@ public class PlayPanel extends JPanel {
 		};
 
 		pitButton.addMouseListener(buttonListener);
+	}
+	
+	public Game getGame() {
+		return game;
 	}
 	}

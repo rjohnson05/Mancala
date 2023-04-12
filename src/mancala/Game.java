@@ -2,6 +2,7 @@ package mancala;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 /**
  * The main class for the game Mancala.
@@ -15,6 +16,7 @@ public class Game {
 	private boolean playerGetsAnotherMove;
 	private boolean capturedMarbles;
 	private int winner;
+	public Random rand = new Random();
 
 	
 	/**
@@ -25,6 +27,29 @@ public class Game {
 		currentPlayer = 0;
 		winner = -1;
 		resetBoard();
+	}
+	//(12,1), (11,2), (10,3), (9,4), (8,5), (7,6)
+	public boolean simulateStep(int index) {
+		for (int i = 7;i < 13;i++) {
+			if (storeList.get(i).getMarbleList().size() + i == 13) {
+				return true;
+			}
+		} return false;
+	}
+	
+	public int getSinglePlayerIndex() {
+		int index = rand.nextInt(6)+7;
+		while (storeList.get(index).getMarbleList().size() == 0) {
+			index = rand.nextInt(6)+7;
+		}
+		for (int i = 7;i < 13;i++) {
+			if (storeList.get(i).getMarbleList().size() + i == 13) {
+				index = i;
+			}
+		
+		}
+		System.out.println(index);
+		return index;
 	}
 
 	/**
@@ -247,7 +272,6 @@ public class Game {
 	public int getWinner() {
 		return winner;
 
-
 	}
 	
 	/**
@@ -410,5 +434,7 @@ public class Game {
 		g.playGame();
 
 	}
+
+
 
 }

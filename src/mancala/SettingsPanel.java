@@ -73,12 +73,6 @@ public class SettingsPanel extends JPanel {
 		this.add(buttonDesc);
 		
 
-  
-		
-		addButtonListeners(quitGame);
-		addButtonListeners(home);
-		addButtonListeners(singlePlayer);
-		addButtonListeners(twoPlayer);
 
 	}
 
@@ -105,49 +99,5 @@ public class SettingsPanel extends JPanel {
 	}
 
 
-	public void addButtonListeners(JButton nextPage) {
-		MouseListener buttonListener = new MouseListener() {
-			public void mouseClicked(MouseEvent e) {
-
-				JButton buttonClicked = (JButton) e.getSource();
-				if (buttonClicked.getText() == "Play Game") {
-					showPage = 2;
-				}
-				
-				if (buttonClicked.getText() == "Home") {
-					showPage = 0;
-					
-				}
-				
-				if (buttonClicked.getText() == "Quit") {
-					System.exit(1);
-					
-				}
-
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				setCursor(new Cursor(Cursor.HAND_CURSOR));
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			}
-		};
-
-		nextPage.addMouseListener(buttonListener);
-	}
 
 }

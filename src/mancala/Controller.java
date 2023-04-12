@@ -38,9 +38,6 @@ public class Controller {
 	boolean playGame = false;
 
 
-
-
-
 	/**
 	 * Creates a new controller for the Mancala program. This controller contains
 	 * the JFrame, into which all the JPanels are placed. It also provides the logic
@@ -223,22 +220,9 @@ public class Controller {
 		
 		Cardlayout c = new Cardlayout();
 		c.createCard();
+		
 
-//		while (c.isVisible()) {
-//		controller.createPlayFrame();
-//		while (controller.getPlayPanel().isVisible()) {
-//			controller.setWinnerState(controller.getPlayPanel().getWinner());
-//			if (controller.getWinnerState() != -1) {
-//				controller.createEndGamePanel();
-////				while (controller.getEndGamePanel().isVisible()) {
-////					controller.setPlayAgainState(controller.getEndGamePanel().getPlayAgain());
-//					if (controller.getPlayAgainState()) {
-//						controller.getPlayPanel().resetBoardGraphics();
-//						break;
-//					}
-//			}
-//				}
-//			}
+
 		}
 	}
 

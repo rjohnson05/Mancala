@@ -78,9 +78,9 @@ public class WelcomePanel extends JPanel {
 		this.add(playGame);
 		this.add(instructions);
   
-		addButtonListeners(quitGame);
-		addButtonListeners(playGame);
-		addButtonListeners(instructions);
+//		addButtonListeners(quitGame);
+//		addButtonListeners(playGame);
+//		addButtonListeners(instructions);
 
 	}
 
@@ -116,51 +116,51 @@ public class WelcomePanel extends JPanel {
 	}
 
 
-	public void addButtonListeners(JButton button) {
-		MouseListener buttonListener = new MouseListener() {
-			public void mouseClicked(MouseEvent e) {
-				JButton buttonClicked = (JButton) e.getSource();
-				if (buttonClicked.getText() == "Play Game") {
-//					System.out.println("clicked playgame");
-					showPage = 2;
-					
-				}
-				
-				if (buttonClicked.getText() == "Instructions") {
-//					System.out.println("clicked instructinos");
-					showPage = 1;
-					
-				}
-				
-				if (buttonClicked.getText() == "Quit") {
-					System.exit(1);
-					
-				}
-
-			}
-
-			@Override
-			public void mousePressed(MouseEvent e) {
-
-			}
-
-			@Override
-			public void mouseReleased(MouseEvent e) {
-
-			}
-
-			@Override
-			public void mouseEntered(MouseEvent e) {
-				setCursor(new Cursor(Cursor.HAND_CURSOR));
-			}
-
-			@Override
-			public void mouseExited(MouseEvent e) {
-				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			}
-		};
-
-		button.addMouseListener(buttonListener);
-	}
+//	public void addButtonListeners(JButton button) {
+//		MouseListener buttonListener = new MouseListener() {
+//			public void mouseClicked(MouseEvent e) {
+//				JButton buttonClicked = (JButton) e.getSource();
+//				if (buttonClicked.getText() == "Play Game") {
+////					System.out.println("clicked playgame");
+//					showPage = 2;
+//					
+//				}
+//				
+//				if (buttonClicked.getText() == "Instructions") {
+////					System.out.println("clicked instructinos");
+//					showPage = 1;
+//					
+//				}
+//				
+//				if (buttonClicked.getText() == "Quit") {
+//					System.exit(1);
+//					
+//				}
+//
+//			}
+//
+//			@Override
+//			public void mousePressed(MouseEvent e) {
+//
+//			}
+//
+//			@Override
+//			public void mouseReleased(MouseEvent e) {
+//
+//			}
+//
+//			@Override
+//			public void mouseEntered(MouseEvent e) {
+//				setCursor(new Cursor(Cursor.HAND_CURSOR));
+//			}
+//
+//			@Override
+//			public void mouseExited(MouseEvent e) {
+//				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+//			}
+//		};
+//
+//		button.addMouseListener(buttonListener);
+//	}
 
 }
