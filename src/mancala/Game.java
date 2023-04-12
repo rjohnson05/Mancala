@@ -291,7 +291,6 @@ public class Game {
 			capturedMarbles = false;
 			return false;
 		}
-
 		// if the end pit marble count is 0 then we have a capture
 		Pit capturedPit = storeList.get(12 - endPitIndex);
 		if (endPit.getMarbleList().size() == 1 && capturedPit.getMarbleList().size() != 0) {
@@ -354,6 +353,10 @@ public class Game {
 	 */
 	public int getCurrentPlayer() {
 		return currentPlayer;
+	}
+
+	public void setCurrentPlayer(int currentPlayer) {
+		this.currentPlayer = currentPlayer;
 	}
 
 	/**
