@@ -1,6 +1,7 @@
 package mancala;
 
 import java.awt.Color;
+
 import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -23,6 +24,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
+
+/**
+ * This class creates the welcome panel to open the program.
+ * It displays the game title and the vision statement for the game. 
+ * 
+ *
+ */
 public class WelcomePanel extends JPanel {
 
 	private Game game = new Game();
@@ -34,8 +42,9 @@ public class WelcomePanel extends JPanel {
 
 	
 	
-	
-
+	/**
+	 * Constructor for the welcome panel
+	 */
 	public WelcomePanel() {
 		
 		this.setPreferredSize(new Dimension(800, 500));
@@ -77,15 +86,13 @@ public class WelcomePanel extends JPanel {
 		this.add(quitGame);
 		this.add(playGame);
 		this.add(instructions);
-  
-//		addButtonListeners(quitGame);
-//		addButtonListeners(playGame);
-//		addButtonListeners(instructions);
 
 	}
 
-	/**
+	/** 
+	 * Adds the actual images to the screen
 	 * 
+	 * @param Graphics which allows images to be added to the JPanel
 	 */
 	public void paintComponent(Graphics graphics) {
 		super.paintComponent(graphics);
@@ -114,53 +121,5 @@ public class WelcomePanel extends JPanel {
 
  
 	}
-
-
-//	public void addButtonListeners(JButton button) {
-//		MouseListener buttonListener = new MouseListener() {
-//			public void mouseClicked(MouseEvent e) {
-//				JButton buttonClicked = (JButton) e.getSource();
-//				if (buttonClicked.getText() == "Play Game") {
-////					System.out.println("clicked playgame");
-//					showPage = 2;
-//					
-//				}
-//				
-//				if (buttonClicked.getText() == "Instructions") {
-////					System.out.println("clicked instructinos");
-//					showPage = 1;
-//					
-//				}
-//				
-//				if (buttonClicked.getText() == "Quit") {
-//					System.exit(1);
-//					
-//				}
-//
-//			}
-//
-//			@Override
-//			public void mousePressed(MouseEvent e) {
-//
-//			}
-//
-//			@Override
-//			public void mouseReleased(MouseEvent e) {
-//
-//			}
-//
-//			@Override
-//			public void mouseEntered(MouseEvent e) {
-//				setCursor(new Cursor(Cursor.HAND_CURSOR));
-//			}
-//
-//			@Override
-//			public void mouseExited(MouseEvent e) {
-//				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-//			}
-//		};
-//
-//		button.addMouseListener(buttonListener);
-//	}
 
 }

@@ -24,6 +24,12 @@ import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.JTextArea;
 
+/**
+ * This class creates the settings panel for the mancala game. It has two different settings options, 
+ * single player or two player. By clicking one of these buttons, the game will launch. This panel
+ * also has other buttons that allow the user to switch between menus.
+ *
+ */
 public class SettingsPanel extends JPanel {
 
 	private Game game = new Game();
@@ -33,8 +39,11 @@ public class SettingsPanel extends JPanel {
 	public JButton singlePlayer = new JButton("Single Player");
 	public JButton twoPlayer = new JButton("Two Player");
 	
-	public int showPage;
 
+
+	/**
+	 * Constructor for the settings panel
+	 */
 	public SettingsPanel() {
 		this.setPreferredSize(new Dimension(800, 500));
 		this.setLayout(null);
@@ -76,8 +85,10 @@ public class SettingsPanel extends JPanel {
 
 	}
 
-	/**
+	/** 
+	 * Adds the actual images to the screen
 	 * 
+	 * @param Graphics which allows images to be added to the JPanel
 	 */
 	public void paintComponent(Graphics graphics) {
 		super.paintComponent(graphics);

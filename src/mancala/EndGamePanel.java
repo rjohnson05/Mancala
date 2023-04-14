@@ -33,8 +33,8 @@ public class EndGamePanel extends JPanel {
 	Image resizedWinningImage;
 	Image resizedLosingImage;
 
-	JButton playAgainButton;
-	JButton exitGameButton;
+	public JButton playAgainButton;
+	public JButton exitGameButton;
 	ImageIcon playAgainIcon;
 	ImageIcon playAgainHoverIcon;
 	ImageIcon exitGameIcon;
@@ -48,7 +48,7 @@ public class EndGamePanel extends JPanel {
 	 * 
 	 * @param winner an integer designating the winning player of the game
 	 */
-	public EndGamePanel(int winner) {
+	public EndGamePanel(int winner, int score1, int score2) {
 		this.setPreferredSize(new Dimension(400, 250));
 		this.setLayout(null);
 		this.setBackground(new Color(242, 234, 218));
@@ -71,14 +71,11 @@ public class EndGamePanel extends JPanel {
 		playAgainButton = new JButton();
 		playAgainButton.setBounds(40, 185, 140, 40);
 		playAgainButton.setBorderPainted(false);
+		playAgainButton.setText("Play Again");
 		playAgainButton.setContentAreaFilled(false);
 		playAgainButton.addMouseListener(new MouseListener(){
 			public void mouseClicked(MouseEvent e) {
-				playAgain = true;
 
-				JComponent comp = (JComponent) e.getSource();
-				Window currentPanel = SwingUtilities.getWindowAncestor(comp);
-				currentPanel.dispose();
 			}
 
 			public void mousePressed(MouseEvent e) {

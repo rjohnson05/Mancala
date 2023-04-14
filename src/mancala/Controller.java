@@ -155,9 +155,6 @@ public class Controller {
 	 * 
 	 * @return EndGamePanel a JPanel containing the end-game screen
 	 */
-//	public EndGamePanel getEndGamePanel() {
-//		return endGamePanel;
-//	}
 
 	/**
 	 * Sets the winner of the game.
@@ -215,14 +212,6 @@ public class Controller {
 	
 
 
-	public static void main(String[] args) {
-		Controller controller = new Controller();
-		
-		Cardlayout c = new Cardlayout();
-		c.createCard();
-		
 
-
-		}
 	}
 
