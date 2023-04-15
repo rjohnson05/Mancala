@@ -571,11 +571,9 @@ public class PlayPanel extends JPanel {
 		// blocking the other player's capture or gaining a capture for yourself
 		if (greatestMarbleLossPitIndex > greatestMarbleGainPitIndex) {
 			bestPitIndex = greatestMarbleLossPitIndex;
-			System.out.println("Opponent Blocked: " + bestPitIndex);
 			return bestPitIndex;
 		} else if (greatestMarbleGainPitIndex > greatestMarbleLossPitIndex) {
 			bestPitIndex = greatestMarbleGainPitIndex;
-			System.out.println("Capture Made: " + bestPitIndex);
 			return bestPitIndex;
 		}
 
@@ -583,12 +581,10 @@ public class PlayPanel extends JPanel {
 		for (int i = 7; i < 13; i++) {
 			if (movePit(i, true) == 6 || movePit(i, true) == 13) {
 				bestPitIndex = i;
-				System.out.println("Another Turn: " + bestPitIndex);
 				return bestPitIndex;
 			}
 		}
 
-		System.out.println("Random Pit: " + bestPitIndex);
 		return bestPitIndex;
 	}
 
