@@ -64,6 +64,10 @@ public class PlayPanel extends JPanel {
 	private JLabel marbleCountLabel = new JLabel();
 	private List<String> keysTyped = new ArrayList<String>();
 	public RoundButton[] pitButtons = new RoundButton[14];
+	
+
+	
+	public boolean turnIsOver = false;
 	public static boolean singlePlayer = false;
 
 	/**
@@ -220,7 +224,7 @@ public class PlayPanel extends JPanel {
 			// Set the background color
 			this.setBackground(new Color(228, 218, 199));
 		} catch (FileNotFoundException e) {
-			System.out.println("An specified image file cannot be found");
+			System.out.println("A specified image file cannot be found");
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -344,9 +348,7 @@ public class PlayPanel extends JPanel {
 		 * the designated pit is moved successfully, the boolean true is returned. If
 		 * there are no marbles in the pit to move, false is returned
 		 */
-//		if (singlePlayer && game.getCurrentPlayer() == 1) {
-//			selectedPitIndex = 10;
-//		}
+
 		Pit selectedPit = game.getStoreList().get(selectedPitIndex);
 		int marbleCount = selectedPit.getMarbleList().size();
 		// Each marble within the selected pit is moved to the subsequent pits
@@ -608,6 +610,7 @@ public class PlayPanel extends JPanel {
 			if (game.checkCapture(endPitIndex)) {
 				moveCapturedMarbles(endPitIndex);
 				game.moveCapturedMarbles(endPitIndex);
+
 			}
 			if (!getsAnotherTurn) {
 				game.switchPlayer();
@@ -618,9 +621,44 @@ public class PlayPanel extends JPanel {
 		if (game.hasWinner()) {
 			game.setWinner();
 			repaint();
+			
 		}
 		repaint();
+		
 	}
+	
+	
+//	public void singlePlayerMove() {
+//		Timer timer = new Timer();
+//		TimerTask action = new TimerTask() {
+//			public void run() {
+//
+//				int bestPitIndex = chooseOpponentPit();
+//				playerMove(bestPitIndex);
+//				if (game.hasWinner()) {
+//					game.setWinner();
+//					
+//				}
+//
+//				// If the computer opponent doesn't land in their store, the timer is
+//				// stopped and prevented from moving the player again
+//				if (!game.getsAnotherMove()) {
+//					timer.cancel();
+//				}
+//
+//			}
+//		};
+//		// The computer opponent's timer is started as soon as the human player has
+//		// finished their turn
+//		if (game.getCurrentPlayer() == 1 && !game.hasWinner()) {
+//			timer.schedule(action, 1500, 1500);
+//		}
+//		
+//		if (game.hasWinner()) {
+//			game.setWinner();
+//		}
+//		
+//	}
 	
 	
 
@@ -642,7 +680,6 @@ public class PlayPanel extends JPanel {
 			 * of the moved marbles.
 			 */
 			public void mouseClicked(MouseEvent e) {
-
 					// On a mouse click, the marbles are moved and the player is changed
 					RoundButton buttonClicked = (RoundButton) e.getSource();
 					Pit currentPit = game.getStoreList().get(buttonClicked.getPitNumber());
@@ -652,40 +689,17 @@ public class PlayPanel extends JPanel {
 					// Only allows player to choose a pit on their side of the board
 					if (currentPit.getSide() == game.getCurrentPlayer()) {
 						playerMove(selectedPitIndex);
-
 					}
-
-
-
 					/*
 					 * Sets a timer for moving the computer opponent. After 2 seconds, a random pit
 					 * index from its side of the board is chosen. If the selected pit is empty, a
 					 * new random pit is selected until a non-empty pit is selected.
 					 */
-					if (singlePlayer) {
-					Timer timer = new Timer();
-					TimerTask action = new TimerTask() {
-						public void run() {
 
-							int bestPitIndex = chooseOpponentPit();
-							playerMove(bestPitIndex);
-
-							// If the computer opponent doesn't land in their store, the timer is
-							// stopped and prevented from moving the player again
-							if (!game.getsAnotherMove()) {
-								timer.cancel();
-							}
-						}
-					};
-					
-					// The computer opponent's timer is started as soon as the human player has
-					// finished their turn
-					if (game.getCurrentPlayer() == 1 && !game.hasWinner()) {
-						timer.schedule(action, 1500, 1500);
-					}
-					}
 					repaint();
+
 			}
+
 
 			/*
 			 * Specifies the actions to be taken when the mouse hovers over a pit button.
