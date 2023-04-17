@@ -99,6 +99,7 @@ public class Game {
 
 		Pit selectedPit = storeList.get(selectedPitIndex);
 		int marbleCount = selectedPit.getMarbleList().size();
+		Marble homePitMarble = null;
 		// Marbles can only be moved if there is at least 1 marble in the selected pit
 		if (marbleCount > 0) {
 			int currentPitIndex = selectedPitIndex;
@@ -117,10 +118,13 @@ public class Game {
 						currentPitIndex++;
 					}
 				}
-
+				
 				int nextPitIndex = currentPitIndex + 1;
-				// Makes sure the pit index loops around if at the end of the list
-				if (nextPitIndex < storeList.size()) {
+				if (nextPitIndex == selectedPitIndex) {
+					// skip the current pit until the end if there are enough marbles to loop all the way around the board
+					homePitMarble = marble;
+				} else if (nextPitIndex < storeList.size()) {
+					// Makes sure the pit index loops around if at the end of the list
 					// Moves the marble to the next pit on the board
 					Pit nextPit = storeList.get(nextPitIndex);
 					nextPit.addMarble(marble);
@@ -136,6 +140,9 @@ public class Game {
 		}
 		// Clears all marbles from the selected pit
 		selectedPit.getMarbleList().clear();
+		if (homePitMarble != null) {
+			selectedPit.addMarble(homePitMarble);
+		}
 
 		return true;
 	}
