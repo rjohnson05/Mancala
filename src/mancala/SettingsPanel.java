@@ -1,28 +1,20 @@
 package mancala;
 
 import java.awt.Color;
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.Random;
 
 import javax.imageio.ImageIO;
-import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
-import javax.swing.JTextArea;
 
 /**
  * This class creates the settings panel for the mancala game. It has two different settings options, 
@@ -30,16 +22,14 @@ import javax.swing.JTextArea;
  * also has other buttons that allow the user to switch between menus.
  *
  */
+@SuppressWarnings("serial")
 public class SettingsPanel extends JPanel {
 
-	private Game game = new Game();
-	private Random rand = new Random();
 	public JButton home = new JButton("Home");
 	public JButton quitGame = new JButton("Quit");
 	public JButton singlePlayer = new JButton("Single Player");
 	public JButton twoPlayer = new JButton("Two Player");
 	
-
 
 	/**
 	 * Constructor for the settings panel
@@ -50,13 +40,9 @@ public class SettingsPanel extends JPanel {
         JPanel panel=new JPanel();  
         panel.setBounds(40,80,200,200);    
 		this.setBackground(new Color(228, 218, 199));
-		
-        
 
 		JLabel welcomeLabel = new JLabel("Welcome to");
 		JLabel buttonDesc = new JLabel("Choose the amount of players:");
-
-        
 
 		welcomeLabel.setFont(new Font("DialogInput", Font.BOLD, 20));
 		quitGame.setFont(new Font("DialogInput", Font.BOLD, 10));
@@ -80,9 +66,6 @@ public class SettingsPanel extends JPanel {
 		this.add(singlePlayer);
 		this.add(twoPlayer);
 		this.add(buttonDesc);
-		
-
-
 	}
 
 	/** 
@@ -105,10 +88,5 @@ public class SettingsPanel extends JPanel {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
- 
 	}
-
-
-
 }

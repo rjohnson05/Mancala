@@ -31,10 +31,9 @@ import javax.swing.JTextArea;
  * 
  *
  */
+@SuppressWarnings("serial")
 public class WelcomePanel extends JPanel {
 
-	private Game game = new Game();
-	private Random rand = new Random();
 	public int showPage;
 	public JButton playGame = new JButton("Play Game");
 	public JButton quitGame = new JButton("Quit");

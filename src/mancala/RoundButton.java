@@ -1,13 +1,10 @@
 package mancala;
 
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
-import javax.swing.DefaultButtonModel;
-import javax.swing.Icon;
 import javax.swing.JButton;
 
 /**
@@ -16,6 +13,7 @@ import javax.swing.JButton;
  * 
  * @author Ryan Johnson, Hank Rugg
  */
+@SuppressWarnings("serial")
 public class RoundButton extends JButton {
 	/*
 	 * This button is linked with a particular pit for the purpose of determining
