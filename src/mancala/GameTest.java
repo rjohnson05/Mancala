@@ -167,10 +167,15 @@ public class GameTest {
 		for (int i = 0; i < 6; i++) {
 			newGame.getStoreList().get(i).getMarbleList().clear();
 		}
+		for (int i = 7; i < 13; i++) {
+			newGame.getStoreList().get(i).getMarbleList().clear();
+		}
 		Marble marble = new Marble();
 		for (int i = 0; i < 3; i++) {
 			newGame.getStoreList().get(6).getMarbleList().add(marble);
 		}
+
+		newGame.setWinner();
 		if (newGame.getWinner() != 0) {
 			System.out.println("FAIL: Player 1 wasn't recorded as the winner when it should have been");
 			return false;
@@ -180,6 +185,8 @@ public class GameTest {
 		for (int i = 0; i < 6; i++) {
 			newGame.getStoreList().get(13).getMarbleList().add(marble);
 		}
+		newGame.setWinner();
+
 		if (newGame.getWinner() != 1) {
 			System.out.println("FAIL: Player 2 wasn't recorded as the winner when it should have been");
 			return false;
