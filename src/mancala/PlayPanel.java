@@ -18,8 +18,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -63,12 +61,12 @@ public class PlayPanel extends JPanel {
 	private JLabel marbleCountDisplayLabel = new JLabel("Number of Marbles:");
 	private JLabel marbleCountLabel = new JLabel();
 	private List<String> keysTyped = new ArrayList<String>();
+	public JButton home = new JButton();
+	public JButton quit = new JButton();
 	public RoundButton[] pitButtons = new RoundButton[14];
-	
-
-	
 	public boolean turnIsOver = false;
 	public static boolean singlePlayer = false;
+
 
 	/**
 	 * Creates a new gameplay panel for the Mancala game.
@@ -118,6 +116,12 @@ public class PlayPanel extends JPanel {
 		p2ScoreLabel.setBounds(560, 460, 200, 25);
 		p1ScoreNumber.setBounds(220, 460, 50, 25);
 		p2ScoreNumber.setBounds(750, 460, 50, 25);
+		quit.setBounds(655, 5, 100, 20);
+		quit.setText("Quit");
+		home.setBounds(5, 5, 100, 20);
+		home.setText("Home");
+		this.add(home);
+		this.add(quit);
 		this.add(p1ScoreLabel);
 		this.add(p2ScoreLabel);
 		this.add(p1ScoreNumber);
@@ -514,6 +518,13 @@ public class PlayPanel extends JPanel {
 	}
 	
 
+	/**
+	 * This is the computer player that the user plays against in single player mode. 
+	 * It defends against captures, looks for captures when choosing a pit, and maximizes the
+	 * amount of marbles they will gain.
+	 * 
+	 * @return an index of the pit for the computer to chose, represented as an int
+	 */
 	public int chooseOpponentPit() {
 		// Chooses a random index in case no better move is found
 		int bestPitIndex = rand.nextInt(13 - 7) + 7;
@@ -622,41 +633,7 @@ public class PlayPanel extends JPanel {
 		repaint();
 		
 	}
-	
-	
-//	public void singlePlayerMove() {
-//		Timer timer = new Timer();
-//		TimerTask action = new TimerTask() {
-//			public void run() {
-//
-//				int bestPitIndex = chooseOpponentPit();
-//				playerMove(bestPitIndex);
-//				if (game.hasWinner()) {
-//					game.setWinner();
-//					
-//				}
-//
-//				// If the computer opponent doesn't land in their store, the timer is
-//				// stopped and prevented from moving the player again
-//				if (!game.getsAnotherMove()) {
-//					timer.cancel();
-//				}
-//
-//			}
-//		};
-//		// The computer opponent's timer is started as soon as the human player has
-//		// finished their turn
-//		if (game.getCurrentPlayer() == 1 && !game.hasWinner()) {
-//			timer.schedule(action, 1500, 1500);
-//		}
-//		
-//		if (game.hasWinner()) {
-//			game.setWinner();
-//		}
-//		
-//	}
-	
-	
+
 
 	/**
 	 * Adds a MouseListener to a button. This is used for the pit buttons to

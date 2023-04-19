@@ -12,13 +12,14 @@ import java.util.Scanner;
  * @author HankRugg, RyanJohnson
  */
 public class Game {
+	
+	public Random rand = new Random();
+	public boolean isOver;
 	private List<Pit> storeList = new ArrayList<>();
 	private int currentPlayer;
 	private boolean playerGetsAnotherMove;
 	private boolean capturedMarbles;
 	private int winner;
-	public Random rand = new Random();
-	public boolean isOver;
 
 	/**
 	 * The constructor for the game. It creates the board and sets the current
@@ -81,8 +82,9 @@ public class Game {
 
 	/**
 	 * This method moves the marbles throughout the board. It takes the amount of
-	 * marbles in the selected pit, and distributes them to the sequential pits. A
-	 * valid pit is xxx
+	 * marbles in the selected pit and distributes them to the sequential pits. A
+	 * valid pit is one that is on that player's side of the board and has at least
+	 * one marble in it. 
 	 * 
 	 * @param selectedPitIndex index of the pit the player wants to move
 	 * @return boolean on whether or not the player selected a valid pit. True for
@@ -148,9 +150,9 @@ public class Game {
 	}
 
 	/**
-	 * The method checks each side of the board to see if the game is over. The game
-	 * is over when there are no marbles left on one or the other sides of the
-	 * board.
+	 * Checks each side of the board to see if the game is over. The game
+	 * is over when there are no marbles left on either player one's side, or player
+	 * two's side. 
 	 * 
 	 * @return boolean on whether or not the game has a winner. True if there is a
 	 *         winner, false otherwise.
