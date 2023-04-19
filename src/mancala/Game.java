@@ -18,6 +18,7 @@ public class Game {
 	private boolean capturedMarbles;
 	private int winner;
 	public Random rand = new Random();
+	public boolean isOver;
 
 	/**
 	 * The constructor for the game. It creates the board and sets the current
