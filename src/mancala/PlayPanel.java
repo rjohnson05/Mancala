@@ -18,8 +18,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
 import javax.swing.BorderFactory;
@@ -650,7 +648,6 @@ public class PlayPanel extends JPanel {
 					RoundButton buttonClicked = (RoundButton) e.getSource();
 					Pit currentPit = game.getStoreList().get(buttonClicked.getPitNumber());
 					int selectedPitIndex = buttonClicked.getPitNumber();
-					boolean getsAnotherTurn = game.setsAnotherMove(selectedPitIndex);
 
 					// Only allows player to choose a pit on their side of the board
 					if (currentPit.getSide() == game.getCurrentPlayer()) {
