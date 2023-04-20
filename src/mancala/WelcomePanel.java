@@ -2,22 +2,16 @@ package mancala;
 
 import java.awt.Color;
 
-import java.awt.Cursor;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
-import java.util.Random;
 
 import javax.imageio.ImageIO;
-import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -31,10 +25,9 @@ import javax.swing.JTextArea;
  * 
  *
  */
+@SuppressWarnings("serial")
 public class WelcomePanel extends JPanel {
 
-	private Game game = new Game();
-	private Random rand = new Random();
 	public int showPage;
 	public JButton playGame = new JButton("Play Game");
 	public JButton quitGame = new JButton("Quit");

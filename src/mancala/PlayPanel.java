@@ -38,6 +38,7 @@ import javax.swing.text.StyledDocument;
  * 
  * @author Ryan Johnson, Hank Rugg
  */
+@SuppressWarnings("serial")
 public class PlayPanel extends JPanel {
 	/*
 	 * The game begins with four marbles in each pit of the board (excluding the two
@@ -74,7 +75,7 @@ public class PlayPanel extends JPanel {
 	public PlayPanel() {
 		/*
 		 * Once initialized, this panel is run until either player has won the Mancala
-		 * game. This initialization ensures that the game board is reset, and that all
+		 * game. This initialization ensures that the game board is reset and that all
 		 * score labels are created. The textbox for the game instruction text is also
 		 * created.
 		 */
@@ -189,8 +190,6 @@ public class PlayPanel extends JPanel {
 		addKeyListener(cheatListener);
 		this.setFocusable(true);
 	}
-	
-
 
 	/**
 	 * Renders the game board and marbles to the screen.
@@ -357,7 +356,6 @@ public class PlayPanel extends JPanel {
 		int marbleCount = selectedPit.getMarbleList().size();
 		// Each marble within the selected pit is moved to the subsequent pits
 		int nextPitIndex = selectedPitIndex;
-		
 
 		for (int i = 0; i < marbleCount; i++) {
 			Marble marble = selectedPit.getMarbleList().get(i);
@@ -516,14 +514,14 @@ public class PlayPanel extends JPanel {
 	public int getWinner() {
 		return game.getWinner();
 	}
-	
 
 	/**
-	 * This is the computer player that the user plays against in single player mode. 
-	 * It defends against captures, looks for captures when choosing a pit, and maximizes the
-	 * amount of marbles they will gain.
+	 * Contains the logic for the computer opponent, deciding which pit would gain
+	 * the most number of marbes for itself.
 	 * 
-	 * @return an index of the pit for the computer to chose, represented as an int
+	 * @return int an integer representing the index of the best pit to be moved by
+	 *         the computer opponent
+
 	 */
 	public int chooseOpponentPit() {
 		// Chooses a random index in case no better move is found
@@ -635,10 +633,9 @@ public class PlayPanel extends JPanel {
 	}
 
 
+	
 	/**
-	 * Adds a MouseListener to a button. This is used for the pit buttons to
-	 * indicate when which pit has been clicked on, as well as specifying a range of
-	 * coordinates for a particular pit.
+	 * Adds a MouseListener to a button.
 	 * 
 	 * @param pitButton a JButton object that specifies which button the mouse
 	 *                  listener should be added to
@@ -646,6 +643,8 @@ public class PlayPanel extends JPanel {
 	public void addButtonListeners(JButton pitButton) {
 		MouseListener buttonListener = new MouseListener() {
 			/*
+			 * This is used for the pit buttons to indicate which pit has been clicked
+			 * on, as well as specifying a range of coordinates for a particular pit.
 			 * Specifies the actions taken when a pit button is clicked. The button must lie
 			 * on the current player's side for the click to have an impact. If a pit button
 			 * on the current player's side is clicked, the marbles in the clicked pit are
@@ -657,7 +656,6 @@ public class PlayPanel extends JPanel {
 					RoundButton buttonClicked = (RoundButton) e.getSource();
 					Pit currentPit = game.getStoreList().get(buttonClicked.getPitNumber());
 					int selectedPitIndex = buttonClicked.getPitNumber();
-					boolean getsAnotherTurn = game.setsAnotherMove(selectedPitIndex);
 
 					// Only allows player to choose a pit on their side of the board
 					if (currentPit.getSide() == game.getCurrentPlayer()) {
@@ -670,7 +668,6 @@ public class PlayPanel extends JPanel {
 					 */
 
 					repaint();
-
 			}
 
 
@@ -703,8 +700,7 @@ public class PlayPanel extends JPanel {
 			}
 
 			public void mousePressed(MouseEvent e) {
-				
-				
+
 			}
 
 			public void mouseReleased(MouseEvent e) {
@@ -715,12 +711,11 @@ public class PlayPanel extends JPanel {
 	}
 
 	/**
-	 * Returns the instance of the Game 
+	 * Returns the instance of the Game
 	 * 
-	 *  @return the instance of the Game
+	 * @return the instance of the Game
 	 */
 	public Game getGame() {
 		return game;
 	}
-	}
-
+}

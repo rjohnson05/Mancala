@@ -23,19 +23,20 @@ import javax.swing.JPanel;
  * 
  * @author Ryan Johnson, Hank Rugg
  */
+@SuppressWarnings("serial")
 public class EndGamePanel extends JPanel {
 	private int winner;
 	private boolean playAgain;
 
-	Image resizedWinningImage;
-	Image resizedLosingImage;
+	private Image resizedWinningImage;
+	private Image resizedLosingImage;
 
 	public JButton playAgainButton;
 	public JButton exitGameButton;
-	ImageIcon playAgainIcon;
-	ImageIcon playAgainHoverIcon;
-	ImageIcon exitGameIcon;
-	ImageIcon exitGameHoverIcon;
+	private ImageIcon playAgainIcon;
+	private ImageIcon playAgainHoverIcon;
+	private ImageIcon exitGameIcon;
+	private ImageIcon exitGameHoverIcon;
 	
 
 	/**
@@ -178,7 +179,6 @@ public class EndGamePanel extends JPanel {
 		} else {
 			g.drawImage(resizedLosingImage, 0, -10, null);
 		}
-
 	}
 
 	/**
