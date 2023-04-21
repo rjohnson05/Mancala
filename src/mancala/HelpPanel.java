@@ -17,24 +17,16 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-/**
- * This class creates the instructions panel for the mancala game. It displays
- * the game rules and how to play this version. It also has buttons that allow
- * the user to switch between each menu.
- *
- * @author Ryan Johnson, Hank Rugg
- */
 @SuppressWarnings("serial")
-public class InstructionsPanel extends JPanel {
+public class HelpPanel extends JPanel {
 
-	public JButton home = new JButton("Home");
-	public JButton playGame = new JButton("Play Game");
+	public JButton resume = new JButton("Resume");
 	public JButton quitGame = new JButton("Quit");
 
 	/**
 	 * Constructor for the instructions panel.
 	 */
-	public InstructionsPanel() {
+	public HelpPanel() {
 		this.setPreferredSize(new Dimension(800, 500));
 		this.setLayout(null);
 		JPanel panel = new JPanel();
@@ -63,22 +55,19 @@ public class InstructionsPanel extends JPanel {
 		welcomeLabel.setFont(new Font("DialogInput", Font.BOLD, 20));
 		rules.setFont(new Font("DialogInput", Font.BOLD, 15));
 		quitGame.setFont(new Font("DialogInput", Font.BOLD, 10));
-		playGame.setFont(new Font("DialogInput", Font.BOLD, 10));
-		home.setFont(new Font("DialogInput", Font.BOLD, 10));
+		resume.setFont(new Font("DialogInput", Font.BOLD, 10));
 		rulesListed.setFont(new Font("DialogInput", Font.BOLD, 10));
 
 		welcomeLabel.setBounds(325, 40, 200, 25);
 		rulesListed.setBounds(200, 220, 500, 150);
 		rules.setBounds(150, 200, 50, 55);
 		quitGame.setBounds(450, 450, 100, 35);
-		playGame.setBounds(350, 450, 100, 35);
-		home.setBounds(250, 450, 100, 35);
+		resume.setBounds(250, 450, 100, 35);
 
 		this.add(welcomeLabel);
 		this.add(rules);
 		this.add(quitGame);
-		this.add(playGame);
-		this.add(home);
+		this.add(resume);
 		this.add(rulesListed);
 
 	}

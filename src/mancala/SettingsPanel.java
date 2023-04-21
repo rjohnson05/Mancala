@@ -17,9 +17,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 /**
- * This class creates the settings panel for the mancala game. It has two different settings options, 
- * single player or two player. By clicking one of these buttons, the game will launch. This panel
- * also has other buttons that allow the user to switch between menus.
+ * This class creates the settings panel for the mancala game. It has two
+ * different settings options, single player or two player. By clicking one of
+ * these buttons, the game will launch. This panel also has other buttons that
+ * allow the user to switch between menus.
  *
  */
 @SuppressWarnings("serial")
@@ -29,7 +30,6 @@ public class SettingsPanel extends JPanel {
 	public JButton quitGame = new JButton("Quit");
 	public JButton singlePlayer = new JButton("Single Player");
 	public JButton twoPlayer = new JButton("Two Player");
-	
 
 	/**
 	 * Constructor for the settings panel
@@ -37,8 +37,8 @@ public class SettingsPanel extends JPanel {
 	public SettingsPanel() {
 		this.setPreferredSize(new Dimension(800, 500));
 		this.setLayout(null);
-        JPanel panel=new JPanel();  
-        panel.setBounds(40,80,200,200);    
+		JPanel panel = new JPanel();
+		panel.setBounds(40, 80, 200, 200);
 		this.setBackground(new Color(228, 218, 199));
 
 		JLabel welcomeLabel = new JLabel("Welcome to");
@@ -50,8 +50,7 @@ public class SettingsPanel extends JPanel {
 		singlePlayer.setFont(new Font("DialogInput", Font.BOLD, 25));
 		twoPlayer.setFont(new Font("DialogInput", Font.BOLD, 25));
 		buttonDesc.setFont(new Font("DialogInput", Font.BOLD, 12));
-		
-		
+
 		welcomeLabel.setBounds(325, 40, 200, 25);
 		quitGame.setBounds(400, 450, 100, 35);
 		home.setBounds(300, 450, 100, 35);
@@ -59,24 +58,23 @@ public class SettingsPanel extends JPanel {
 		twoPlayer.setBounds(300, 300, 200, 100);
 		buttonDesc.setBounds(300, 125, 250, 100);
 
-		
 		this.add(welcomeLabel);
 		this.add(quitGame);
-		this.add(home);		
+		this.add(home);
 		this.add(singlePlayer);
 		this.add(twoPlayer);
 		this.add(buttonDesc);
 	}
 
-	/** 
-	 * Adds the actual images to the screen
+	/**
+	 * Adds the images to the screen.
 	 * 
 	 * @param Graphics which allows images to be added to the JPanel
 	 */
 	public void paintComponent(Graphics graphics) {
 		super.paintComponent(graphics);
 		final Graphics2D g = (Graphics2D) graphics;
-		
+
 		// Create the Mancala title image
 		BufferedImage titleImage;
 		try {

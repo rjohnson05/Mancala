@@ -37,7 +37,6 @@ public class EndGamePanel extends JPanel {
 	private ImageIcon playAgainHoverIcon;
 	private ImageIcon exitGameIcon;
 	private ImageIcon exitGameHoverIcon;
-	
 
 	/**
 	 * Creates a new end-screen panel for the Mancala game. This JPanel is
@@ -71,7 +70,7 @@ public class EndGamePanel extends JPanel {
 		playAgainButton.setBorderPainted(false);
 		playAgainButton.setText("Play Again");
 		playAgainButton.setContentAreaFilled(false);
-		playAgainButton.addMouseListener(new MouseListener(){
+		playAgainButton.addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent e) {
 
 			}
