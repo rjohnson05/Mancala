@@ -19,10 +19,11 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
-
 /**
- * This class creates the welcome panel to open the program.
- * It displays the game title and the vision statement for the game. 
+ * This class creates the welcome panel to open the program and displays the
+ * game title and the vision statement for the game.
+ * 
+ * @author Ryan Johnson, Hank Rugg
  */
 @SuppressWarnings("serial")
 public class WelcomePanel extends JPanel {
@@ -46,7 +47,7 @@ public class WelcomePanel extends JPanel {
 
 	
 	/**
-	 * Constructor for the welcome panel
+	 * Constructor for the welcome panel.
 	 */
 	public WelcomePanel() {
 		this.setPreferredSize(new Dimension(800, 500));
@@ -202,8 +203,8 @@ public class WelcomePanel extends JPanel {
 		}
 	}
 
-	/** 
-	 * Adds the actual images to the screen
+	/**
+	 * Adds the images to the screen.
 	 * 
 	 * @param Graphics which allows images to be added to the JPanel
 	 */

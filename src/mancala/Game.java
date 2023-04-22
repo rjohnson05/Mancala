@@ -9,10 +9,10 @@ import java.util.Scanner;
  * The main class for the game Mancala. This contains the business logic for the
  * game and additionally allows you to play the text based version.
  * 
- * @author HankRugg, RyanJohnson
+ * @author Ryan Johnson, Hank Rugg
  */
 public class Game {
-	
+
 	public Random rand = new Random();
 	public boolean isOver;
 	private List<Pit> storeList = new ArrayList<>();
@@ -31,13 +31,12 @@ public class Game {
 		resetBoard();
 	}
 
-
 	/**
 	 * Sets the playerGetsAnotherMove class variable to either true if the player
 	 * gets another move or false if the player' turn is over
 	 * 
 	 * @param selectedPitIndex index of the pit the player wants to move
-	 * @return boolean whether or not the player gets another move
+	 * @return boolean true if the player gets another move, false otherwise
 	 */
 	public boolean setsAnotherMove(int selectedPitIndex) {
 		Pit selectedPit = storeList.get(selectedPitIndex);
@@ -74,17 +73,17 @@ public class Game {
 	 * Returns whether or not the player gets another turn. The player gets another
 	 * turn if the last marble that they move ends in their store.
 	 * 
-	 * @return boolean whether or not the player gets another move
+	 * @return boolean true if the player gets another move, false otherwise
 	 */
 	public boolean getsAnotherMove() {
 		return playerGetsAnotherMove;
 	}
 
 	/**
-	 * This method moves the marbles throughout the board. It takes the amount of
+	 * Moves the marbles throughout the board. It takes the amount of
 	 * marbles in the selected pit and distributes them to the sequential pits. A
 	 * valid pit is one that is on that player's side of the board and has at least
-	 * one marble in it. 
+	 * one marble in it.
 	 * 
 	 * @param selectedPitIndex index of the pit the player wants to move
 	 * @return boolean on whether or not the player selected a valid pit. True for
@@ -120,10 +119,11 @@ public class Game {
 						currentPitIndex++;
 					}
 				}
-				
+
 				int nextPitIndex = currentPitIndex + 1;
 				if (nextPitIndex == selectedPitIndex) {
-					// skip the current pit until the end if there are enough marbles to loop all the way around the board
+					// skip the current pit until the end if there are enough marbles to loop all
+					// the way around the board
 					homePitMarble = marble;
 				} else if (nextPitIndex < storeList.size()) {
 					// Makes sure the pit index loops around if at the end of the list
@@ -150,9 +150,9 @@ public class Game {
 	}
 
 	/**
-	 * Checks each side of the board to see if the game is over. The game
-	 * is over when there are no marbles left on either player one's side, or player
-	 * two's side. 
+	 * Checks each side of the board to see if the game is over. The game is over
+	 * when there are no marbles left on either player one's side, or player two's
+	 * side.
 	 * 
 	 * @return boolean on whether or not the game has a winner. True if there is a
 	 *         winner, false otherwise.
@@ -176,7 +176,7 @@ public class Game {
 	}
 
 	/**
-	 * This method changes the turn to the opposite player.
+	 * Changes the turn to the opposite player.
 	 * 
 	 */
 	public void switchPlayer() {
@@ -191,7 +191,7 @@ public class Game {
 	}
 
 	/**
-	 * This is called when the game is done. It outputs text containing the winner
+	 * Called when the game is done. It outputs text containing the winner
 	 * and the score of the game.
 	 * 
 	 */
@@ -229,6 +229,9 @@ public class Game {
 		storeList.add(new Pit(0, -1));
 	}
 
+	/**
+	 * Sets the winner of the game.
+	 */
 	public void setWinner() {
 		// compare the stores of each player
 		if (hasWinner()) {
@@ -286,8 +289,9 @@ public class Game {
 	 * player that moved. This method is paired with the
 	 * {@link moveCapturedMarbled()} method.
 	 * 
-	 * @param selectedPitIndex index of the pit the player wants to move
-	 * @return boolean on whether or not the player made a capture move
+	 * @param endPitIndex Index of the pit the player's move will finish on
+	 * @return boolean on whether or not the player made a capture move. True if the 
+	 * player made a capture, false otherwise
 	 * @see #moveCapturedMarbles(int)
 	 */
 	public boolean checkCapture(int endPitIndex) {
@@ -317,10 +321,10 @@ public class Game {
 
 	/**
 	 * Carries out the action of moving the captured marbles. Gets the selected pit
-	 * from the selected pit index, and moves the marbles to the correct pits.
+	 * from the selected pit index and moves the marbles to the correct pits.
 	 * Paired with the checkCapture() method.
 	 * 
-	 * @param selectedPitIndex index of the pit the player wants to move
+	 * @param endPitIndex Index of the pit the player's move will finish on
 	 * @see #checkCapture(int)
 	 */
 	public void moveCapturedMarbles(int endPitIndex) {
@@ -364,13 +368,17 @@ public class Game {
 	public int getCurrentPlayer() {
 		return currentPlayer;
 	}
-
+	
+	/**
+	 * Sets the current player.
+	 * @param currentPlayer
+	 */
 	public void setCurrentPlayer(int currentPlayer) {
 		this.currentPlayer = currentPlayer;
 	}
 
 	/**
-	 * This method executes the text version game.
+	 * Executes the text version game.
 	 */
 	public void playGame() {
 		int getSelectedIndex = -1;
@@ -424,7 +432,7 @@ public class Game {
 	}
 
 	/**
-	 * This method runs the text based game.
+	 * Runs the text based game.
 	 * 
 	 * @param args
 	 */

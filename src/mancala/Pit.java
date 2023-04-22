@@ -118,6 +118,11 @@ public class Pit {
 		marblesContained.add(marble);
 	}
 
+	/**
+	 * To string method for the pit.
+	 * 
+	 * @return String of the amount of marbles in the pit
+	 */
 	public String toString() {
 		return String.valueOf(marblesContained.size());
 	}

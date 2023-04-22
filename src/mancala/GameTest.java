@@ -1,6 +1,20 @@
 package mancala;
 
+/**
+ * This program contains the unit tests for the Game.java class. Running this
+ * program will output text confirming the success of all tests, or specify
+ * which test fails if any of them are unsuccessful.
+ *
+ * @author Ryan Johnson, Hank Rugg
+ */
+
 public class GameTest {
+
+	/**
+	 * Tests the creation of the board.
+	 * 
+	 * @return boolean, true if the game was initialized correctly, false otherwise
+	 */
 	private static boolean testGameInitialization() {
 		Game newGame = new Game();
 		// Verify that there are 14 spaces on the board (12 pits & 2 stores)
@@ -35,6 +49,11 @@ public class GameTest {
 		return true;
 	}
 
+	/**
+	 * Tests the move method.
+	 * 
+	 * @return boolean, true if the moves worked correctly, false otherwise
+	 */
 	private static boolean testMove() {
 		// Creates a new Mancala game and moves a space with four marbles
 		Game newGame = new Game();
@@ -83,6 +102,12 @@ public class GameTest {
 		return true;
 	}
 
+	/**
+	 * Tests the has winner method.
+	 * 
+	 * @return boolean, true if the method returns the correct winner, false
+	 *         otherwise
+	 */
 	private static boolean testHasWinner() {
 		Game newGame = new Game();
 
@@ -126,6 +151,12 @@ public class GameTest {
 		return true;
 	}
 
+	/**
+	 * Tests the switch player method.
+	 * 
+	 * @return boolean, true if the turn was switched to the opposite player, false
+	 *         otherwise
+	 */
 	private static boolean testSwitchPlayer() {
 		Game newGame = new Game();
 
@@ -146,6 +177,11 @@ public class GameTest {
 		return true;
 	}
 
+	/**
+	 * Tests the reset board method.
+	 * 
+	 * @return boolean, true if the board was reset correctly, false otherwise
+	 */
 	private static boolean testResetBoard() {
 		Game newGame = new Game();
 
@@ -160,6 +196,12 @@ public class GameTest {
 		return true;
 	}
 
+	/**
+	 * Test the get winner method.
+	 * 
+	 * @return boolean, true if the method returns the correct winner, false
+	 *         otherwise
+	 */
 	private static boolean testGetWinner() {
 		Game newGame = new Game();
 
@@ -204,6 +246,12 @@ public class GameTest {
 		return true;
 	}
 
+	/**
+	 * Executes when this program is ran. Will indicate the success or failure of
+	 * the methods.
+	 * 
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		if (testGameInitialization() && testMove() && testHasWinner() && testSwitchPlayer() && testResetBoard()
 				&& testGetWinner()) {

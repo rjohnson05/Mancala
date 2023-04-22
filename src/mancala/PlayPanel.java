@@ -34,7 +34,9 @@ import javax.swing.text.StyleConstants;
 import javax.swing.text.StyledDocument;
 
 /**
- * Contains the graphics for the gameplay of Mancala.
+ * Contains the graphics for the gameplay of Mancala. This is the main panel
+ * that the user will be on while using the program, and is the panel the game
+ * is played on.
  * 
  * @author Ryan Johnson, Hank Rugg
  */
@@ -64,10 +66,9 @@ public class PlayPanel extends JPanel {
 	private List<String> keysTyped = new ArrayList<String>();
 	public JButton home = new JButton();
 	public JButton quit = new JButton();
+	public JButton help = new JButton();
 	public RoundButton[] pitButtons = new RoundButton[14];
-	public boolean turnIsOver = false;
-	public static boolean singlePlayer = false;
-
+	public boolean singlePlayer = false;
 
 	/**
 	 * Creates a new gameplay panel for the Mancala game.
@@ -121,8 +122,11 @@ public class PlayPanel extends JPanel {
 		quit.setText("Quit");
 		home.setBounds(5, 5, 100, 20);
 		home.setText("Home");
+		help.setBounds(355, 5, 100, 20);
+		help.setText("Help");
 		this.add(home);
 		this.add(quit);
+		this.add(help);
 		this.add(p1ScoreLabel);
 		this.add(p2ScoreLabel);
 		this.add(p1ScoreNumber);
@@ -521,7 +525,6 @@ public class PlayPanel extends JPanel {
 	 * 
 	 * @return int an integer representing the index of the best pit to be moved by
 	 *         the computer opponent
-
 	 */
 	public int chooseOpponentPit() {
 		// Chooses a random index in case no better move is found
@@ -626,16 +629,14 @@ public class PlayPanel extends JPanel {
 		if (game.hasWinner()) {
 			game.setWinner();
 			repaint();
-			
+
 		}
 		repaint();
-		
+
 	}
 
-
-	
 	/**
-	 * Adds a MouseListener to a button.
+	 * Adds a button listener to a button.
 	 * 
 	 * @param pitButton a JButton object that specifies which button the mouse
 	 *                  listener should be added to
@@ -643,33 +644,32 @@ public class PlayPanel extends JPanel {
 	public void addButtonListeners(JButton pitButton) {
 		MouseListener buttonListener = new MouseListener() {
 			/*
-			 * This is used for the pit buttons to indicate which pit has been clicked
-			 * on, as well as specifying a range of coordinates for a particular pit.
-			 * Specifies the actions taken when a pit button is clicked. The button must lie
-			 * on the current player's side for the click to have an impact. If a pit button
-			 * on the current player's side is clicked, the marbles in the clicked pit are
-			 * moved as necessary. The panel is then repainted to show the updated positions
-			 * of the moved marbles.
+			 * This is used for the pit buttons to indicate which pit has been clicked on,
+			 * as well as specifying a range of coordinates for a particular pit. Specifies
+			 * the actions taken when a pit button is clicked. The button must lie on the
+			 * current player's side for the click to have an impact. If a pit button on the
+			 * current player's side is clicked, the marbles in the clicked pit are moved as
+			 * necessary. The panel is then repainted to show the updated positions of the
+			 * moved marbles.
 			 */
 			public void mouseClicked(MouseEvent e) {
-					// On a mouse click, the marbles are moved and the player is changed
-					RoundButton buttonClicked = (RoundButton) e.getSource();
-					Pit currentPit = game.getStoreList().get(buttonClicked.getPitNumber());
-					int selectedPitIndex = buttonClicked.getPitNumber();
+				// On a mouse click, the marbles are moved and the player is changed
+				RoundButton buttonClicked = (RoundButton) e.getSource();
+				Pit currentPit = game.getStoreList().get(buttonClicked.getPitNumber());
+				int selectedPitIndex = buttonClicked.getPitNumber();
 
-					// Only allows player to choose a pit on their side of the board
-					if (currentPit.getSide() == game.getCurrentPlayer()) {
-						playerMove(selectedPitIndex);
-					}
-					/*
-					 * Sets a timer for moving the computer opponent. After 2 seconds, a random pit
-					 * index from its side of the board is chosen. If the selected pit is empty, a
-					 * new random pit is selected until a non-empty pit is selected.
-					 */
+				// Only allows player to choose a pit on their side of the board
+				if (currentPit.getSide() == game.getCurrentPlayer()) {
+					playerMove(selectedPitIndex);
+				}
+				/*
+				 * Sets a timer for moving the computer opponent. After 2 seconds, a random pit
+				 * index from its side of the board is chosen. If the selected pit is empty, a
+				 * new random pit is selected until a non-empty pit is selected.
+				 */
 
-					repaint();
+				repaint();
 			}
-
 
 			/*
 			 * Specifies the actions to be taken when the mouse hovers over a pit button.
