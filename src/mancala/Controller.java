@@ -29,7 +29,6 @@ public class Controller extends JFrame implements MouseListener {
      * Constructor for the cardlayout.
      */
     public Controller(){
- 
         // to get the content
         c = getContentPane();
  
@@ -43,9 +42,9 @@ public class Controller extends JFrame implements MouseListener {
  
         // create welcome panel and adds mouse listeners
         welcome = new WelcomePanel();
-        welcome.playGame.addMouseListener(this);
-        welcome.instructions.addMouseListener(this);
-        welcome.quitGame.addMouseListener(this);
+        welcome.playGameButton.addMouseListener(this);
+        welcome.instructionsButton.addMouseListener(this);
+        welcome.exitGameButton.addMouseListener(this);
         c.add("welcome", welcome);
 
         // create instructions panel and adds mouse listeners
@@ -71,7 +70,6 @@ public class Controller extends JFrame implements MouseListener {
         play.home.addMouseListener(this);
         play.quit.addMouseListener(this);
         c.add("play", play);
-        
     }
     
      
@@ -80,8 +78,6 @@ public class Controller extends JFrame implements MouseListener {
      * Creates the cards
      */
     public void createCard() {
-
-            
             // Creating Object of CardLayout class.
             Controller cl = new Controller();
      
@@ -93,7 +89,6 @@ public class Controller extends JFrame implements MouseListener {
      
             // Function to set default operation of JFrame.
             cl.setDefaultCloseOperation(EXIT_ON_CLOSE);
-    	
     }
     /**
      * Creates the end game panel
@@ -132,7 +127,6 @@ public class Controller extends JFrame implements MouseListener {
 			if (!play.getGame().getsAnotherMove()) {
 				timer.cancel();
 			}
-
 		}
 	};
 	if (play.getGame().hasWinner()) {
@@ -144,7 +138,6 @@ public class Controller extends JFrame implements MouseListener {
 			e1.printStackTrace();
 		}
 		createEndGame();
-		
 	}
 	// The computer opponent's timer is started as soon as the human player has
 	// finished their turn
@@ -160,13 +153,13 @@ public class Controller extends JFrame implements MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		JButton bclicked = (JButton) e.getSource();
-    	if (bclicked.getText() == "Instructions") {
+    	if (bclicked == welcome.instructionsButton) {
     		card.show(c, "instructions");
     	}
-    	else if (bclicked.getText() == "Play Game") {
+    	else if (bclicked == welcome.playGameButton) {
     		card.show(c, "settings");
     	}
-    	else if (bclicked.getText() == "Quit") {
+    	else if (bclicked == welcome.exitGameButton) {
     		System.exit(1);
     	}
     	else if (bclicked.getText() == "Home") {
@@ -199,7 +192,6 @@ public class Controller extends JFrame implements MouseListener {
     		play.resetBoardGraphics();
     		card.show(c, "settings");
     	}
-    	
 	}
 	
 	/**
