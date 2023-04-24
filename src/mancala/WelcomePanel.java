@@ -13,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
@@ -27,54 +28,42 @@ import javax.swing.JPanel;
  */
 @SuppressWarnings("serial")
 public class WelcomePanel extends JPanel {
+	private static int WINDOW_WIDTH = 800;
+	private static int WINDOW_HEIGHT = 540;
+	private Random rand = new Random();
 
 	public int showPage;
 	public JButton playGameButton = new JButton();
 	public JButton exitGameButton = new JButton();
 	public JButton instructionsButton = new JButton();
 
+	private Image resizedBackgroundImage;
 	private Image resizedTitleImage;
 	private Image resizedWelcomeToImage;
-	
+
 	private ImageIcon playGameIcon;
 	private ImageIcon playGameHoverIcon;
 	private ImageIcon exitGameIcon;
 	private ImageIcon exitGameHoverIcon;
 	private ImageIcon instructionsIcon;
 	private ImageIcon instructionsHoverIcon;
-	
+
 	private List<Marble> marbleList = new ArrayList<Marble>();
 
-	
 	/**
 	 * Constructor for the welcome panel.
 	 */
 	public WelcomePanel() {
-		this.setPreferredSize(new Dimension(800, 500));
+		this.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
 		this.setLayout(null);
-        this.setBounds(40,80,200,200);    
 		this.setBackground(new Color(228, 218, 199));
 
-		// Create the welcoming text
-		//JLabel welcomeLabel = new JLabel("Welcome to");
-//		JTextArea visionStatement = new JTextArea("Through the creation of a computer-based\nMancala game, we are bringing one of the oldest\n"
-//				+ "board games to the latest generation.\nUnlike many modern mindless computer games, this\n"
-//				+ "game seeks to improve the memory and\nstrategic abilities of all those seeking\nto better their mental skills.");
-//		visionStatement.setEditable(false);
-//		visionStatement.setBackground(new Color(228, 218, 199));
-//		//welcomeLabel.setFont(new Font("DialogInput", Font.BOLD, 20));
-//		visionStatement.setFont(new Font("DialogInput", Font.BOLD, 20));
-
-		//welcomeLabel.setBounds(325, 40, 200, 25);
-		//visionStatement.setBounds(150, 200, 800, 300);
-		
 		// Create the "Play Game" Button
-		playGameButton.setBounds(310, 320, 180,50);
+		playGameButton.setBounds(310, 365, 180, 50);
 		playGameButton.setBorderPainted(false);
 		playGameButton.setContentAreaFilled(false);
-		playGameButton.addMouseListener(new MouseListener(){
+		playGameButton.addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent e) {
-
 			}
 
 			public void mousePressed(MouseEvent e) {
@@ -91,12 +80,12 @@ public class WelcomePanel extends JPanel {
 				playGameButton.setIcon(playGameIcon);
 			}
 		});
-		
+
 		// Create the "Instructions" Button
-		instructionsButton.setBounds(290, 380, 220,50);
+		instructionsButton.setBounds(290, 425, 220, 50);
 		instructionsButton.setBorderPainted(false);
 		instructionsButton.setContentAreaFilled(false);
-		instructionsButton.addMouseListener(new MouseListener(){
+		instructionsButton.addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent e) {
 
 			}
@@ -115,12 +104,12 @@ public class WelcomePanel extends JPanel {
 				instructionsButton.setIcon(instructionsIcon);
 			}
 		});
-		
+
 		// Create the "Exit Game" Button
-		exitGameButton.setBounds(310, 440, 180,50);
+		exitGameButton.setBounds(310, 485, 180, 50);
 		exitGameButton.setBorderPainted(false);
 		exitGameButton.setContentAreaFilled(false);
-		exitGameButton.addMouseListener(new MouseListener(){
+		exitGameButton.addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent e) {
 
 			}
@@ -140,22 +129,25 @@ public class WelcomePanel extends JPanel {
 			}
 		});
 
-		//this.add(welcomeLabel);
-		//this.add(visionStatement);
 		this.add(exitGameButton);
 		this.add(playGameButton);
 		this.add(instructionsButton);
-		
+
 		try {
+			// Create the background image
+			Image backgroundImage = ImageIO.read(new File("images/mainBackground.jpg"));
+			Image backgroundImageIcon = new ImageIcon(backgroundImage).getImage();
+			resizedBackgroundImage = backgroundImageIcon.getScaledInstance(800, 565, Image.SCALE_SMOOTH);
+
 			// Create the title images
 			Image titleImage = ImageIO.read(new File("images/mancalaTitle.png"));
 			Image titleImageIcon = new ImageIcon(titleImage).getImage();
 			resizedTitleImage = titleImageIcon.getScaledInstance(500, 100, Image.SCALE_SMOOTH);
-			
+
 			Image welcomeToImage = ImageIO.read(new File("images/welcomeToTitle.png"));
 			Image welcomeToImageIcon = new ImageIcon(welcomeToImage).getImage();
 			resizedWelcomeToImage = welcomeToImageIcon.getScaledInstance(400, 80, Image.SCALE_SMOOTH);
-			
+
 			// Create the images, including the button images
 			BufferedImage playGameBufferedImage = ImageIO.read(new File("images/playGame.png"));
 			BufferedImage playGameHoverBufferedImage = ImageIO.read(new File("images/playGameHover.png"));
@@ -171,7 +163,7 @@ public class WelcomePanel extends JPanel {
 			Image exitGameHoverImage = new ImageIcon(exitGameHoverBufferedImage).getImage();
 			Image instructionsImage = new ImageIcon(instructionsBufferedImage).getImage();
 			Image instructionsHoverImage = new ImageIcon(instructionsHoverBufferedImage).getImage();
-		
+
 			Image resizedPlayGameImage = playGameImage.getScaledInstance(180, 50, Image.SCALE_SMOOTH);
 			Image resizedPlayGameHoverImage = playGameHoverImage.getScaledInstance(180, 50, Image.SCALE_SMOOTH);
 			Image resizedExitGameImage = exitGameImage.getScaledInstance(180, 50, Image.SCALE_SMOOTH);
@@ -191,11 +183,17 @@ public class WelcomePanel extends JPanel {
 			playGameButton.setIcon(playGameIcon);
 			exitGameButton.setIcon(exitGameIcon);
 			instructionsButton.setIcon(instructionsIcon);
-			
-			for (int i = 0; i < 20; i++) {
+
+			for (int i = 0; i < 50; i++) {
 				Marble newMarble = new Marble();
-				newMarble.setXcord();
-				newMarble.setYcord();
+				newMarble.setXcord(rand.nextInt(WINDOW_WIDTH));
+				newMarble.setYcord(rand.nextInt(WINDOW_HEIGHT));
+				while ((newMarble.getYcord() < 0.65 * WINDOW_HEIGHT) || (newMarble.getYcord() > 0.96 * WINDOW_HEIGHT)
+						|| (newMarble.getXcord() > 0.94 * WINDOW_WIDTH) || ((newMarble.getXcord() > 0.32 * WINDOW_WIDTH)
+								&& (newMarble.getXcord() < 0.65 * WINDOW_WIDTH))) {
+					newMarble.setXcord(rand.nextInt(WINDOW_WIDTH));
+					newMarble.setYcord(rand.nextInt(WINDOW_HEIGHT));
+				}
 				marbleList.add(newMarble);
 			}
 		} catch (IOException e) {
@@ -211,8 +209,14 @@ public class WelcomePanel extends JPanel {
 	public void paintComponent(Graphics graphics) {
 		super.paintComponent(graphics);
 		final Graphics2D g = (Graphics2D) graphics;
-		
-			g.drawImage(resizedTitleImage, 140, 130, null);
-			g.drawImage(resizedWelcomeToImage, 190, 60, null);	
+
+		g.drawImage(resizedBackgroundImage, 0, 0, null);
+
+		for (Marble marble : marbleList) {
+			g.drawImage(marble.getMarbleImage(), marble.getXcord(), marble.getYcord(), null);
+		}
+
+		g.drawImage(resizedTitleImage, 140, 130, null);
+		g.drawImage(resizedWelcomeToImage, 190, 60, null);
 	}
 }
