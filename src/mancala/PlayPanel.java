@@ -61,11 +61,10 @@ public class PlayPanel extends JPanel {
 	private JLabel marbleCountDisplayLabel = new JLabel("Number of Marbles:");
 	private JLabel marbleCountLabel = new JLabel();
 
-	public JButton home = new JButton();
-	public JButton quit = new JButton();
-	public JButton help = new JButton();
 	public List<RoundButton> pitButtons = new ArrayList<>();
 	public boolean singlePlayer = false;
+	private boolean highlightHintsP1 = true;
+	private boolean highlightHintsP2 = false;
 
 	public JButton homeButton = new JButton();
 	public JButton helpButton = new JButton();
@@ -74,6 +73,8 @@ public class PlayPanel extends JPanel {
 	private Image resizedBackgroundImage;
 	private Image resizedTitleImage;
 	private Image resizedBoard;
+	private Image resizedHighlightImage;
+	
 	private ImageIcon homeIcon;
 	private ImageIcon homeHoverIcon;
 	private ImageIcon helpIcon;
@@ -244,6 +245,11 @@ public class PlayPanel extends JPanel {
 			// Display the board image
 			Image boardDisplayImage = new ImageIcon(boardImage).getImage();
 			resizedBoard = boardDisplayImage.getScaledInstance(800, 250, Image.SCALE_SMOOTH);
+			
+			// Create the background image
+			Image highlightImage = ImageIO.read(new File("images/highlight.png"));
+			Image highlightImageIcon = new ImageIcon(highlightImage).getImage();
+			resizedHighlightImage = highlightImageIcon.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
 
 			// Create the button images
 			BufferedImage homeBufferedImage = ImageIO.read(new File("images/home.png"));
@@ -280,6 +286,8 @@ public class PlayPanel extends JPanel {
 			helpButton.setIcon(helpIcon);
 			exitGameButton.setIcon(exitGameIcon);
 			homeButton.setIcon(homeIcon);
+			
+			
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -298,12 +306,29 @@ public class PlayPanel extends JPanel {
 		g.drawImage(resizedTitleImage, 200, 70, null);
 		g.drawImage(resizedBackgroundImage, 0, 0, null);
 		g.drawImage(resizedBoard, 20, 150, null);
+		
 
 		// Draw every marble on the board
 		for (Pit pit : game.getStoreList()) {
 			for (Marble marble : pit.getMarbleList()) {
 				g.drawImage(marble.getMarbleImage(), marble.getXcord(), marble.getYcord(), null);
 			}
+		}
+		
+		if (highlightHintsP1) {
+			g.drawImage(resizedHighlightImage, 112, 282, null);
+			g.drawImage(resizedHighlightImage, 197, 282, null);
+			g.drawImage(resizedHighlightImage, 279, 281, null);
+			g.drawImage(resizedHighlightImage, 411, 282, null);
+			g.drawImage(resizedHighlightImage, 495, 279, null);
+			g.drawImage(resizedHighlightImage, 580, 278, null);
+		} else if (highlightHintsP2) {
+			g.drawImage(resizedHighlightImage, 116, 173, null);
+			g.drawImage(resizedHighlightImage, 198, 173, null);
+			g.drawImage(resizedHighlightImage, 279, 173, null);
+			g.drawImage(resizedHighlightImage, 408, 171, null);
+			g.drawImage(resizedHighlightImage, 488, 169, null);
+			g.drawImage(resizedHighlightImage, 569, 168, null);
 		}
 	}
 
@@ -576,9 +601,17 @@ public class PlayPanel extends JPanel {
 				instructionsPane.setText("Player 2 gets an extra move!\nChoose a pit.");
 			}
 		} else if (game.getCurrentPlayer() == 1) {
-			instructionsPane.setText("Player 2, it's your turn.\nChoose a pit.");
+			if (highlightHintsP2) {
+				instructionsPane.setText("Player 2, it's your turn.\nSelect one of your highlighted pits.");
+			} else {
+				instructionsPane.setText("Player 2, it's your turn.\nChoose a pit.");
+			}
 		} else {
-			instructionsPane.setText("Player 1, it's your turn.\nChoose a pit.");
+			if (highlightHintsP1) {
+				instructionsPane.setText("Player 1, it's your turn.\nSelect one of your highlighted pits.");
+			} else {
+				instructionsPane.setText("Player 1, it's your turn.\nChoose a pit.");
+			}
 		}
 
 		p1ScoreNumber.setText(String.valueOf(game.getStoreList().get(13).getMarbleList().size()));
@@ -696,6 +729,13 @@ public class PlayPanel extends JPanel {
 			}
 			if (!getsAnotherTurn) {
 				game.switchPlayer();
+				// Turns off the highlighting hints after each player's first turn
+				if (highlightHintsP1) {
+					highlightHintsP2 = true;
+				} else {
+					highlightHintsP2 = false;
+				}
+				highlightHintsP1 = false;
 			}
 			changeInstructionText(getsAnotherTurn);
 		}
@@ -795,5 +835,18 @@ public class PlayPanel extends JPanel {
 	 */
 	public boolean getSinglePlayer() {
 		return singlePlayer;
+	}
+	
+	/**
+	 * Sets the boolean specifying whether the highlight hints should be shown on Player 2's side.
+	 * 
+	 * @param highlightHint true if hightlight hints should be shown over Player 2's pits and false otherwise
+	 */
+	public void setHighlightHintsP2(boolean highlightHint) {
+		highlightHintsP2 = highlightHint;
+	}
+	
+	public boolean getHighlightHintsP2() {
+		return highlightHintsP2;
 	}
 }

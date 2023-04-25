@@ -177,6 +177,9 @@ public class Controller extends JFrame implements MouseListener, KeyListener {
 		if (play.getGame().getCurrentPlayer() == 1 && !play.getGame().hasWinner()) {
 			timer.schedule(action, 1500, 1500);
 		}
+		
+		
+		System.out.println(play.getHighlightHintsP2());
 	}
 
 	/*
@@ -212,9 +215,7 @@ public class Controller extends JFrame implements MouseListener, KeyListener {
 			createPlayPanel(true);
 			card.show(c, "play");
 		} else if (bclicked.getText() == " ") {
-			System.out.println(play.singlePlayer);
 			if (play.singlePlayer) {
-				System.out.println("Telling computer to move");
 				singlePlayerMove();
 			}
 			if (play.getGame().hasWinner()) {
