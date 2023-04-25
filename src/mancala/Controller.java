@@ -177,9 +177,6 @@ public class Controller extends JFrame implements MouseListener, KeyListener {
 		if (play.getGame().getCurrentPlayer() == 1 && !play.getGame().hasWinner()) {
 			timer.schedule(action, 1500, 1500);
 		}
-		
-		
-		System.out.println(play.getHighlightHintsP2());
 	}
 
 	/*

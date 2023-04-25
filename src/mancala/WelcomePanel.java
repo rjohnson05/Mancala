@@ -135,9 +135,9 @@ public class WelcomePanel extends JPanel {
 
 		try {
 			// Create the background image
-//			Image backgroundImage = ImageIO.read(new File("images/mainBackground.jpg"));
-//			Image backgroundImageIcon = new ImageIcon(backgroundImage).getImage();
-//			resizedBackgroundImage = backgroundImageIcon.getScaledInstance(800, 565, Image.SCALE_SMOOTH);
+			Image backgroundImage = ImageIO.read(new File("images/mainBackground.jpg"));
+			Image backgroundImageIcon = new ImageIcon(backgroundImage).getImage();
+			resizedBackgroundImage = backgroundImageIcon.getScaledInstance(800, 565, Image.SCALE_SMOOTH);
 
 			// Create the title images
 			Image titleImage = ImageIO.read(new File("images/mancalaTitle.png"));
