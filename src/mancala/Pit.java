@@ -46,6 +46,15 @@ public class Pit {
 			addMarble(new Marble());
 		}
 	}
+	
+	/**
+	 * Adds a Marble object to the pit.
+	 * 
+	 * @param marble the Marble object to be added to the list
+	 */
+	public void addMarble(Marble marble) {
+		marblesContained.add(marble);
+	}
 
 	/**
 	 * Removes the specified marble from the pit.
@@ -107,15 +116,6 @@ public class Pit {
 	 */
 	public JButton getBoundary() {
 		return pitBoundary;
-	}
-
-	/**
-	 * Adds a Marble object to the pit.
-	 * 
-	 * @param marble the Marble object to be added to the list
-	 */
-	public void addMarble(Marble marble) {
-		marblesContained.add(marble);
 	}
 
 	/**
