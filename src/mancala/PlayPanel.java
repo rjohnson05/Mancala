@@ -232,21 +232,16 @@ public class PlayPanel extends JPanel {
 			BufferedImage homeHoverBufferedImage = ImageIO.read(new File("images/homeHover.png"));
 			BufferedImage helpBufferedImage = ImageIO.read(new File("images/help.png"));
 			BufferedImage helpHoverBufferedImage = ImageIO.read(new File("images/helpHover.png"));
-			BufferedImage exitGameBufferedImage = ImageIO.read(new File("images/exitGame.png"));
-			BufferedImage exitGameHoverBufferedImage = ImageIO.read(new File("images/exitGameHover.png"));
+
 
 			// Resize the images to correct sizes
 			Image helpImage = new ImageIcon(helpBufferedImage).getImage();
 			Image helpHoverImage = new ImageIcon(helpHoverBufferedImage).getImage();
-			Image exitGameImage = new ImageIcon(exitGameBufferedImage).getImage();
-			Image exitGameHoverImage = new ImageIcon(exitGameHoverBufferedImage).getImage();
 			Image homeImage = new ImageIcon(homeBufferedImage).getImage();
 			Image homeHoverImage = new ImageIcon(homeHoverBufferedImage).getImage();
 
 			Image resizedHelpImage = helpImage.getScaledInstance(90, 40, Image.SCALE_SMOOTH);
 			Image resizedHelpHoverImage = helpHoverImage.getScaledInstance(90, 40, Image.SCALE_SMOOTH);
-			Image resizedExitGameImage = exitGameImage.getScaledInstance(150, 40, Image.SCALE_SMOOTH);
-			Image resizedExitGameHoverImage = exitGameHoverImage.getScaledInstance(150, 40, Image.SCALE_SMOOTH);
 			Image resizedHomeImage = homeImage.getScaledInstance(120, 40, Image.SCALE_SMOOTH);
 			Image resizedHomeHoverImage = homeHoverImage.getScaledInstance(120, 40, Image.SCALE_SMOOTH);
 
