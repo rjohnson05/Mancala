@@ -38,7 +38,7 @@ public class Marble {
 	static {
 		// Define the dimensions for each image from the original image file
 		try {
-			BufferedImage mainImage = ImageIO.read(new File("mancalaImages.png"));
+			BufferedImage mainImage = ImageIO.read(new File("images/mancalaImages.png"));
 			BufferedImage blueMarble = mainImage.getSubimage(33, 32, 120, 150);
 			BufferedImage greenMarble = mainImage.getSubimage(55, 285, 120, 150);
 			BufferedImage redMarble = mainImage.getSubimage(34, 542, 120, 100);

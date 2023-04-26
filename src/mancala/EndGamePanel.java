@@ -1,6 +1,7 @@
 package mancala;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -27,16 +28,22 @@ import javax.swing.JPanel;
 public class EndGamePanel extends JPanel {
 	private int winner;
 	private boolean playAgain;
+	private boolean singlePlayer;
 
+	private Image resizedBackgroundImage;
 	private Image resizedWinningImage;
 	private Image resizedLosingImage;
+	private Image resizedVictoryImage;
 
+	public JButton homeButton;
 	public JButton playAgainButton;
 	public JButton exitGameButton;
 	private ImageIcon playAgainIcon;
 	private ImageIcon playAgainHoverIcon;
 	private ImageIcon exitGameIcon;
 	private ImageIcon exitGameHoverIcon;
+	private ImageIcon homeIcon;
+	private ImageIcon homeHoverIcon;
 
 	/**
 	 * Creates a new end-screen panel for the Mancala game. This JPanel is
@@ -45,30 +52,39 @@ public class EndGamePanel extends JPanel {
 	 * 
 	 * @param winner an integer designating the winning player of the game
 	 */
-	public EndGamePanel(int winner, int score1, int score2) {
+	public EndGamePanel(int winner, int score1, int score2, boolean singlePlayer) {
 		this.setPreferredSize(new Dimension(400, 250));
 		this.setLayout(null);
 		this.setBackground(new Color(242, 234, 218));
 
 		this.winner = winner;
 		this.playAgain = false;
+		this.singlePlayer = singlePlayer;
 
 		// Create the labels
 		JLabel loseLabel = new JLabel("You Lost!");
 		JLabel winLabel = new JLabel("You Won!");
+		JLabel player1winLabel = new JLabel("Player 1 Won!");
+		JLabel player2winLabel = new JLabel("Player 2 Won!");
+		JLabel score = new JLabel("Player 1: " + score1 + "     Player 2: " + score2);
 		JLabel restartLabel = new JLabel("Would you like to play again?");
-		loseLabel.setBounds(155, 110, 380, 50);
-		winLabel.setBounds(150, 110, 380, 50);
-		restartLabel.setBounds(55, 135, 380, 50);
-		loseLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
-		winLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
-		restartLabel.setFont(new Font("Tahoma", Font.BOLD, 20));
+		loseLabel.setBounds(295, 330, 380, 50);
+		winLabel.setBounds(305, 330, 380, 50);
+		player1winLabel.setBounds(360, 330, 450, 50);
+		player2winLabel.setBounds(360, 330, 450, 50);
+		score.setBounds(165, 280, 450 ,50);
+		restartLabel.setBounds(120, 380, 600, 50);
+		loseLabel.setFont(new Font("Tahoma", Font.BOLD, 35));
+		winLabel.setFont(new Font("Tahoma", Font.BOLD, 35));
+		player1winLabel.setFont(new Font("Tahoma", Font.BOLD, 35));
+		player2winLabel.setFont(new Font("Tahoma", Font.BOLD, 35));
+		score.setFont(new Font("Tahoma", Font.BOLD, 35));
+		restartLabel.setFont(new Font("Tahoma", Font.BOLD, 35));
 
 		// Create the "Play Again" button
 		playAgainButton = new JButton();
-		playAgainButton.setBounds(40, 185, 140, 40);
+		playAgainButton.setBounds(130, 490, 180, 50);
 		playAgainButton.setBorderPainted(false);
-		playAgainButton.setText("Play Again");
 		playAgainButton.setContentAreaFilled(false);
 		playAgainButton.addMouseListener(new MouseListener() {
 			public void mouseClicked(MouseEvent e) {
@@ -89,10 +105,35 @@ public class EndGamePanel extends JPanel {
 				playAgainButton.setIcon(playAgainIcon);
 			}
 		});
+		
+
+		// Create the "Home" Button
+		homeButton = new JButton();
+		homeButton.setBounds(320, 490, 150,50);
+		homeButton.setBorderPainted(false);
+		homeButton.setContentAreaFilled(false);
+		homeButton.addMouseListener(new MouseListener(){
+			public void mouseClicked(MouseEvent e) {
+			}
+
+			public void mousePressed(MouseEvent e) {
+			}
+
+			public void mouseReleased(MouseEvent e) {
+			}
+
+			public void mouseEntered(MouseEvent e) {
+				homeButton.setIcon(homeHoverIcon);
+			}
+
+			public void mouseExited(MouseEvent e) {
+				homeButton.setIcon(homeIcon);
+			}
+		});
 
 		// Create the "Exit Game" button
 		exitGameButton = new JButton();
-		exitGameButton.setBounds(220, 185, 140, 40);
+		exitGameButton.setBounds(480, 490, 180, 50);
 		exitGameButton.setBorderPainted(false);
 		exitGameButton.setContentAreaFilled(false);
 		exitGameButton.addMouseListener(new MouseListener() {
@@ -115,48 +156,78 @@ public class EndGamePanel extends JPanel {
 			}
 		});
 
-		if (winner == 0) {
-			this.add(winLabel);
+		if (singlePlayer) {
+			if (winner == 0) {
+				this.add(winLabel);
+			} else {
+				this.add(loseLabel);
+			}
 		} else {
-			this.add(loseLabel);
+			if (winner == 0) {
+				this.add(player1winLabel);
+			} else {
+				this.add(player2winLabel);
+			}
 		}
+		
 		this.add(restartLabel);
+		this.add(score);
 		this.add(playAgainButton);
 		this.add(exitGameButton);
+		this.add(homeButton);
 
 		try {
+			// Create the background image
+			Image backgroundImage = ImageIO.read(new File("images/wood.jpg"));
+			Image backgroundImageIcon = new ImageIcon(backgroundImage).getImage();
+			resizedBackgroundImage = backgroundImageIcon.getScaledInstance(800,565, Image.SCALE_SMOOTH);
+			
 			// Create the images, including the button images
-			BufferedImage winningBufferedImage = ImageIO.read(new File("winning.png"));
-			BufferedImage losingBufferedImage = ImageIO.read(new File("losing.png"));
-			BufferedImage playAgainBufferedImage = ImageIO.read(new File("playAgainButton.png"));
-			BufferedImage playAgainHoverBufferedImage = ImageIO.read(new File("playAgainHover.png"));
-			BufferedImage exitGameBufferedImage = ImageIO.read(new File("exitGameButton.png"));
-			BufferedImage exitGameHoverBufferedImage = ImageIO.read(new File("exitGameHoverButton.png"));
+			BufferedImage winningBufferedImage = ImageIO.read(new File("images/winning.png"));
+			BufferedImage losingBufferedImage = ImageIO.read(new File("images/losing.png"));
+			BufferedImage victoryBufferedImage = ImageIO.read(new File("images/victory.png"));
+			BufferedImage playAgainBufferedImage = ImageIO.read(new File("images/playAgainButton.png"));
+			BufferedImage playAgainHoverBufferedImage = ImageIO.read(new File("images/playAgainHover.png"));
+			BufferedImage exitGameBufferedImage = ImageIO.read(new File("images/exitGame.png"));
+			BufferedImage exitGameHoverBufferedImage = ImageIO.read(new File("images/exitGameHover.png"));
+			BufferedImage homeBufferedImage = ImageIO.read(new File("images/home.png"));
+			BufferedImage homeHoverBufferedImage = ImageIO.read(new File("images/homeHover.png"));
 
 			// Resize the images to correct sizes
 			Image winningImage = new ImageIcon(winningBufferedImage).getImage();
 			Image losingImage = new ImageIcon(losingBufferedImage).getImage();
-			resizedWinningImage = winningImage.getScaledInstance(350, 140, Image.SCALE_SMOOTH);
-			resizedLosingImage = losingImage.getScaledInstance(400, 150, Image.SCALE_SMOOTH);
+			Image victoryImage = new ImageIcon(victoryBufferedImage).getImage();
+			resizedWinningImage = winningImage.getScaledInstance(700, 280, Image.SCALE_SMOOTH);
+			resizedLosingImage = losingImage.getScaledInstance(800, 300, Image.SCALE_SMOOTH);
+			resizedVictoryImage = victoryImage.getScaledInstance(700, 450, Image.SCALE_SMOOTH);
+			Image homeImage = new ImageIcon(homeBufferedImage).getImage();
+			Image homeHoverImage = new ImageIcon(homeHoverBufferedImage).getImage();
+		
 
 			Image playAgainImage = new ImageIcon(playAgainBufferedImage).getImage();
 			Image playAgainHoverImage = new ImageIcon(playAgainHoverBufferedImage).getImage();
 			Image exitGameImage = new ImageIcon(exitGameBufferedImage).getImage();
 			Image exitGameHoverImage = new ImageIcon(exitGameHoverBufferedImage).getImage();
-			Image resizedPlayAgainImage = playAgainImage.getScaledInstance(140, 40, Image.SCALE_SMOOTH);
-			Image resizedPlayAgainHoverImage = playAgainHoverImage.getScaledInstance(140, 40, Image.SCALE_SMOOTH);
-			Image resizedExitGameImage = exitGameImage.getScaledInstance(140, 40, Image.SCALE_SMOOTH);
-			Image resizedExitGameHoverImage = exitGameHoverImage.getScaledInstance(140, 40, Image.SCALE_SMOOTH);
+			Image resizedPlayAgainImage = playAgainImage.getScaledInstance(180, 50, Image.SCALE_SMOOTH);
+			Image resizedPlayAgainHoverImage = playAgainHoverImage.getScaledInstance(180, 50, Image.SCALE_SMOOTH);
+			Image resizedExitGameImage = exitGameImage.getScaledInstance(180, 50, Image.SCALE_SMOOTH);
+			Image resizedExitGameHoverImage = exitGameHoverImage.getScaledInstance(180, 50, Image.SCALE_SMOOTH);
+			Image resizedHomeImage = homeImage.getScaledInstance(150, 50, Image.SCALE_SMOOTH);
+			Image resizedHomeHoverImage = homeHoverImage.getScaledInstance(150, 50, Image.SCALE_SMOOTH);
+
 
 			// Creating icons for the button images
 			playAgainIcon = new ImageIcon(resizedPlayAgainImage);
 			playAgainHoverIcon = new ImageIcon(resizedPlayAgainHoverImage);
 			exitGameIcon = new ImageIcon(resizedExitGameImage);
 			exitGameHoverIcon = new ImageIcon(resizedExitGameHoverImage);
+			homeIcon = new ImageIcon(resizedHomeImage);
+			homeHoverIcon = new ImageIcon(resizedHomeHoverImage);
 
 			// Set the button images to the buttons
 			playAgainButton.setIcon(playAgainIcon);
 			exitGameButton.setIcon(exitGameIcon);
+			homeButton.setIcon(homeIcon);
 
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -173,10 +244,15 @@ public class EndGamePanel extends JPanel {
 		super.paintComponent(graphics);
 		final Graphics2D g = (Graphics2D) graphics;
 
-		if (winner == 0) {
-			g.drawImage(resizedWinningImage, 30, 0, null);
+		g.drawImage(resizedBackgroundImage, 0,0, null);
+		if (singlePlayer) {
+			if (winner == 0) {
+				g.drawImage(resizedWinningImage, 30, 20, null);
+			} else {
+				g.drawImage(resizedLosingImage, 0, -10, null);
+			}
 		} else {
-			g.drawImage(resizedLosingImage, 0, -10, null);
+			g.drawImage(resizedVictoryImage, 25,-60, null);
 		}
 	}
 

@@ -3,20 +3,22 @@ package mancala;
 import java.awt.Color;
 
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextArea;
 
 /**
  * This class creates the welcome panel to open the program and displays the
@@ -26,51 +28,177 @@ import javax.swing.JTextArea;
  */
 @SuppressWarnings("serial")
 public class WelcomePanel extends JPanel {
+	private static int WINDOW_WIDTH = 800;
+	private static int WINDOW_HEIGHT = 540;
+	private Random rand = new Random();
 
 	public int showPage;
-	public JButton playGame = new JButton("Play Game");
-	public JButton quitGame = new JButton("Quit");
-	public JButton instructions = new JButton("Instructions");
+	public JButton playGameButton = new JButton();
+	public JButton exitGameButton = new JButton();
+	public JButton instructionsButton = new JButton();
+
+	private Image resizedBackgroundImage;
+	private Image resizedTitleImage;
+	private Image resizedWelcomeToImage;
+
+	private ImageIcon playGameIcon;
+	private ImageIcon playGameHoverIcon;
+	private ImageIcon exitGameIcon;
+	private ImageIcon exitGameHoverIcon;
+	private ImageIcon instructionsIcon;
+	private ImageIcon instructionsHoverIcon;
+
+	private List<Marble> marbleList = new ArrayList<Marble>();
 
 	/**
 	 * Constructor for the welcome panel.
 	 */
 	public WelcomePanel() {
-
-		this.setPreferredSize(new Dimension(800, 500));
+		this.setPreferredSize(new Dimension(WINDOW_WIDTH, WINDOW_HEIGHT));
 		this.setLayout(null);
-		JPanel panel = new JPanel();
-		panel.setBounds(40, 80, 200, 200);
 		this.setBackground(new Color(228, 218, 199));
 
-		JLabel welcomeLabel = new JLabel("Welcome to");
-		JTextArea visionStatement = new JTextArea(
-				"Through the creation of a computer-based Mancala game, we are bringing one of the oldest\n"
-						+ "board games to the latest generation. Unlike many modern mindless computer games, this\n"
-						+ "game seeks to improve the memory and strategic abilities of all those seeking to better their\n"
-						+ "mental skills.");
+		// Create the "Play Game" Button
+		playGameButton.setBounds(310, 365, 180, 50);
+		playGameButton.setBorderPainted(false);
+		playGameButton.setContentAreaFilled(false);
+		playGameButton.addMouseListener(new MouseListener() {
+			public void mouseClicked(MouseEvent e) {
+			}
 
-		visionStatement.setEditable(false);
-		visionStatement.setBackground(new Color(228, 218, 199));
+			public void mousePressed(MouseEvent e) {
+			}
 
-		welcomeLabel.setFont(new Font("DialogInput", Font.BOLD, 20));
-		visionStatement.setFont(new Font("DialogInput", Font.BOLD, 10));
-		quitGame.setFont(new Font("DialogInput", Font.BOLD, 10));
-		playGame.setFont(new Font("DialogInput", Font.BOLD, 10));
-		instructions.setFont(new Font("DialogInput", Font.BOLD, 10));
+			public void mouseReleased(MouseEvent e) {
+			}
 
-		welcomeLabel.setBounds(325, 40, 200, 25);
-		visionStatement.setBounds(150, 200, 500, 55);
-		quitGame.setBounds(450, 450, 100, 35);
-		playGame.setBounds(350, 450, 100, 35);
-		instructions.setBounds(250, 450, 100, 35);
+			public void mouseEntered(MouseEvent e) {
+				playGameButton.setIcon(playGameHoverIcon);
+			}
 
-		this.add(welcomeLabel);
-		this.add(visionStatement);
-		this.add(quitGame);
-		this.add(playGame);
-		this.add(instructions);
+			public void mouseExited(MouseEvent e) {
+				playGameButton.setIcon(playGameIcon);
+			}
+		});
 
+		// Create the "Instructions" Button
+		instructionsButton.setBounds(290, 425, 220, 50);
+		instructionsButton.setBorderPainted(false);
+		instructionsButton.setContentAreaFilled(false);
+		instructionsButton.addMouseListener(new MouseListener() {
+			public void mouseClicked(MouseEvent e) {
+
+			}
+
+			public void mousePressed(MouseEvent e) {
+			}
+
+			public void mouseReleased(MouseEvent e) {
+			}
+
+			public void mouseEntered(MouseEvent e) {
+				instructionsButton.setIcon(instructionsHoverIcon);
+			}
+
+			public void mouseExited(MouseEvent e) {
+				instructionsButton.setIcon(instructionsIcon);
+			}
+		});
+
+		// Create the "Exit Game" Button
+		exitGameButton.setBounds(310, 485, 180, 50);
+		exitGameButton.setBorderPainted(false);
+		exitGameButton.setContentAreaFilled(false);
+		exitGameButton.addMouseListener(new MouseListener() {
+			public void mouseClicked(MouseEvent e) {
+
+			}
+
+			public void mousePressed(MouseEvent e) {
+			}
+
+			public void mouseReleased(MouseEvent e) {
+			}
+
+			public void mouseEntered(MouseEvent e) {
+				exitGameButton.setIcon(exitGameHoverIcon);
+			}
+
+			public void mouseExited(MouseEvent e) {
+				exitGameButton.setIcon(exitGameIcon);
+			}
+		});
+
+		this.add(exitGameButton);
+		this.add(playGameButton);
+		this.add(instructionsButton);
+
+		try {
+			// Create the background image
+			Image backgroundImage = ImageIO.read(new File("images/mainBackground.jpg"));
+			Image backgroundImageIcon = new ImageIcon(backgroundImage).getImage();
+			resizedBackgroundImage = backgroundImageIcon.getScaledInstance(800, 565, Image.SCALE_SMOOTH);
+
+			// Create the title images
+			Image titleImage = ImageIO.read(new File("images/mancalaTitle.png"));
+			Image titleImageIcon = new ImageIcon(titleImage).getImage();
+			resizedTitleImage = titleImageIcon.getScaledInstance(500, 100, Image.SCALE_SMOOTH);
+
+			Image welcomeToImage = ImageIO.read(new File("images/welcomeToTitle.png"));
+			Image welcomeToImageIcon = new ImageIcon(welcomeToImage).getImage();
+			resizedWelcomeToImage = welcomeToImageIcon.getScaledInstance(400, 80, Image.SCALE_SMOOTH);
+
+			// Create the images, including the button images
+			BufferedImage playGameBufferedImage = ImageIO.read(new File("images/playGame.png"));
+			BufferedImage playGameHoverBufferedImage = ImageIO.read(new File("images/playGameHover.png"));
+			BufferedImage exitGameBufferedImage = ImageIO.read(new File("images/exitGame.png"));
+			BufferedImage exitGameHoverBufferedImage = ImageIO.read(new File("images/exitGameHover.png"));
+			BufferedImage instructionsBufferedImage = ImageIO.read(new File("images/instructions.png"));
+			BufferedImage instructionsHoverBufferedImage = ImageIO.read(new File("images/instructionsHover.png"));
+
+			// Resize the images to correct sizes
+			Image playGameImage = new ImageIcon(playGameBufferedImage).getImage();
+			Image playGameHoverImage = new ImageIcon(playGameHoverBufferedImage).getImage();
+			Image exitGameImage = new ImageIcon(exitGameBufferedImage).getImage();
+			Image exitGameHoverImage = new ImageIcon(exitGameHoverBufferedImage).getImage();
+			Image instructionsImage = new ImageIcon(instructionsBufferedImage).getImage();
+			Image instructionsHoverImage = new ImageIcon(instructionsHoverBufferedImage).getImage();
+
+			Image resizedPlayGameImage = playGameImage.getScaledInstance(180, 50, Image.SCALE_SMOOTH);
+			Image resizedPlayGameHoverImage = playGameHoverImage.getScaledInstance(180, 50, Image.SCALE_SMOOTH);
+			Image resizedExitGameImage = exitGameImage.getScaledInstance(180, 50, Image.SCALE_SMOOTH);
+			Image resizedExitGameHoverImage = exitGameHoverImage.getScaledInstance(180, 50, Image.SCALE_SMOOTH);
+			Image resizedInstructionsImage = instructionsImage.getScaledInstance(220, 50, Image.SCALE_SMOOTH);
+			Image resizedInstructionsHoverImage = instructionsHoverImage.getScaledInstance(220, 50, Image.SCALE_SMOOTH);
+
+			// Creating icons for the button images
+			playGameIcon = new ImageIcon(resizedPlayGameImage);
+			playGameHoverIcon = new ImageIcon(resizedPlayGameHoverImage);
+			exitGameIcon = new ImageIcon(resizedExitGameImage);
+			exitGameHoverIcon = new ImageIcon(resizedExitGameHoverImage);
+			instructionsIcon = new ImageIcon(resizedInstructionsImage);
+			instructionsHoverIcon = new ImageIcon(resizedInstructionsHoverImage);
+
+			// Set the button images to the buttons
+			playGameButton.setIcon(playGameIcon);
+			exitGameButton.setIcon(exitGameIcon);
+			instructionsButton.setIcon(instructionsIcon);
+
+			for (int i = 0; i < 50; i++) {
+				Marble newMarble = new Marble();
+				newMarble.setXcord(rand.nextInt(WINDOW_WIDTH));
+				newMarble.setYcord(rand.nextInt(WINDOW_HEIGHT));
+				while ((newMarble.getYcord() < 0.65 * WINDOW_HEIGHT) || (newMarble.getYcord() > 0.96 * WINDOW_HEIGHT)
+						|| (newMarble.getXcord() > 0.94 * WINDOW_WIDTH) || ((newMarble.getXcord() > 0.32 * WINDOW_WIDTH)
+								&& (newMarble.getXcord() < 0.65 * WINDOW_WIDTH))) {
+					newMarble.setXcord(rand.nextInt(WINDOW_WIDTH));
+					newMarble.setYcord(rand.nextInt(WINDOW_HEIGHT));
+				}
+				marbleList.add(newMarble);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -82,27 +210,13 @@ public class WelcomePanel extends JPanel {
 		super.paintComponent(graphics);
 		final Graphics2D g = (Graphics2D) graphics;
 
-		// Create the Mancala title image
-		BufferedImage titleImage;
-		try {
-			titleImage = ImageIO.read(new File("mancalaTitle.png"));
-			Image titleImageIcon = new ImageIcon(titleImage).getImage();
-			Image resizedTitleImage = titleImageIcon.getScaledInstance(400, 60, Image.SCALE_SMOOTH);
-			g.drawImage(resizedTitleImage, 200, 100, null);
+		g.drawImage(resizedBackgroundImage, 0, 0, null);
 
-			// Create the board image
-			BufferedImage mainImage = ImageIO.read(new File("mancalaImages.png"));
-			BufferedImage boardImage = mainImage.getSubimage(15, 1400, 500, 150);
-
-			// Display the board image
-			Image boardDisplayImage = new ImageIcon(boardImage).getImage();
-			Image resizedBoard = boardDisplayImage.getScaledInstance(400, 125, Image.SCALE_SMOOTH);
-			g.drawImage(resizedBoard, 200, 300, null);
-
-		} catch (IOException e) {
-			e.printStackTrace();
+		for (Marble marble : marbleList) {
+			g.drawImage(marble.getMarbleImage(), marble.getXcord(), marble.getYcord(), null);
 		}
 
+		g.drawImage(resizedTitleImage, 140, 130, null);
+		g.drawImage(resizedWelcomeToImage, 190, 60, null);
 	}
-
 }

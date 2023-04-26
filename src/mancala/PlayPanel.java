@@ -13,7 +13,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,12 +62,23 @@ public class PlayPanel extends JPanel {
 	private JLabel p2ScoreNumber = new JLabel("0");
 	private JLabel marbleCountDisplayLabel = new JLabel("Number of Marbles:");
 	private JLabel marbleCountLabel = new JLabel();
-	private List<String> keysTyped = new ArrayList<String>();
+	
 	public JButton home = new JButton();
 	public JButton quit = new JButton();
 	public JButton help = new JButton();
 	public RoundButton[] pitButtons = new RoundButton[14];
 	public boolean singlePlayer = false;
+	
+	public JButton homeButton = new JButton();
+	public JButton helpButton = new JButton();
+	
+	private Image resizedBackgroundImage;
+	private Image resizedTitleImage;
+	private Image resizedBoard;
+	private ImageIcon homeIcon;
+	private ImageIcon homeHoverIcon;
+	private ImageIcon helpIcon;
+	private ImageIcon helpHoverIcon;
 
 	/**
 	 * Creates a new gameplay panel for the Mancala game.
@@ -84,7 +94,7 @@ public class PlayPanel extends JPanel {
 		this.setLayout(null);
 
 		// Create the instruction area underneath the game board
-		instructionsPane.setBounds(250, 360, 300, 70);
+		instructionsPane.setBounds(250, 410, 300, 70);
 		instructionsPane.setEditable(false);
 		// Changes the border around the instruction area
 		Border blackBorder = BorderFactory.createLineBorder(Color.black);
@@ -105,28 +115,24 @@ public class PlayPanel extends JPanel {
 		} catch (BadLocationException e) {
 			System.out.println("You input an invalid location for inserting a string into the instructions JTextPane");
 		}
-		this.add(instructionsPane);
 
 		// Creating each player's score label
 		JLabel p1ScoreLabel = new JLabel("Player 2 Score: ");
 		JLabel p2ScoreLabel = new JLabel("Player 1 Score: ");
 		p1ScoreLabel.setFont(new Font("DialogInput", Font.BOLD, 20));
 		p2ScoreLabel.setFont(new Font("DialogInput", Font.BOLD, 20));
+		p1ScoreLabel.setForeground(Color.WHITE);
+		p2ScoreLabel.setForeground(Color.WHITE);
 		p1ScoreNumber.setFont(new Font("DialogInput", Font.BOLD, 20));
 		p2ScoreNumber.setFont(new Font("DialogInput", Font.BOLD, 20));
-		p1ScoreLabel.setBounds(30, 460, 200, 25);
-		p2ScoreLabel.setBounds(560, 460, 200, 25);
-		p1ScoreNumber.setBounds(220, 460, 50, 25);
-		p2ScoreNumber.setBounds(750, 460, 50, 25);
-		quit.setBounds(655, 5, 100, 20);
-		quit.setText("Quit");
-		home.setBounds(5, 5, 100, 20);
-		home.setText("Home");
-		help.setBounds(355, 5, 100, 20);
-		help.setText("Help");
-		this.add(home);
-		this.add(quit);
-		this.add(help);
+		p1ScoreNumber.setForeground(Color.WHITE);
+		p2ScoreNumber.setForeground(Color.WHITE);
+		p1ScoreLabel.setBounds(30, 510, 200, 25);
+		p2ScoreLabel.setBounds(560, 510, 200, 25);
+		p1ScoreNumber.setBounds(220, 510, 50, 25);
+		p2ScoreNumber.setBounds(750, 510, 50, 25);
+
+		this.add(instructionsPane);
 		this.add(p1ScoreLabel);
 		this.add(p2ScoreLabel);
 		this.add(p1ScoreNumber);
@@ -135,64 +141,117 @@ public class PlayPanel extends JPanel {
 		// Add the marble count display box to the panel
 		this.add(marbleCountDisplayLabel);
 		this.add(marbleCountLabel);
-
+		
 		resetBoardGraphics();
-
-		KeyListener cheatListener = new KeyListener() {
-			public void keyPressed(KeyEvent e) {
-				String keyPressed = KeyEvent.getKeyText(e.getKeyCode());
-				// Remove the first recorded key if longer than 'cheat'
-				if (keysTyped.size() >= 5) {
-					keysTyped.remove(0);
-				}
-				// Add the pressed key to the list of pressed keys
-				keysTyped.add(keyPressed);
-
-				// Adds an extra miss is the word 'cheat' has been typed
-				String cheatWinArray = "[W, I, N, P, 1]";
-				if (keysTyped.toString().equals(cheatWinArray)) {
-					for (int i = 0; i < 6; i++) {
-						Pit pit = game.getStoreList().get(i);
-						for (Marble marble : pit.getMarbleList()) {
-							Pit store = game.getStoreList().get(6);
-							store.getMarbleList().add(marble);
-						}
-					}
-					for (int i = 0; i < 6; i++) {
-						Pit pit = game.getStoreList().get(i);
-						pit.getMarbleList().clear();
-					}
-				}
-
-				String cheatLoseArray = "[W, I, N, P, 2]";
-				if (keysTyped.toString().equals(cheatLoseArray)) {
-					for (int i = 0; i < 6; i++) {
-						Pit pit = game.getStoreList().get(i);
-						for (Marble marble : pit.getMarbleList()) {
-							Pit store = game.getStoreList().get(13);
-							store.getMarbleList().add(marble);
-						}
-					}
-					for (int i = 0; i < 6; i++) {
-						Pit pit = game.getStoreList().get(i);
-						pit.getMarbleList().clear();
-					}
-				}
-
-				if (game.hasWinner()) {
-					game.setWinner();
-					repaint();
-				}
+		
+		// Create the "Home" Button
+		homeButton.setBounds(270, 500, 120,40);
+		homeButton.setBorderPainted(false);
+		homeButton.setContentAreaFilled(false);
+		homeButton.addMouseListener(new MouseListener(){
+			public void mouseClicked(MouseEvent e) {
 			}
 
-			public void keyReleased(KeyEvent e) {
+			public void mousePressed(MouseEvent e) {
 			}
 
-			public void keyTyped(KeyEvent e) {
+			public void mouseReleased(MouseEvent e) {
 			}
-		};
-		addKeyListener(cheatListener);
-		this.setFocusable(true);
+
+			public void mouseEntered(MouseEvent e) {
+				homeButton.setIcon(homeHoverIcon);
+				setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+
+			public void mouseExited(MouseEvent e) {
+				homeButton.setIcon(homeIcon);
+				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+		});
+		
+		// Create the "Help" Button
+		helpButton.setBounds(420, 500, 90, 40);
+		helpButton.setBorderPainted(false);
+		helpButton.setContentAreaFilled(false);
+		helpButton.addMouseListener(new MouseListener() {
+			public void mouseClicked(MouseEvent e) {
+			}
+
+			public void mousePressed(MouseEvent e) {
+			}
+
+			public void mouseReleased(MouseEvent e) {
+			}
+
+			public void mouseEntered(MouseEvent e) {
+				helpButton.setIcon(helpHoverIcon);
+				setCursor(new Cursor(Cursor.HAND_CURSOR));
+			}
+
+			public void mouseExited(MouseEvent e) {
+				helpButton.setIcon(helpIcon);
+				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
+			}
+		});
+		
+		
+		this.add(helpButton);
+		this.add(homeButton);
+		
+		try {
+		    //Create the background image
+			Image backgroundImage = ImageIO.read(new File("images/playWood.jpg"));
+			Image backgroundImageIcon = new ImageIcon(backgroundImage).getImage();
+			resizedBackgroundImage = backgroundImageIcon.getScaledInstance(800,565, Image.SCALE_SMOOTH);
+			
+			// Create the title images
+			Image titleImage = ImageIO.read(new File("images/mancalaTitle.png"));
+			Image titleImageIcon = new ImageIcon(titleImage).getImage();
+			resizedTitleImage = titleImageIcon.getScaledInstance(500, 100, Image.SCALE_SMOOTH);
+			
+			// Create the board image
+			BufferedImage mainImage = ImageIO.read(new File("images/mancalaImages.png"));
+			BufferedImage boardImage = mainImage.getSubimage(15, 1400, 500, 150);
+
+			// Display the board image
+			Image boardDisplayImage = new ImageIcon(boardImage).getImage();
+			resizedBoard = boardDisplayImage.getScaledInstance(800, 250, Image.SCALE_SMOOTH);
+			
+			// Create the button images
+			BufferedImage homeBufferedImage = ImageIO.read(new File("images/home.png"));
+			BufferedImage homeHoverBufferedImage = ImageIO.read(new File("images/homeHover.png"));
+			BufferedImage helpBufferedImage = ImageIO.read(new File("images/help.png"));
+			BufferedImage helpHoverBufferedImage = ImageIO.read(new File("images/helpHover.png"));
+			BufferedImage exitGameBufferedImage = ImageIO.read(new File("images/exitGame.png"));
+			BufferedImage exitGameHoverBufferedImage = ImageIO.read(new File("images/exitGameHover.png"));
+			
+			// Resize the images to correct sizes
+			Image helpImage = new ImageIcon(helpBufferedImage).getImage();
+			Image helpHoverImage = new ImageIcon(helpHoverBufferedImage).getImage();
+			Image exitGameImage = new ImageIcon(exitGameBufferedImage).getImage();
+			Image exitGameHoverImage = new ImageIcon(exitGameHoverBufferedImage).getImage();
+			Image homeImage = new ImageIcon(homeBufferedImage).getImage();
+			Image homeHoverImage = new ImageIcon(homeHoverBufferedImage).getImage();
+		
+			Image resizedHelpImage = helpImage.getScaledInstance(90, 40, Image.SCALE_SMOOTH);
+			Image resizedHelpHoverImage = helpHoverImage.getScaledInstance(90, 40, Image.SCALE_SMOOTH);
+			Image resizedExitGameImage = exitGameImage.getScaledInstance(150, 40, Image.SCALE_SMOOTH);
+			Image resizedExitGameHoverImage = exitGameHoverImage.getScaledInstance(150, 40, Image.SCALE_SMOOTH);
+			Image resizedHomeImage = homeImage.getScaledInstance(120, 40, Image.SCALE_SMOOTH);
+			Image resizedHomeHoverImage = homeHoverImage.getScaledInstance(120, 40, Image.SCALE_SMOOTH);
+
+			// Creating icons for the button images
+			helpIcon = new ImageIcon(resizedHelpImage);
+			helpHoverIcon = new ImageIcon(resizedHelpHoverImage);
+			homeIcon = new ImageIcon(resizedHomeImage);
+			homeHoverIcon = new ImageIcon(resizedHomeHoverImage);
+
+			// Set the button images to the buttons
+			helpButton.setIcon(helpIcon);
+			homeButton.setIcon(homeIcon);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	/**
@@ -205,35 +264,15 @@ public class PlayPanel extends JPanel {
 		super.paintComponent(graphics);
 		final Graphics2D g = (Graphics2D) graphics;
 
-		try {
-			// Create the board image
-			BufferedImage mainImage = ImageIO.read(new File("mancalaImages.png"));
-			BufferedImage boardImage = mainImage.getSubimage(15, 1400, 500, 150);
+		g.drawImage(resizedTitleImage, 200, 70, null);
+		g.drawImage(resizedBackgroundImage, 0,0, null);
+		g.drawImage(resizedBoard, 20, 150, null);
 
-			// Display the board image
-			Image boardDisplayImage = new ImageIcon(boardImage).getImage();
-			Image resizedBoard = boardDisplayImage.getScaledInstance(800, 250, Image.SCALE_SMOOTH);
-			g.drawImage(resizedBoard, 20, 100, null);
-
-			// Draw every marble on the board
-			for (Pit pit : game.getStoreList()) {
-				for (Marble marble : pit.getMarbleList()) {
-					g.drawImage(marble.getMarbleImage(), marble.getXcord(), marble.getYcord(), null);
-				}
+		// Draw every marble on the board
+		for (Pit pit : game.getStoreList()) {
+			for (Marble marble : pit.getMarbleList()) {
+				g.drawImage(marble.getMarbleImage(), marble.getXcord(), marble.getYcord(), null);
 			}
-
-			// Create the Mancala title image
-			BufferedImage titleImage = ImageIO.read(new File("mancalaTitle.png"));
-			Image titleImageIcon = new ImageIcon(titleImage).getImage();
-			Image resizedTitleImage = titleImageIcon.getScaledInstance(400, 60, Image.SCALE_SMOOTH);
-			g.drawImage(resizedTitleImage, 200, 20, null);
-
-			// Set the background color
-			this.setBackground(new Color(228, 218, 199));
-		} catch (FileNotFoundException e) {
-			System.out.println("A specified image file cannot be found");
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -261,7 +300,7 @@ public class PlayPanel extends JPanel {
 			if (i < 3) {
 				RoundButton pitButton = new RoundButton(i);
 				pitButton.setText(" ");
-				pitButton.setBounds(125 + (84 * i), 245 - (i), 73, 74);
+				pitButton.setBounds(125 + (84 * i), 295 - (i), 73, 74);
 				currentPit.setBoundary(pitButton);
 				pitButton.setBorderPainted(false);
 				addButtonListeners(pitButton);
@@ -271,7 +310,7 @@ public class PlayPanel extends JPanel {
 			} else if (i < 6) {
 				RoundButton pitButton = new RoundButton(i);
 				pitButton.setText(" ");
-				pitButton.setBounds(427 + (83 * (i - 3)), 250 - (2 * i), 71, 70);
+				pitButton.setBounds(427 + (83 * (i - 3)), 300 - (2 * i), 71, 70);
 				currentPit.setBoundary(pitButton);
 				pitButton.setBorderPainted(false);
 				addButtonListeners(pitButton);
@@ -283,7 +322,7 @@ public class PlayPanel extends JPanel {
 				// This button still needs rotated for greater precision
 				RoundButton pitButton = new RoundButton(i);
 				pitButton.setText(" ");
-				pitButton.setBounds(666, 130, 84, 180);
+				pitButton.setBounds(666, 180, 84, 180);
 				currentPit.setBoundary(pitButton);
 				pitButton.setOpaque(false);
 				pitButton.setContentAreaFilled(false);
@@ -293,17 +332,17 @@ public class PlayPanel extends JPanel {
 			} else if (i > 6 && i < 10) {
 				RoundButton pitButton = new RoundButton(i);
 				pitButton.setText(" ");
-				pitButton.setBounds((584 - (-81 * (7 - i))), 133 + (-2 * (7 - i)), 69, 67);
+				pitButton.setBounds((584 - (-81 * (7 - i))), 183 + (-2 * (7 - i)), 69, 67);
 				currentPit.setBoundary(pitButton);
 				pitButton.setBorderPainted(false);
 				addButtonListeners(pitButton);
 				pitButton.setFocusable(false);
 				this.add(pitButton);
-				pitButtons[i] = pitButton;
+				pitButtons[i] = pitButton;				
 			} else if (i < 13) {
 				RoundButton pitButton = new RoundButton(i);
 				pitButton.setText(" ");
-				pitButton.setBounds(294 - (-81 * (10 - i)), 135 + (-1 * (10 - i)), 70, 70);
+				pitButton.setBounds(294 - (-81 * (10 - i)), 185 + (-1 * (10 - i)), 70, 70);
 				currentPit.setBoundary(pitButton);
 				pitButton.setBorderPainted(false);
 				addButtonListeners(pitButton);
@@ -313,7 +352,7 @@ public class PlayPanel extends JPanel {
 			} else {
 				RoundButton pitButton = new RoundButton(i);
 				pitButton.setText(" ");
-				pitButton.setBounds(43, 136, 75, 183);
+				pitButton.setBounds(43, 186, 75, 183);
 				currentPit.setBoundary(pitButton);
 				pitButton.setOpaque(false);
 				pitButton.setContentAreaFilled(false);
@@ -547,7 +586,6 @@ public class PlayPanel extends JPanel {
 
 			if (game.checkCapture(endPitIndex)) {
 				int possibleMarbleLoss = game.getStoreList().get(12 - endPitIndex).getMarbleList().size();
-				System.out.println(i);
 				if (possibleMarbleLoss > game.getStoreList().get(greatestMarbleLossPitIndex).getMarbleList().size()) {
 					greatestMarbleLossPitIndex = 12 - endPitIndex;
 				}
@@ -662,11 +700,6 @@ public class PlayPanel extends JPanel {
 				if (currentPit.getSide() == game.getCurrentPlayer()) {
 					playerMove(selectedPitIndex);
 				}
-				/*
-				 * Sets a timer for moving the computer opponent. After 2 seconds, a random pit
-				 * index from its side of the board is chosen. If the selected pit is empty, a
-				 * new random pit is selected until a non-empty pit is selected.
-				 */
 
 				repaint();
 			}
@@ -700,7 +733,6 @@ public class PlayPanel extends JPanel {
 			}
 
 			public void mousePressed(MouseEvent e) {
-
 			}
 
 			public void mouseReleased(MouseEvent e) {
@@ -717,5 +749,14 @@ public class PlayPanel extends JPanel {
 	 */
 	public Game getGame() {
 		return game;
+	}
+	
+	/**
+	 * Returns whether the game is a single-player game
+	 * 
+	 * @return true if it is a single-player game and false if it is a two-player game
+	 */
+	public boolean getSinglePlayer() {
+		return singlePlayer;
 	}
 }
