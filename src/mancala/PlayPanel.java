@@ -7,8 +7,6 @@ import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
-import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
@@ -66,24 +64,31 @@ public class PlayPanel extends JPanel {
 	public JButton home = new JButton();
 	public JButton quit = new JButton();
 	public JButton help = new JButton();
-	public RoundButton[] pitButtons = new RoundButton[14];
+
+
+	public List<RoundButton> pitButtons = new ArrayList<>();
 	public boolean singlePlayer = false;
-	
+	private boolean highlightHintsP1 = true;
+	private boolean highlightHintsP2 = false;
+
 	public JButton homeButton = new JButton();
 	public JButton helpButton = new JButton();
-	
+
 	private Image resizedBackgroundImage;
 	private Image resizedTitleImage;
 	private Image resizedBoard;
+	private Image resizedHighlightImage;
 	private ImageIcon homeIcon;
 	private ImageIcon homeHoverIcon;
 	private ImageIcon helpIcon;
 	private ImageIcon helpHoverIcon;
 
+
+
 	/**
 	 * Creates a new gameplay panel for the Mancala game.
 	 */
-	public PlayPanel() {
+	public PlayPanel(boolean singlePlayer) {
 		/*
 		 * Once initialized, this panel is run until either player has won the Mancala
 		 * game. This initialization ensures that the game board is reset and that all
@@ -92,6 +97,8 @@ public class PlayPanel extends JPanel {
 		 */
 		this.setPreferredSize(new Dimension(800, 500));
 		this.setLayout(null);
+
+		this.singlePlayer = singlePlayer;
 
 		// Create the instruction area underneath the game board
 		instructionsPane.setBounds(250, 410, 300, 70);
@@ -149,6 +156,7 @@ public class PlayPanel extends JPanel {
 		homeButton.setBorderPainted(false);
 		homeButton.setContentAreaFilled(false);
 		homeButton.addMouseListener(new MouseListener(){
+
 			public void mouseClicked(MouseEvent e) {
 			}
 
@@ -168,7 +176,7 @@ public class PlayPanel extends JPanel {
 				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 		});
-		
+
 		// Create the "Help" Button
 		helpButton.setBounds(420, 500, 90, 40);
 		helpButton.setBorderPainted(false);
@@ -193,21 +201,17 @@ public class PlayPanel extends JPanel {
 				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
 			}
 		});
-		
-		
+
+
 		this.add(helpButton);
 		this.add(homeButton);
-		
+
 		try {
-		    //Create the background image
+			// Create the background image
 			Image backgroundImage = ImageIO.read(new File("images/playWood.jpg"));
 			Image backgroundImageIcon = new ImageIcon(backgroundImage).getImage();
-			resizedBackgroundImage = backgroundImageIcon.getScaledInstance(800,565, Image.SCALE_SMOOTH);
-			
-			// Create the title images
-			Image titleImage = ImageIO.read(new File("images/mancalaTitle.png"));
-			Image titleImageIcon = new ImageIcon(titleImage).getImage();
-			resizedTitleImage = titleImageIcon.getScaledInstance(500, 100, Image.SCALE_SMOOTH);
+			resizedBackgroundImage = backgroundImageIcon.getScaledInstance(800, 565, Image.SCALE_SMOOTH);
+
 			
 			// Create the board image
 			BufferedImage mainImage = ImageIO.read(new File("images/mancalaImages.png"));
@@ -217,6 +221,12 @@ public class PlayPanel extends JPanel {
 			Image boardDisplayImage = new ImageIcon(boardImage).getImage();
 			resizedBoard = boardDisplayImage.getScaledInstance(800, 250, Image.SCALE_SMOOTH);
 			
+
+			// Create the background image
+//			Image highlightImage = ImageIO.read(new File("images/highlight.png"));
+//			Image highlightImageIcon = new ImageIcon(highlightImage).getImage();
+//			resizedHighlightImage = highlightImageIcon.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+
 			// Create the button images
 			BufferedImage homeBufferedImage = ImageIO.read(new File("images/home.png"));
 			BufferedImage homeHoverBufferedImage = ImageIO.read(new File("images/homeHover.png"));
@@ -224,7 +234,7 @@ public class PlayPanel extends JPanel {
 			BufferedImage helpHoverBufferedImage = ImageIO.read(new File("images/helpHover.png"));
 			BufferedImage exitGameBufferedImage = ImageIO.read(new File("images/exitGame.png"));
 			BufferedImage exitGameHoverBufferedImage = ImageIO.read(new File("images/exitGameHover.png"));
-			
+
 			// Resize the images to correct sizes
 			Image helpImage = new ImageIcon(helpBufferedImage).getImage();
 			Image helpHoverImage = new ImageIcon(helpHoverBufferedImage).getImage();
@@ -232,7 +242,7 @@ public class PlayPanel extends JPanel {
 			Image exitGameHoverImage = new ImageIcon(exitGameHoverBufferedImage).getImage();
 			Image homeImage = new ImageIcon(homeBufferedImage).getImage();
 			Image homeHoverImage = new ImageIcon(homeHoverBufferedImage).getImage();
-		
+
 			Image resizedHelpImage = helpImage.getScaledInstance(90, 40, Image.SCALE_SMOOTH);
 			Image resizedHelpHoverImage = helpHoverImage.getScaledInstance(90, 40, Image.SCALE_SMOOTH);
 			Image resizedExitGameImage = exitGameImage.getScaledInstance(150, 40, Image.SCALE_SMOOTH);
@@ -243,12 +253,17 @@ public class PlayPanel extends JPanel {
 			// Creating icons for the button images
 			helpIcon = new ImageIcon(resizedHelpImage);
 			helpHoverIcon = new ImageIcon(resizedHelpHoverImage);
+			
+		
+			
 			homeIcon = new ImageIcon(resizedHomeImage);
 			homeHoverIcon = new ImageIcon(resizedHomeHoverImage);
 
 			// Set the button images to the buttons
 			helpButton.setIcon(helpIcon);
 			homeButton.setIcon(homeIcon);
+			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -265,14 +280,32 @@ public class PlayPanel extends JPanel {
 		final Graphics2D g = (Graphics2D) graphics;
 
 		g.drawImage(resizedTitleImage, 200, 70, null);
-		g.drawImage(resizedBackgroundImage, 0,0, null);
+		g.drawImage(resizedBackgroundImage, 0, 0, null);
 		g.drawImage(resizedBoard, 20, 150, null);
+		
 
 		// Draw every marble on the board
 		for (Pit pit : game.getStoreList()) {
 			for (Marble marble : pit.getMarbleList()) {
 				g.drawImage(marble.getMarbleImage(), marble.getXcord(), marble.getYcord(), null);
 			}
+		}
+		
+		if (highlightHintsP1) {
+			g.drawImage(resizedHighlightImage, 112, 282, null);
+			g.drawImage(resizedHighlightImage, 197, 282, null);
+			g.drawImage(resizedHighlightImage, 279, 281, null);
+			g.drawImage(resizedHighlightImage, 411, 282, null);
+			g.drawImage(resizedHighlightImage, 495, 279, null);
+			g.drawImage(resizedHighlightImage, 580, 278, null);
+		} else if (highlightHintsP2) {
+			g.drawImage(resizedHighlightImage, 116, 173, null);
+			g.drawImage(resizedHighlightImage, 198, 173, null);
+			g.drawImage(resizedHighlightImage, 279, 173, null);
+			g.drawImage(resizedHighlightImage, 408, 171, null);
+			g.drawImage(resizedHighlightImage, 488, 169, null);
+			g.drawImage(resizedHighlightImage, 569, 168, null);
+
 		}
 	}
 
@@ -288,6 +321,7 @@ public class PlayPanel extends JPanel {
 		 * each marble is set to a random value within its starting pit.
 		 */
 		game.resetBoard();
+		pitButtons.clear();
 		changeInstructionText(false);
 		// Assign coordinates to each of the pits for showing the marble images in the
 		// correct pits
@@ -306,7 +340,7 @@ public class PlayPanel extends JPanel {
 				addButtonListeners(pitButton);
 				pitButton.setFocusable(false);
 				this.add(pitButton);
-				pitButtons[i] = pitButton;
+				pitButtons.add(pitButton);
 			} else if (i < 6) {
 				RoundButton pitButton = new RoundButton(i);
 				pitButton.setText(" ");
@@ -316,7 +350,7 @@ public class PlayPanel extends JPanel {
 				addButtonListeners(pitButton);
 				pitButton.setFocusable(false);
 				this.add(pitButton);
-				pitButtons[i] = pitButton;
+				pitButtons.add(pitButton);
 			} else if (i == 6) {
 				// This is a rectangular button instead of a circular button
 				// This button still needs rotated for greater precision
@@ -328,27 +362,32 @@ public class PlayPanel extends JPanel {
 				pitButton.setContentAreaFilled(false);
 				pitButton.setBorderPainted(false);
 				addButtonListeners(pitButton);
-				pitButtons[i] = pitButton;
+				pitButtons.add(pitButton);
 			} else if (i > 6 && i < 10) {
 				RoundButton pitButton = new RoundButton(i);
 				pitButton.setText(" ");
 				pitButton.setBounds((584 - (-81 * (7 - i))), 183 + (-2 * (7 - i)), 69, 67);
 				currentPit.setBoundary(pitButton);
 				pitButton.setBorderPainted(false);
-				addButtonListeners(pitButton);
+				if (!singlePlayer) {
+					addButtonListeners(pitButton);
+					pitButtons.add(pitButton);
+				}
 				pitButton.setFocusable(false);
 				this.add(pitButton);
-				pitButtons[i] = pitButton;				
+
 			} else if (i < 13) {
 				RoundButton pitButton = new RoundButton(i);
 				pitButton.setText(" ");
 				pitButton.setBounds(294 - (-81 * (10 - i)), 185 + (-1 * (10 - i)), 70, 70);
 				currentPit.setBoundary(pitButton);
 				pitButton.setBorderPainted(false);
-				addButtonListeners(pitButton);
+				if (!singlePlayer) {
+					addButtonListeners(pitButton);
+					pitButtons.add(pitButton);
+				}
 				pitButton.setFocusable(false);
 				this.add(pitButton);
-				pitButtons[i] = pitButton;
 			} else {
 				RoundButton pitButton = new RoundButton(i);
 				pitButton.setText(" ");
@@ -358,7 +397,7 @@ public class PlayPanel extends JPanel {
 				pitButton.setContentAreaFilled(false);
 				pitButton.setBorderPainted(false);
 				addButtonListeners(pitButton);
-				pitButtons[i] = pitButton;
+				pitButtons.add(pitButton);
 			}
 		}
 
@@ -540,9 +579,17 @@ public class PlayPanel extends JPanel {
 				instructionsPane.setText("Player 2 gets an extra move!\nChoose a pit.");
 			}
 		} else if (game.getCurrentPlayer() == 1) {
-			instructionsPane.setText("Player 2, it's your turn.\nChoose a pit.");
+			if (highlightHintsP2) {
+				instructionsPane.setText("Player 2, it's your turn.\nSelect one of your highlighted pits.");
+			} else {
+				instructionsPane.setText("Player 2, it's your turn.\nChoose a pit.");
+			}
 		} else {
-			instructionsPane.setText("Player 1, it's your turn.\nChoose a pit.");
+			if (highlightHintsP1) {
+				instructionsPane.setText("Player 1, it's your turn.\nSelect one of your highlighted pits.");
+			} else {
+				instructionsPane.setText("Player 1, it's your turn.\nChoose a pit.");
+			}
 		}
 
 		p1ScoreNumber.setText(String.valueOf(game.getStoreList().get(13).getMarbleList().size()));
@@ -660,6 +707,13 @@ public class PlayPanel extends JPanel {
 			}
 			if (!getsAnotherTurn) {
 				game.switchPlayer();
+				// Turns off the highlighting hints after each player's first turn
+				if (highlightHintsP1) {
+					highlightHintsP2 = true;
+				} else {
+					highlightHintsP2 = false;
+				}
+				highlightHintsP1 = false;
 			}
 			changeInstructionText(getsAnotherTurn);
 		}
@@ -750,13 +804,29 @@ public class PlayPanel extends JPanel {
 	public Game getGame() {
 		return game;
 	}
-	
+
 	/**
 	 * Returns whether the game is a single-player game
 	 * 
-	 * @return true if it is a single-player game and false if it is a two-player game
+	 * @return true if it is a single-player game and false if it is a two-player
+	 *         game
+
 	 */
 	public boolean getSinglePlayer() {
 		return singlePlayer;
 	}
+	
+	/**
+	 * Sets the boolean specifying whether the highlight hints should be shown on Player 2's side.
+	 * 
+	 * @param highlightHint true if hightlight hints should be shown over Player 2's pits and false otherwise
+	 */
+	public void setHighlightHintsP2(boolean highlightHint) {
+		highlightHintsP2 = highlightHint;
+	}
+	
+	public boolean getHighlightHintsP2() {
+		return highlightHintsP2;
+	}
+
 }

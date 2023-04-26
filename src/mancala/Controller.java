@@ -65,7 +65,7 @@ public class Controller extends JFrame implements MouseListener, KeyListener {
 		c.add("settings", settings);
 		
 		// create play panel and adds mouse listeners to all the pit buttons
-		play = new PlayPanel();
+		play = new PlayPanel(false);
 		for (RoundButton button : play.pitButtons) {
 			button.addMouseListener(this);
 		}
