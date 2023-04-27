@@ -27,10 +27,10 @@ import javax.swing.JPanel;
  */
 @SuppressWarnings("serial")
 public class SettingsPanel extends JPanel {
-	public JButton homeButton = new JButton();
+	private JButton homeButton = new JButton();
 
-	public JButton singlePlayerButton = new JButton();
-	public JButton twoPlayerButton = new JButton();
+	private JButton singlePlayerButton = new JButton();
+	private JButton twoPlayerButton = new JButton();
 	
 	private Image resizedBackgroundImage;
 	private Image resizedTitleImage;
@@ -199,5 +199,32 @@ public class SettingsPanel extends JPanel {
 
 		g.drawImage(resizedBackgroundImage, 0,0, null);
 		g.drawImage(resizedTitleImage, 140, 30, null);
+	}
+	
+	/**
+	 * Returns the "Home" button.
+	 * 
+	 * @return a JButton with the "Home" image
+	 */
+	public JButton getHomeButton() {
+		return homeButton;
+	}
+	
+	/**
+	 * Returns the "Single Player" button.
+	 * 
+	 * @return a JButton with the "Single Player" image
+	 */
+	public JButton getSinglePlayerButton() {
+		return singlePlayerButton;
+	}
+	
+	/**
+	 * Returns the "Two Player" button.
+	 * 
+	 * @return a JButton with the "Two Player" image
+	 */
+	public JButton getTwoPlayerButton() {
+		return twoPlayerButton;
 	}
 }

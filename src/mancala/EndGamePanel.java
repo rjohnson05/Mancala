@@ -28,15 +28,16 @@ public class EndGamePanel extends JPanel {
 	private int winner;
 	private boolean playAgain;
 	private boolean singlePlayer;
+	
+	private JButton homeButton;
+	private JButton playAgainButton;
+	private JButton exitGameButton;
 
 	private Image resizedBackgroundImage;
 	private Image resizedWinningImage;
 	private Image resizedLosingImage;
 	private Image resizedVictoryImage;
-
-	public JButton homeButton;
-	public JButton playAgainButton;
-	public JButton exitGameButton;
+	
 	private ImageIcon playAgainIcon;
 	private ImageIcon playAgainHoverIcon;
 	private ImageIcon exitGameIcon;
@@ -274,5 +275,32 @@ public class EndGamePanel extends JPanel {
 	 */
 	public boolean getPlayAgain() {
 		return playAgain;
+	}
+	
+	/**
+	 * Returns the "Home" button.
+	 * 
+	 * @return a JButton with the "Home" image
+	 */
+	public JButton getHomeButton() {
+		return homeButton;
+	}
+	
+	/**
+	 * Returns the "Play Again" button.
+	 * 
+	 * @return a JButton with the "Play Again" image
+	 */
+	public JButton getPlayAgainButton() {
+		return playAgainButton;
+	}
+	
+	/**
+	 * Returns the "Exit Game" button.
+	 * 
+	 * @return a JButton with the "Exit Game" image
+	 */
+	public JButton getExitGameButton() {
+		return exitGameButton;
 	}
 }

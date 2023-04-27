@@ -2,7 +2,6 @@ package mancala;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 /**
  * The main class for the game Mancala. This contains the business logic for the
@@ -12,8 +11,6 @@ import java.util.Random;
  */
 public class Game {
 
-	public Random rand = new Random();
-	public boolean isOver;
 	private List<Pit> storeList = new ArrayList<>();
 	private int currentPlayer;
 	private boolean playerGetsAnotherMove;
@@ -27,54 +24,6 @@ public class Game {
 		currentPlayer = 0;
 		winner = -1;
 		resetBoard();
-	}
-
-	/**
-	 * Sets the playerGetsAnotherMove class variable to either true if the player
-	 * gets another move or false if the player' turn is over
-	 * 
-	 * @param selectedPitIndex index of the pit the player wants to move
-	 * @return boolean true if the player gets another move, false otherwise
-	 */
-	public boolean setsAnotherMove(int selectedPitIndex) {
-		Pit selectedPit = storeList.get(selectedPitIndex);
-		int marbleCount = selectedPit.getMarbleList().size();
-
-		if (selectedPit.getMarbleList().size() == 0) {
-			playerGetsAnotherMove = false;
-			return false;
-		}
-
-		// checking if the marbles get to the end of the list and will loop around
-		int endPitIndex = selectedPitIndex + marbleCount;
-		if (endPitIndex > 13) {
-			endPitIndex -= 13;
-		}
-
-		// checking which store to check
-		if (currentPlayer == 0) {
-			if (endPitIndex == 6) {
-				playerGetsAnotherMove = true;
-				return true;
-			}
-		} else {
-			if (endPitIndex == 13) {
-				playerGetsAnotherMove = true;
-				return true;
-			}
-		}
-		playerGetsAnotherMove = false;
-		return false;
-	}
-
-	/**
-	 * Returns whether or not the player gets another turn. The player gets another
-	 * turn if the last marble that they move ends in their store.
-	 * 
-	 * @return boolean true if the player gets another move, false otherwise
-	 */
-	public boolean getsAnotherMove() {
-		return playerGetsAnotherMove;
 	}
 
 	/**
@@ -228,57 +177,6 @@ public class Game {
 	}
 
 	/**
-	 * Sets the winner of the game.
-	 */
-	public void setWinner() {
-		// compare the stores of each player
-		if (hasWinner()) {
-			// Determine which side of the board is empty
-			int emptySide = 0;
-			for (int i = 0; i < 6; i++) {
-				if (storeList.get(i).getMarbleList().size() != 0) {
-					emptySide = 1;
-				}
-			}
-
-			// Move all marbles from the non-empty side to the corresponding player's store
-			if (emptySide == 0) {
-				for (int i = 7; i < 13; i++) {
-					for (Marble marble : storeList.get(i).getMarbleList()) {
-						storeList.get(13).getMarbleList().add(marble);
-					}
-					storeList.get(i).getMarbleList().clear();
-				}
-			} else {
-				for (int i = 0; i < 6; i++) {
-					for (Marble marble : storeList.get(i).getMarbleList()) {
-						storeList.get(6).getMarbleList().add(marble);
-					}
-					storeList.get(i).getMarbleList().clear();
-				}
-			}
-
-			// if player 0 has a greater amount in their store, return 0
-			if (storeList.get(6).getMarbleList().size() > storeList.get(13).getMarbleList().size()) {
-				winner = 0;
-			} else {
-				// otherwise, return player 1
-				winner = 1;
-			}
-		}
-	}
-
-	/**
-	 * Returns the identifier of the player that wins the game.
-	 * 
-	 * @return the player that won as represented by an int
-	 */
-	public int getWinner() {
-		return winner;
-
-	}
-
-	/**
 	 * Checks to see if a capture play was made. A capture happens when a player
 	 * lands on an empty pit with their final marble, and the pit across from the
 	 * board has one or more marbles in it. If this scenario happens, the player
@@ -343,6 +241,105 @@ public class Game {
 			endPit.getMarbleList().remove(0);
 
 		}
+	}
+	
+	/**
+	 * Sets the playerGetsAnotherMove class variable to either true if the player
+	 * gets another move or false if the player' turn is over
+	 * 
+	 * @param selectedPitIndex index of the pit the player wants to move
+	 * @return boolean true if the player gets another move, false otherwise
+	 */
+	public boolean setsAnotherMove(int selectedPitIndex) {
+		Pit selectedPit = storeList.get(selectedPitIndex);
+		int marbleCount = selectedPit.getMarbleList().size();
+
+		if (selectedPit.getMarbleList().size() == 0) {
+			playerGetsAnotherMove = false;
+			return false;
+		}
+
+		// checking if the marbles get to the end of the list and will loop around
+		int endPitIndex = selectedPitIndex + marbleCount;
+		if (endPitIndex > 13) {
+			endPitIndex -= 13;
+		}
+
+		// checking which store to check
+		if (currentPlayer == 0) {
+			if (endPitIndex == 6) {
+				playerGetsAnotherMove = true;
+				return true;
+			}
+		} else {
+			if (endPitIndex == 13) {
+				playerGetsAnotherMove = true;
+				return true;
+			}
+		}
+		playerGetsAnotherMove = false;
+		return false;
+	}
+	
+	/**
+	 * Sets the winner of the game.
+	 */
+	public void setWinner() {
+		// compare the stores of each player
+		if (hasWinner()) {
+			// Determine which side of the board is empty
+			int emptySide = 0;
+			for (int i = 0; i < 6; i++) {
+				if (storeList.get(i).getMarbleList().size() != 0) {
+					emptySide = 1;
+				}
+			}
+
+			// Move all marbles from the non-empty side to the corresponding player's store
+			if (emptySide == 0) {
+				for (int i = 7; i < 13; i++) {
+					for (Marble marble : storeList.get(i).getMarbleList()) {
+						storeList.get(13).getMarbleList().add(marble);
+					}
+					storeList.get(i).getMarbleList().clear();
+				}
+			} else {
+				for (int i = 0; i < 6; i++) {
+					for (Marble marble : storeList.get(i).getMarbleList()) {
+						storeList.get(6).getMarbleList().add(marble);
+					}
+					storeList.get(i).getMarbleList().clear();
+				}
+			}
+
+			// if player 0 has a greater amount in their store, return 0
+			if (storeList.get(6).getMarbleList().size() > storeList.get(13).getMarbleList().size()) {
+				winner = 0;
+			} else {
+				// otherwise, return player 1
+				winner = 1;
+			}
+		}
+	}
+
+	/**
+	 * Returns the identifier of the player that wins the game.
+	 * 
+	 * @return the player that won as represented by an int
+	 */
+	public int getWinner() {
+		return winner;
+
+	}
+
+	/**
+	 * Returns whether or not the player gets another turn. The player gets another
+	 * turn if the last marble that they move ends in their store.
+	 * 
+	 * @return boolean true if the player gets another move, false otherwise
+	 */
+	public boolean getsAnotherMove() {
+		return playerGetsAnotherMove;
 	}
 
 	/**

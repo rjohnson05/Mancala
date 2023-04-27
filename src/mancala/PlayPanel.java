@@ -61,13 +61,14 @@ public class PlayPanel extends JPanel {
 	private JLabel marbleCountDisplayLabel = new JLabel("Number of Marbles:");
 	private JLabel marbleCountLabel = new JLabel();
 
-	public List<RoundButton> pitButtons = new ArrayList<>();
-	public boolean singlePlayer = false;
+	private List<RoundButton> pitButtons = new ArrayList<>();
+	
+	private boolean singlePlayer = false;
 	private boolean highlightHintsP1 = true;
 	private boolean highlightHintsP2 = false;
 
-	public JButton homeButton = new JButton();
-	public JButton helpButton = new JButton();
+	private JButton homeButton = new JButton();
+	private JButton helpButton = new JButton();
 
 	private Image resizedBackgroundImage;
 	private Image resizedTitleImage;
@@ -305,56 +306,6 @@ public class PlayPanel extends JPanel {
 	}
 
 	/**
-	 * Makes sure that all marbles are visible at the start of the game.
-	 * 
-	 * @param pit the pit that is must have all marbles visible
-	 */
-	private void makeMarblesVisible(Pit pit) {
-		int marbleCount = 0;
-		for (Marble marble : pit.getMarbleList()) {
-			marbleCount++;
-			boolean hidden = true;
-			if (marbleCount == 4) {
-				marbleCount = 4;
-			}
-			while (hidden) {
-				marble.setXcord(rand.nextInt(((pit.getBoundary().getBounds().x + pit.getBoundary().getBounds().width
-						- marble.getMarbleImage().getWidth(getFocusCycleRootAncestor()) - 5))
-						- (pit.getBoundary().getBounds().x + 5)) + (pit.getBoundary().getBounds().x + 5));
-				marble.setYcord(rand.nextInt(((pit.getBoundary().getBounds().y + pit.getBoundary().getBounds().height
-						- marble.getMarbleImage().getHeight(getFocusCycleRootAncestor()) - 5))
-						- (pit.getBoundary().getBounds().y + 5)) + (pit.getBoundary().getBounds().y + 5));
-				if (isMarbleVisible(pit, marble)) {
-					hidden = false;
-				}
-			}
-		}
-	}
-
-	/**
-	 * Determines whether a given marble is visible in a given pit.
-	 * 
-	 * @param pit    the pit in which the marble must be visible
-	 * @param marble the Marble object that is being checked for visibility
-	 * @return true if the marble is visible over all other marbles and false
-	 *         otherwise
-	 */
-	private boolean isMarbleVisible(Pit pit, Marble marble) {
-		for (Marble currentMarble : pit.getMarbleList()) {
-			if (!marble.equals(currentMarble)) {
-				if (pit.getMarbleList().size() > 6) {
-					return true;
-				}
-				if (Math.abs(marble.getXcord() - currentMarble.getXcord()) < 10
-						&& Math.abs(marble.getYcord() - currentMarble.getYcord()) < 10) {
-					return false;
-				}
-			}
-		}
-		return true;
-	}
-
-	/**
 	 * Resets the game board graphics to the initial Mancala game state.
 	 */
 	public void resetBoardGraphics() {
@@ -454,6 +405,56 @@ public class PlayPanel extends JPanel {
 		}
 
 		repaint();
+	}
+	
+	/**
+	 * Makes sure that all marbles are visible at the start of the game.
+	 * 
+	 * @param pit the pit that is must have all marbles visible
+	 */
+	private void makeMarblesVisible(Pit pit) {
+		int marbleCount = 0;
+		for (Marble marble : pit.getMarbleList()) {
+			marbleCount++;
+			boolean hidden = true;
+			if (marbleCount == 4) {
+				marbleCount = 4;
+			}
+			while (hidden) {
+				marble.setXcord(rand.nextInt(((pit.getBoundary().getBounds().x + pit.getBoundary().getBounds().width
+						- marble.getMarbleImage().getWidth(getFocusCycleRootAncestor()) - 5))
+						- (pit.getBoundary().getBounds().x + 5)) + (pit.getBoundary().getBounds().x + 5));
+				marble.setYcord(rand.nextInt(((pit.getBoundary().getBounds().y + pit.getBoundary().getBounds().height
+						- marble.getMarbleImage().getHeight(getFocusCycleRootAncestor()) - 5))
+						- (pit.getBoundary().getBounds().y + 5)) + (pit.getBoundary().getBounds().y + 5));
+				if (isMarbleVisible(pit, marble)) {
+					hidden = false;
+				}
+			}
+		}
+	}
+
+	/**
+	 * Determines whether a given marble is visible in a given pit.
+	 * 
+	 * @param pit    the pit in which the marble must be visible
+	 * @param marble the Marble object that is being checked for visibility
+	 * @return true if the marble is visible over all other marbles and false
+	 *         otherwise
+	 */
+	private boolean isMarbleVisible(Pit pit, Marble marble) {
+		for (Marble currentMarble : pit.getMarbleList()) {
+			if (!marble.equals(currentMarble)) {
+				if (pit.getMarbleList().size() > 6) {
+					return true;
+				}
+				if (Math.abs(marble.getXcord() - currentMarble.getXcord()) < 10
+						&& Math.abs(marble.getYcord() - currentMarble.getYcord()) < 10) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	/**
@@ -633,15 +634,6 @@ public class PlayPanel extends JPanel {
 
 		p1ScoreNumber.setText(String.valueOf(game.getStoreList().get(13).getMarbleList().size()));
 		p2ScoreNumber.setText(String.valueOf(game.getStoreList().get(6).getMarbleList().size()));
-	}
-
-	/**
-	 * Returns an integer designating the winning player for the game.
-	 * 
-	 * @return int returns 0 if Player 1 won and 1 if Player 2 won
-	 */
-	public int getWinner() {
-		return game.getWinner();
 	}
 
 	/**
@@ -845,6 +837,15 @@ public class PlayPanel extends JPanel {
 	}
 
 	/**
+	 * Sets the boolean specifying whether the game is being played in "single player" mode.
+	 * 
+	 * @param singlePlayer true if being played in "single player" mode and false if in "two player" mode
+	 */
+	public void setSinglePlayer(boolean singlePlayer) {
+		this.singlePlayer = singlePlayer;
+	}
+	
+	/**
 	 * Returns whether the game is a single-player game
 	 * 
 	 * @return true if it is a single-player game and false if it is a two-player
@@ -865,8 +866,50 @@ public class PlayPanel extends JPanel {
 		highlightHintsP2 = highlightHint;
 	}
 
+	/**
+	 * Returns the boolean specifying whether the highlight hints should be shown on
+	 * Player 2's side.
+	 * 
+	 * @return true if hightlight hints should be shown over Player 2's
+	 *                      pits and false otherwise
+	 */
 	public boolean getHighlightHintsP2() {
 		return highlightHintsP2;
 	}
 
+	/**
+	 * Returns the "Home" button.
+	 * 
+	 * @return a JButton with the "Home" image
+	 */
+	public JButton getHomeButton() {
+		return homeButton;
+	}
+	
+	/**
+	 * Returns the "Help" button.
+	 * 
+	 * @return a JButton with the "Help" image
+	 */
+	public JButton getHelpButton() {
+		return helpButton;
+	}
+	
+	/**
+	 * Returns the list of buttons behind each pit on the board.
+	 * 
+	 * @return a list of the RoundButtons behind the pits of the board
+	 */
+	public List<RoundButton> getPitButtons() {
+		return pitButtons;
+	}
+	
+	/**
+	 * Returns an integer designating the winning player for the game.
+	 * 
+	 * @return int returns 0 if Player 1 won and 1 if Player 2 won
+	 */
+	public int getWinner() {
+		return game.getWinner();
+	}
 }

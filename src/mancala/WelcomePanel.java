@@ -31,10 +31,9 @@ public class WelcomePanel extends JPanel {
 	private static int WINDOW_WIDTH = 800;
 	private static int WINDOW_HEIGHT = 540;
 
-	public int showPage;
-	public JButton playGameButton = new JButton();
-	public JButton exitGameButton = new JButton();
-	public JButton instructionsButton = new JButton();
+	private JButton playGameButton = new JButton();
+	private JButton exitGameButton = new JButton();
+	private JButton instructionsButton = new JButton();
 
 	private Random rand = new Random();
 	private Image resizedBackgroundImage;
@@ -218,5 +217,32 @@ public class WelcomePanel extends JPanel {
 
 		g.drawImage(resizedTitleImage, 140, 130, null);
 		g.drawImage(resizedWelcomeToImage, 190, 60, null);
+	}
+	
+	/**
+	 * Returns the "Play Game" button.
+	 * 
+	 * @return a JButton with the "Play Game" image
+	 */
+	public JButton getPlayGameButton() {
+		return playGameButton;
+	}
+	
+	/**
+	 * Returns the "Exit Game" button.
+	 * 
+	 * @return a JButton with the "Exit Game" image
+	 */
+	public JButton getExitGameButton() {
+		return exitGameButton;
+	}
+	
+	/**
+	 * Returns the "Instructions" button.
+	 * 
+	 * @return a JButton with the "Instructions" image
+	 */
+	public JButton getInstructionsButton() {
+		return instructionsButton;
 	}
 }

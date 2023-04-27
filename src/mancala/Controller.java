@@ -48,34 +48,34 @@ public class Controller extends JFrame implements MouseListener, KeyListener {
 		
 		// create welcome panel and adds mouse listeners
 		welcome = new WelcomePanel();
-		welcome.playGameButton.addMouseListener(this);
-		welcome.instructionsButton.addMouseListener(this);
-		welcome.exitGameButton.addMouseListener(this);
+		welcome.getPlayGameButton().addMouseListener(this);
+		welcome.getInstructionsButton().addMouseListener(this);
+		welcome.getExitGameButton().addMouseListener(this);
 		c.add("welcome", welcome);
 
 		// create instructions panel and adds mouse listeners
 		instructions = new InstructionsPanel();
-		instructions.homeButton.addMouseListener(this);
+		instructions.getHomeButton().addMouseListener(this);
 		c.add("instructions", instructions);
 
 		// create settings panel and adds mouse listeners
 		settings = new SettingsPanel();
-		settings.homeButton.addMouseListener(this);
-		settings.singlePlayerButton.addMouseListener(this);
-		settings.twoPlayerButton.addMouseListener(this);
+		settings.getHomeButton().addMouseListener(this);
+		settings.getSinglePlayerButton().addMouseListener(this);
+		settings.getTwoPlayerButton().addMouseListener(this);
 		c.add("settings", settings);
 		
 		// create play panel and adds mouse listeners to all the pit buttons
 		play = new PlayPanel(false);
-		for (RoundButton button : play.pitButtons) {
+		for (RoundButton button : play.getPitButtons()) {
 			button.addMouseListener(this);
 		}
-		play.homeButton.addMouseListener(this);
-		play.helpButton.addMouseListener(this);
+		play.getHomeButton().addMouseListener(this);
+		play.getHelpButton().addMouseListener(this);
 		c.add("play", play);
 		
 		help = new HelpPanel();
-		help.resumeButton.addMouseListener(this);
+		help.getResumeButton().addMouseListener(this);
 		c.add("help", help);
 		
 		addKeyListener(this);
@@ -110,12 +110,12 @@ public class Controller extends JFrame implements MouseListener, KeyListener {
 		// create play panel and adds mouse listeners to all the pit buttons
 		play = new PlayPanel(singlePlayer);
 
-		for (int i = 0; i < play.pitButtons.size(); i++) {
-			play.pitButtons.get(i).addMouseListener(this);
+		for (int i = 0; i < play.getPitButtons().size(); i++) {
+			play.getPitButtons().get(i).addMouseListener(this);
 		}
 
-		play.homeButton.addMouseListener(this);
-		play.helpButton.addMouseListener(this);
+		play.getHomeButton().addMouseListener(this);
+		play.getHelpButton().addMouseListener(this);
 		c.add("play", play);
 
 	}
@@ -126,9 +126,9 @@ public class Controller extends JFrame implements MouseListener, KeyListener {
 	public void createEndGame() {
 		end = new EndGamePanel(play.getGame().getWinner(), play.getGame().getStoreList().get(6).getMarbleList().size(),
 				play.getGame().getStoreList().get(13).getMarbleList().size(), play.getSinglePlayer());
-		end.exitGameButton.addMouseListener(this);
-		end.playAgainButton.addMouseListener(this);
-		end.homeButton.addMouseListener(this);
+		end.getExitGameButton().addMouseListener(this);
+		end.getPlayAgainButton().addMouseListener(this);
+		end.getHomeButton().addMouseListener(this);
 		c.add("end", end);
 	}
 
@@ -193,27 +193,27 @@ public class Controller extends JFrame implements MouseListener, KeyListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		JButton bclicked = (JButton) e.getSource();
-		if (bclicked == welcome.instructionsButton) {
+		if (bclicked == welcome.getInstructionsButton()) {
     		card.show(c, "instructions");
     	}
-    	else if (bclicked == welcome.playGameButton ) {
+    	else if (bclicked == welcome.getPlayGameButton() ) {
     		card.show(c, "settings");
     	}
-    	else if (bclicked == welcome.exitGameButton) {
+    	else if (bclicked == welcome.getExitGameButton()) {
     		System.exit(1);
     	}
-    	else if (bclicked == instructions.homeButton || bclicked == settings.homeButton) {
+    	else if (bclicked == instructions.getHomeButton() || bclicked == settings.getHomeButton()) {
     		card.show(c, "welcome");
     	}
-    	else if (bclicked == settings.twoPlayerButton || bclicked == help.resumeButton) {
+    	else if (bclicked == settings.getTwoPlayerButton() || bclicked == help.getResumeButton()) {
     		card.show(c, "play");
     	}
-    	else if (bclicked == settings.singlePlayerButton) {
-    		play.singlePlayer = true;
+    	else if (bclicked == settings.getSinglePlayerButton()) {
+    		play.setSinglePlayer(true);
     		card.show(c, "play");
     	}
     	else if (bclicked.getText() == " ") {
-    		if (play.singlePlayer) {
+    		if (play.getSinglePlayer()) {
     			singlePlayerMove();
     		}
     		if (play.getGame().hasWinner()) {
@@ -226,17 +226,17 @@ public class Controller extends JFrame implements MouseListener, KeyListener {
 				createEndGame();
 				card.show(c, "end");
 			}
-		} else if (bclicked == play.homeButton) {
-			play.singlePlayer = false;
+		} else if (bclicked == play.getHomeButton()) {
+			play.setSinglePlayer(false);
 			play.resetBoardGraphics();
 			card.show(c, "welcome");
-		} else if (bclicked == play.helpButton) {
+		} else if (bclicked == play.getHelpButton()) {
 			card.show(c, "help");
-		} else if (bclicked == end.homeButton) {
+		} else if (bclicked == end.getHomeButton()) {
 			play.resetBoardGraphics();
-			play.singlePlayer = false;
+			play.setSinglePlayer(false);
 			card.show(c, "welcome");
-		} else if (bclicked == end.playAgainButton) {
+		} else if (bclicked == end.getPlayAgainButton()) {
 			play.resetBoardGraphics();
 			card.show(c, "play");
 		}
@@ -263,16 +263,6 @@ public class Controller extends JFrame implements MouseListener, KeyListener {
 	@Override
 	public void mouseExited(MouseEvent e) {
 		setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-	}
-
-	/**
-	 * Executes when the program runs and creates an instance of the controller.
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		Controller c = new Controller();
-		c.createCard();
 	}
 
 	@Override
@@ -331,5 +321,15 @@ public class Controller extends JFrame implements MouseListener, KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
+	}
+	
+	/**
+	 * Executes when the program runs and creates an instance of the controller.
+	 * 
+	 * @param args
+	 */
+	public static void main(String[] args) {
+		Controller c = new Controller();
+		c.createCard();
 	}
 }

@@ -60,6 +60,19 @@ public class RoundButton extends JButton {
 		}
 		return shape.contains(x, y);
 	}
+	
+	/**
+	 * Shows a border around the button.
+	 * 
+	 * @param graphics a Graphics object that draws the board and marble images to
+	 *                 the JPanel
+	 */
+	protected void paintBorder(Graphics g) {
+		if (isBorderPainted()) {
+			g.setColor(getForeground());
+			g.drawOval(0, 0, getSize().width - 1, getSize().height - 1);
+		}
+	}
 
 	/**
 	 * Returns the index of a button's corresponding pit in a Mancala game's list of
@@ -70,12 +83,5 @@ public class RoundButton extends JButton {
 	 */
 	public int getPitNumber() {
 		return pitNumber;
-	}
-
-	protected void paintBorder(Graphics g) {
-		if (isBorderPainted()) {
-			g.setColor(getForeground());
-			g.drawOval(0, 0, getSize().width - 1, getSize().height - 1);
-		}
 	}
 }

@@ -20,7 +20,7 @@ import javax.swing.JTextArea;
 
 @SuppressWarnings("serial")
 public class HelpPanel extends JPanel {
-	public JButton resumeButton = new JButton();
+	private JButton resumeButton = new JButton();
 	
 	private Image resizedBackgroundImage;
 	private Image resizedTitleImage;
@@ -142,5 +142,13 @@ public class HelpPanel extends JPanel {
 			g.drawImage(resizedBackgroundImage, 0,0, null);
 			g.drawImage(resizedTitleImage, 140, 30, null);
 		}
-
+		
+		/**
+		 * Returns the "Resume" button.
+		 * 
+		 * @return a JButton with the "Resume" image
+		 */
+		public JButton getResumeButton() {
+			return resumeButton;
+		}
 }

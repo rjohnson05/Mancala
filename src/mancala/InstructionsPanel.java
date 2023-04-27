@@ -27,8 +27,7 @@ import javax.swing.JTextArea;
  */
 @SuppressWarnings("serial")
 public class InstructionsPanel extends JPanel {
-	public JButton homeButton = new JButton();
-
+	private JButton homeButton = new JButton();
 	
 	private Image resizedBackgroundImage;
 	private Image resizedTitleImage;
@@ -148,5 +147,14 @@ public class InstructionsPanel extends JPanel {
 
 		g.drawImage(resizedBackgroundImage, 0,0, null);
 		g.drawImage(resizedTitleImage, 140, 30, null);
+	}
+	
+	/**
+	 * Returns the "Home" button.
+	 * 
+	 * @return a JButton with the "Home" image
+	 */
+	public JButton getHomeButton() {
+		return homeButton;
 	}
 }
