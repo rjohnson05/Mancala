@@ -29,8 +29,7 @@ import javax.swing.JTextArea;
 @SuppressWarnings("serial")
 public class InstructionsPanel extends JPanel {
 	public JButton homeButton = new JButton();
-//	public JButton playGameButton = new JButton();
-//	public JButton exitGameButton = new JButton();
+
 	
 	private Image resizedBackgroundImage;
 	private Image resizedTitleImage;
@@ -77,6 +76,7 @@ public class InstructionsPanel extends JPanel {
 		rulesListed.setBounds(130, 180, 800, 400);
 
 
+
 		// Create the "Home" Button
 		homeButton.setBounds(320, 490, 150,50);
 		homeButton.setBorderPainted(false);
@@ -84,7 +84,6 @@ public class InstructionsPanel extends JPanel {
 		homeButton.addMouseListener(new MouseListener(){
 			public void mouseClicked(MouseEvent e) {
 			}
-
 			public void mousePressed(MouseEvent e) {
 			}
 
@@ -100,6 +99,7 @@ public class InstructionsPanel extends JPanel {
 			}
 		});
 		
+
 		
 		this.add(rules);
 		this.add(homeButton);

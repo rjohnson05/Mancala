@@ -30,13 +30,13 @@ import javax.swing.JPanel;
 public class WelcomePanel extends JPanel {
 	private static int WINDOW_WIDTH = 800;
 	private static int WINDOW_HEIGHT = 540;
-	private Random rand = new Random();
 
 	public int showPage;
 	public JButton playGameButton = new JButton();
 	public JButton exitGameButton = new JButton();
 	public JButton instructionsButton = new JButton();
 
+	private Random rand = new Random();
 	private Image resizedBackgroundImage;
 	private Image resizedTitleImage;
 	private Image resizedWelcomeToImage;

@@ -22,7 +22,6 @@ import javax.swing.JTextArea;
 @SuppressWarnings("serial")
 public class HelpPanel extends JPanel {
 	public JButton resumeButton = new JButton();
-//	public JButton exitGameButton = new JButton();
 	
 	private Image resizedBackgroundImage;
 	private Image resizedTitleImage;
@@ -119,12 +118,14 @@ public class HelpPanel extends JPanel {
 				Image resizedResumeHoverImage = resumeHoverImage.getScaledInstance(180, 50, Image.SCALE_SMOOTH);
 
 
+
 				// Creating icons for the button images
 				resumeIcon = new ImageIcon(resizedResumeImage);
 				resumeHoverIcon = new ImageIcon(resizedResumeHoverImage);
 
 				// Set the button images to the buttons
 				resumeButton.setIcon(resumeIcon);
+
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -142,4 +143,5 @@ public class HelpPanel extends JPanel {
 			g.drawImage(resizedBackgroundImage, 0,0, null);
 			g.drawImage(resizedTitleImage, 140, 30, null);
 		}
+
 }

@@ -69,10 +69,11 @@ public class EndGamePanel extends JPanel {
 		JLabel restartLabel = new JLabel("Would you like to play again?");
 		loseLabel.setBounds(295, 330, 380, 50);
 		winLabel.setBounds(305, 330, 380, 50);
-		player1winLabel.setBounds(360, 330, 450, 50);
-		player2winLabel.setBounds(360, 330, 450, 50);
+		player1winLabel.setBounds(280, 330, 450, 50);
+		player2winLabel.setBounds(280, 330, 450, 50);
 		score.setBounds(165, 280, 450 ,50);
 		restartLabel.setBounds(120, 380, 600, 50);
+
 		loseLabel.setFont(new Font("Tahoma", Font.BOLD, 35));
 		winLabel.setFont(new Font("Tahoma", Font.BOLD, 35));
 		player1winLabel.setFont(new Font("Tahoma", Font.BOLD, 35));
@@ -192,6 +193,7 @@ public class EndGamePanel extends JPanel {
 			BufferedImage homeBufferedImage = ImageIO.read(new File("images/home.png"));
 			BufferedImage homeHoverBufferedImage = ImageIO.read(new File("images/homeHover.png"));
 
+
 			// Resize the images to correct sizes
 			Image winningImage = new ImageIcon(winningBufferedImage).getImage();
 			Image losingImage = new ImageIcon(losingBufferedImage).getImage();
@@ -202,6 +204,7 @@ public class EndGamePanel extends JPanel {
 			Image homeImage = new ImageIcon(homeBufferedImage).getImage();
 			Image homeHoverImage = new ImageIcon(homeHoverBufferedImage).getImage();
 		
+
 
 			Image playAgainImage = new ImageIcon(playAgainBufferedImage).getImage();
 			Image playAgainHoverImage = new ImageIcon(playAgainHoverBufferedImage).getImage();

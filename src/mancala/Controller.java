@@ -28,6 +28,7 @@ public class Controller extends JFrame implements MouseListener, KeyListener {
 	
 	public List<String> keysTyped = new ArrayList<String>();
 
+
 	/**
 	 * Constructor for the Controller. This is how to program switches screens and
 	 * allows the user to play multiple games without
@@ -96,6 +97,27 @@ public class Controller extends JFrame implements MouseListener, KeyListener {
 
 		// Function to set default operation of JFrame.
 		cl.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+	}
+
+	/**
+	 * Creates the panel that houses the main gameplay.
+	 * 
+	 * @param singlePlayer true if the game is in "single player" mode and false if
+	 *                     in "two player" mode
+	 */
+	public void createPlayPanel(boolean singlePlayer) {
+		// create play panel and adds mouse listeners to all the pit buttons
+		play = new PlayPanel(singlePlayer);
+
+		for (int i = 0; i < play.pitButtons.size(); i++) {
+			play.pitButtons.get(i).addMouseListener(this);
+		}
+
+		play.homeButton.addMouseListener(this);
+		play.helpButton.addMouseListener(this);
+		c.add("play", play);
+
 	}
 
 	/**
@@ -123,6 +145,7 @@ public class Controller extends JFrame implements MouseListener, KeyListener {
 				 * index from its side of the board is chosen. If the selected pit is empty, a
 				 * new random pit is selected until a non-empty pit is selected.
 				 */			
+
 				int bestPitIndex = play.chooseOpponentPit();
 				play.playerMove(bestPitIndex);
 				if (play.getGame().hasWinner()) {
@@ -200,21 +223,24 @@ public class Controller extends JFrame implements MouseListener, KeyListener {
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
 				}
-    			createEndGame();
-    			play.resetBoardGraphics();
-    			card.show(c, "end");
-    		}
-    	} else if (bclicked == play.homeButton) {
-    		play.resetBoardGraphics();
-    		card.show(c, "welcome");
-    	} else if (bclicked == play.helpButton) {
-    		card.show(c, "help");
-    	} else if (bclicked == end.homeButton) {
-    		play.singlePlayer = false;
-    		card.show(c, "welcome");
-    	} else if (bclicked == end.playAgainButton) {
-    		card.show(c, "play");
-    	}
+				createEndGame();
+				card.show(c, "end");
+			}
+		} else if (bclicked == play.homeButton) {
+			play.singlePlayer = false;
+			play.resetBoardGraphics();
+			card.show(c, "welcome");
+		} else if (bclicked == play.helpButton) {
+			card.show(c, "help");
+		} else if (bclicked == end.homeButton) {
+			play.resetBoardGraphics();
+			play.singlePlayer = false;
+			card.show(c, "welcome");
+		} else if (bclicked == end.playAgainButton) {
+			play.resetBoardGraphics();
+			card.show(c, "play");
+		}
+		
 	}
 
 	@Override
@@ -223,19 +249,16 @@ public class Controller extends JFrame implements MouseListener, KeyListener {
 
 	}
 
-
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		// TODO Auto-generated method stub
 
 	}
 
-
 	@Override
 	public void mouseEntered(MouseEvent e) {
 		setCursor(new Cursor(Cursor.HAND_CURSOR));
 	}
-
 
 	@Override
 	public void mouseExited(MouseEvent e) {
@@ -254,7 +277,7 @@ public class Controller extends JFrame implements MouseListener, KeyListener {
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		
+
 	}
 
 	@Override
@@ -270,11 +293,11 @@ public class Controller extends JFrame implements MouseListener, KeyListener {
 		// Adds an extra miss is the word 'cheat' has been typed
 		String cheatWinArray = "[W, I, N, P, 1]";
 		if (keysTyped.toString().equals(cheatWinArray)) {
-			System.out.println("Cheat 1");
 			for (int i = 0; i < 51; i++) {
 				Marble newMarble = new Marble();
 				play.getGame().getStoreList().get(6).addMarble(newMarble);
-			};
+			}
+			;
 			for (int i = 7; i < 13; i++) {
 				Pit pit = play.getGame().getStoreList().get(i);
 				pit.getMarbleList().clear();
@@ -283,7 +306,6 @@ public class Controller extends JFrame implements MouseListener, KeyListener {
 
 		String cheatLoseArray = "[W, I, N, P, 2]";
 		if (keysTyped.toString().equals(cheatLoseArray)) {
-			System.out.println("Cheat 2");
 			for (int i = 0; i < 51; i++) {
 				Marble newMarble = new Marble();
 				play.getGame().getStoreList().get(13).addMarble(newMarble);
@@ -310,6 +332,5 @@ public class Controller extends JFrame implements MouseListener, KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-		
 	}
 }

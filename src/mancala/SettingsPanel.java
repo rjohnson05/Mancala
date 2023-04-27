@@ -28,6 +28,7 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class SettingsPanel extends JPanel {
 	public JButton homeButton = new JButton();
+
 	public JButton singlePlayerButton = new JButton();
 	public JButton twoPlayerButton = new JButton();
 	
@@ -57,7 +58,8 @@ public class SettingsPanel extends JPanel {
 		buttonDesc.setBounds(165, 140, 500, 100);
 
 		// Create the "Home" Button
-		homeButton.setBounds(320, 490, 150,50);
+
+		homeButton.setBounds(325, 490, 150,50);
 		homeButton.setBorderPainted(false);
 		homeButton.setContentAreaFilled(false);
 		homeButton.addMouseListener(new MouseListener(){
@@ -129,6 +131,7 @@ public class SettingsPanel extends JPanel {
 			}
 		});
 		
+
 		this.add(homeButton);
 		this.add(singlePlayerButton);
 		this.add(twoPlayerButton);
@@ -148,6 +151,7 @@ public class SettingsPanel extends JPanel {
 			// Create the button images
 			BufferedImage homeBufferedImage = ImageIO.read(new File("images/home.png"));
 			BufferedImage homeHoverBufferedImage = ImageIO.read(new File("images/homeHover.png"));
+
 			BufferedImage singlePlayerBufferedImage = ImageIO.read(new File("images/singlePlayer.png"));
 			BufferedImage singlePlayerHoverBufferedImage = ImageIO.read(new File("images/singlePlayerHover.png"));
 			BufferedImage twoPlayerBufferedImage = ImageIO.read(new File("images/twoPlayer.png"));
@@ -177,7 +181,6 @@ public class SettingsPanel extends JPanel {
 			twoPlayerHoverIcon = new ImageIcon(resizedTwoPlayerHoverImage);
 
 			// Set the button images to the buttons
-//			exitGameButton.setIcon(exitGameIcon);
 			homeButton.setIcon(homeIcon);
 			singlePlayerButton.setIcon(singlePlayerIcon);
 			twoPlayerButton.setIcon(twoPlayerIcon);

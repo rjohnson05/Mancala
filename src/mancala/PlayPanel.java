@@ -60,11 +60,6 @@ public class PlayPanel extends JPanel {
 	private JLabel p2ScoreNumber = new JLabel("0");
 	private JLabel marbleCountDisplayLabel = new JLabel("Number of Marbles:");
 	private JLabel marbleCountLabel = new JLabel();
-	
-	public JButton home = new JButton();
-	public JButton quit = new JButton();
-	public JButton help = new JButton();
-
 
 	public List<RoundButton> pitButtons = new ArrayList<>();
 	public boolean singlePlayer = false;
@@ -84,7 +79,6 @@ public class PlayPanel extends JPanel {
 	private ImageIcon helpHoverIcon;
 
 
-
 	/**
 	 * Creates a new gameplay panel for the Mancala game.
 	 */
@@ -101,7 +95,7 @@ public class PlayPanel extends JPanel {
 		this.singlePlayer = singlePlayer;
 
 		// Create the instruction area underneath the game board
-		instructionsPane.setBounds(250, 410, 300, 70);
+		instructionsPane.setBounds(250, 410, 310, 80);
 		instructionsPane.setEditable(false);
 		// Changes the border around the instruction area
 		Border blackBorder = BorderFactory.createLineBorder(Color.black);
@@ -157,6 +151,7 @@ public class PlayPanel extends JPanel {
 		homeButton.setContentAreaFilled(false);
 		homeButton.addMouseListener(new MouseListener(){
 
+
 			public void mouseClicked(MouseEvent e) {
 			}
 
@@ -178,7 +173,8 @@ public class PlayPanel extends JPanel {
 		});
 
 		// Create the "Help" Button
-		helpButton.setBounds(420, 500, 90, 40);
+
+		helpButton.setBounds(440, 500, 90, 40);
 		helpButton.setBorderPainted(false);
 		helpButton.setContentAreaFilled(false);
 		helpButton.addMouseListener(new MouseListener() {
@@ -203,6 +199,7 @@ public class PlayPanel extends JPanel {
 		});
 
 
+
 		this.add(helpButton);
 		this.add(homeButton);
 
@@ -212,7 +209,12 @@ public class PlayPanel extends JPanel {
 			Image backgroundImageIcon = new ImageIcon(backgroundImage).getImage();
 			resizedBackgroundImage = backgroundImageIcon.getScaledInstance(800, 565, Image.SCALE_SMOOTH);
 
-			
+			// Create the title images
+			Image titleImage = ImageIO.read(new File("images/mancalaTitle.png"));
+			Image titleImageIcon = new ImageIcon(titleImage).getImage();
+			resizedTitleImage = titleImageIcon.getScaledInstance(500, 100, Image.SCALE_SMOOTH);
+
+
 			// Create the board image
 			BufferedImage mainImage = ImageIO.read(new File("images/mancalaImages.png"));
 			BufferedImage boardImage = mainImage.getSubimage(15, 1400, 500, 150);
@@ -223,9 +225,10 @@ public class PlayPanel extends JPanel {
 			
 
 			// Create the background image
-//			Image highlightImage = ImageIO.read(new File("images/highlight.png"));
-//			Image highlightImageIcon = new ImageIcon(highlightImage).getImage();
-//			resizedHighlightImage = highlightImageIcon.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+			Image highlightImage = ImageIO.read(new File("images/highlight.png"));
+			Image highlightImageIcon = new ImageIcon(highlightImage).getImage();
+			resizedHighlightImage = highlightImageIcon.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
+
 
 			// Create the button images
 			BufferedImage homeBufferedImage = ImageIO.read(new File("images/home.png"));
@@ -233,30 +236,29 @@ public class PlayPanel extends JPanel {
 			BufferedImage helpBufferedImage = ImageIO.read(new File("images/help.png"));
 			BufferedImage helpHoverBufferedImage = ImageIO.read(new File("images/helpHover.png"));
 
-
 			// Resize the images to correct sizes
 			Image helpImage = new ImageIcon(helpBufferedImage).getImage();
 			Image helpHoverImage = new ImageIcon(helpHoverBufferedImage).getImage();
+
 			Image homeImage = new ImageIcon(homeBufferedImage).getImage();
 			Image homeHoverImage = new ImageIcon(homeHoverBufferedImage).getImage();
 
 			Image resizedHelpImage = helpImage.getScaledInstance(90, 40, Image.SCALE_SMOOTH);
 			Image resizedHelpHoverImage = helpHoverImage.getScaledInstance(90, 40, Image.SCALE_SMOOTH);
+
 			Image resizedHomeImage = homeImage.getScaledInstance(120, 40, Image.SCALE_SMOOTH);
 			Image resizedHomeHoverImage = homeHoverImage.getScaledInstance(120, 40, Image.SCALE_SMOOTH);
 
 			// Creating icons for the button images
 			helpIcon = new ImageIcon(resizedHelpImage);
 			helpHoverIcon = new ImageIcon(resizedHelpHoverImage);
-			
-		
-			
+
 			homeIcon = new ImageIcon(resizedHomeImage);
 			homeHoverIcon = new ImageIcon(resizedHomeHoverImage);
 
 			// Set the button images to the buttons
-			helpButton.setIcon(helpIcon);
 			homeButton.setIcon(homeIcon);
+			helpButton.setIcon(helpIcon);
 			
 
 		} catch (IOException e) {
@@ -274,9 +276,10 @@ public class PlayPanel extends JPanel {
 		super.paintComponent(graphics);
 		final Graphics2D g = (Graphics2D) graphics;
 
-		g.drawImage(resizedTitleImage, 200, 70, null);
+		
 		g.drawImage(resizedBackgroundImage, 0, 0, null);
 		g.drawImage(resizedBoard, 20, 150, null);
+		g.drawImage(resizedTitleImage, 140, 30, null);
 		
 
 		// Draw every marble on the board
@@ -805,7 +808,6 @@ public class PlayPanel extends JPanel {
 	 * 
 	 * @return true if it is a single-player game and false if it is a two-player
 	 *         game
-
 	 */
 	public boolean getSinglePlayer() {
 		return singlePlayer;
