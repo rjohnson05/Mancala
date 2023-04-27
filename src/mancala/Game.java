@@ -3,7 +3,6 @@ package mancala;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.Scanner;
 
 /**
  * The main class for the game Mancala. This contains the business logic for the
@@ -18,7 +17,6 @@ public class Game {
 	private List<Pit> storeList = new ArrayList<>();
 	private int currentPlayer;
 	private boolean playerGetsAnotherMove;
-	private boolean capturedMarbles;
 	private int winner;
 
 	/**
@@ -297,7 +295,6 @@ public class Game {
 	public boolean checkCapture(int endPitIndex) {
 		// if the end pit is in either of the stores, it can not be captured
 		if (endPitIndex == 13 || endPitIndex == 6) {
-			capturedMarbles = false;
 			return false;
 		}
 
@@ -305,17 +302,14 @@ public class Game {
 		Pit endPit = storeList.get(endPitIndex);
 
 		if (endPit.getSide() != currentPlayer) {
-			capturedMarbles = false;
 			return false;
 		}
 		// if the end pit marble count is 0 then we have a capture
 		Pit capturedPit = storeList.get(12 - endPitIndex);
 		if (endPit.getMarbleList().size() == 1 && capturedPit.getMarbleList().size() != 0) {
-			capturedMarbles = true;
 			return true;
 		}
 
-		capturedMarbles = false;
 		return false;
 	}
 

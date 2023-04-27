@@ -293,11 +293,10 @@ public class Controller extends JFrame implements MouseListener, KeyListener {
 		// Adds an extra miss is the word 'cheat' has been typed
 		String cheatWinArray = "[W, I, N, P, 1]";
 		if (keysTyped.toString().equals(cheatWinArray)) {
-			for (int i = 0; i < 51; i++) {
+			for (int i = 0; i < 24; i++) {
 				Marble newMarble = new Marble();
 				play.getGame().getStoreList().get(6).addMarble(newMarble);
 			}
-			;
 			for (int i = 7; i < 13; i++) {
 				Pit pit = play.getGame().getStoreList().get(i);
 				pit.getMarbleList().clear();
@@ -306,7 +305,7 @@ public class Controller extends JFrame implements MouseListener, KeyListener {
 
 		String cheatLoseArray = "[W, I, N, P, 2]";
 		if (keysTyped.toString().equals(cheatLoseArray)) {
-			for (int i = 0; i < 51; i++) {
+			for (int i = 0; i < 24; i++) {
 				Marble newMarble = new Marble();
 				play.getGame().getStoreList().get(13).addMarble(newMarble);
 			}
