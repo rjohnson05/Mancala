@@ -22,15 +22,13 @@ import javax.swing.JTextArea;
 @SuppressWarnings("serial")
 public class HelpPanel extends JPanel {
 	public JButton resumeButton = new JButton();
-	public JButton exitGameButton = new JButton();
 	
 	private Image resizedBackgroundImage;
 	private Image resizedTitleImage;
 	
 	private ImageIcon resumeIcon;
 	private ImageIcon resumeHoverIcon;
-	private ImageIcon exitGameIcon;
-	private ImageIcon exitGameHoverIcon;
+
 
 		/**
 		 * Constructor for the instructions panel.
@@ -46,7 +44,8 @@ public class HelpPanel extends JPanel {
 					+ "     the board belong to Player 1, as well as the right-hand store. All of the \n"
 					+ "     upper pits and the left-hand store belong to Player 2.\n\n"
 					+ "2. The current player must click on one of their own pits. This will move\n"
-					+ "     the marbles from that pit around the board in a counter-clockwise direction.\n\n"
+					+ "     the marbles from that pit to the following pits in a counter-clockwise direction.\n"
+					+ "     dropping one marble in each pit until there are none left.\n\n"
 					+ "3. If the last marble from your selected pit lands in your store, you get\n"
 					+ "     another turn.\n\n"
 					+ "4. If the last marble from your selected pit lands in an empty pit across from\n"
@@ -70,7 +69,7 @@ public class HelpPanel extends JPanel {
 			rulesListed.setBounds(130, 180, 800, 400);
 
 			// Create the "Play Game" Button
-			resumeButton.setBounds(130, 490, 180,50);
+			resumeButton.setBounds(320, 490, 180,50);
 			resumeButton.setBorderPainted(false);
 			resumeButton.setContentAreaFilled(false);
 			resumeButton.addMouseListener(new MouseListener(){
@@ -92,31 +91,7 @@ public class HelpPanel extends JPanel {
 				}
 			});
 			
-			// Create the "Exit Game" Button
-			exitGameButton.setBounds(480, 490, 180,50);
-			exitGameButton.setBorderPainted(false);
-			exitGameButton.setContentAreaFilled(false);
-			exitGameButton.addMouseListener(new MouseListener(){
-				public void mouseClicked(MouseEvent e) {
-				}
-
-				public void mousePressed(MouseEvent e) {
-				}
-
-				public void mouseReleased(MouseEvent e) {
-				}
-
-				public void mouseEntered(MouseEvent e) {
-					exitGameButton.setIcon(exitGameHoverIcon);
-				}
-
-				public void mouseExited(MouseEvent e) {
-					exitGameButton.setIcon(exitGameIcon);
-				}
-			});
-			
 			this.add(rules);
-			this.add(exitGameButton);
 			this.add(resumeButton);
 			this.add(rulesListed);
 
@@ -134,29 +109,23 @@ public class HelpPanel extends JPanel {
 				// Create the button images
 				BufferedImage resumeBufferedImage = ImageIO.read(new File("images/resume.png"));
 				BufferedImage resumeHoverBufferedImage = ImageIO.read(new File("images/resumeHover.png"));
-				BufferedImage exitGameBufferedImage = ImageIO.read(new File("images/exitGame.png"));
-				BufferedImage exitGameHoverBufferedImage = ImageIO.read(new File("images/exitGameHover.png"));
 				
 				// Resize the images to correct sizes
 				Image resumeImage = new ImageIcon(resumeBufferedImage).getImage();
 				Image resumeHoverImage = new ImageIcon(resumeHoverBufferedImage).getImage();
-				Image exitGameImage = new ImageIcon(exitGameBufferedImage).getImage();
-				Image exitGameHoverImage = new ImageIcon(exitGameHoverBufferedImage).getImage();
 			
 				Image resizedResumeImage = resumeImage.getScaledInstance(180, 50, Image.SCALE_SMOOTH);
 				Image resizedResumeHoverImage = resumeHoverImage.getScaledInstance(180, 50, Image.SCALE_SMOOTH);
-				Image resizedExitGameImage = exitGameImage.getScaledInstance(180, 50, Image.SCALE_SMOOTH);
-				Image resizedExitGameHoverImage = exitGameHoverImage.getScaledInstance(180, 50, Image.SCALE_SMOOTH);
+
+
 
 				// Creating icons for the button images
 				resumeIcon = new ImageIcon(resizedResumeImage);
 				resumeHoverIcon = new ImageIcon(resizedResumeHoverImage);
-				exitGameIcon = new ImageIcon(resizedExitGameImage);
-				exitGameHoverIcon = new ImageIcon(resizedExitGameHoverImage);
 
 				// Set the button images to the buttons
 				resumeButton.setIcon(resumeIcon);
-				exitGameButton.setIcon(exitGameIcon);
+
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -174,4 +143,5 @@ public class HelpPanel extends JPanel {
 			g.drawImage(resizedBackgroundImage, 0,0, null);
 			g.drawImage(resizedTitleImage, 140, 30, null);
 		}
+
 }

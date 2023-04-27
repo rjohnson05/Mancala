@@ -28,7 +28,7 @@ import javax.swing.JPanel;
 @SuppressWarnings("serial")
 public class SettingsPanel extends JPanel {
 	public JButton homeButton = new JButton();
-	public JButton exitGameButton = new JButton();
+
 	public JButton singlePlayerButton = new JButton();
 	public JButton twoPlayerButton = new JButton();
 	
@@ -37,8 +37,6 @@ public class SettingsPanel extends JPanel {
 
 	private ImageIcon homeIcon;
 	private ImageIcon homeHoverIcon;
-	private ImageIcon exitGameIcon;
-	private ImageIcon exitGameHoverIcon;
 	private ImageIcon singlePlayerIcon;
 	private ImageIcon singlePlayerHoverIcon;
 	private ImageIcon twoPlayerIcon;
@@ -60,7 +58,8 @@ public class SettingsPanel extends JPanel {
 		buttonDesc.setBounds(165, 140, 500, 100);
 
 		// Create the "Home" Button
-		homeButton.setBounds(220, 490, 150,50);
+
+		homeButton.setBounds(325, 490, 150,50);
 		homeButton.setBorderPainted(false);
 		homeButton.setContentAreaFilled(false);
 		homeButton.addMouseListener(new MouseListener(){
@@ -83,28 +82,6 @@ public class SettingsPanel extends JPanel {
 			}
 		});
 		
-		// Create the "Exit Game" Button
-		exitGameButton.setBounds(410, 490, 180, 50);
-		exitGameButton.setBorderPainted(false);
-		exitGameButton.setContentAreaFilled(false);
-		exitGameButton.addMouseListener(new MouseListener() {
-			public void mouseClicked(MouseEvent e) {
-			}
-	
-			public void mousePressed(MouseEvent e) {
-			}
-	
-			public void mouseReleased(MouseEvent e) {
-			}
-	
-			public void mouseEntered(MouseEvent e) {
-				exitGameButton.setIcon(exitGameHoverIcon);
-			}
-	
-			public void mouseExited(MouseEvent e) {
-				exitGameButton.setIcon(exitGameIcon);
-			}
-		});
 		
 		// Create the "Single Player" Button
 		singlePlayerButton.setBounds(240, 230, 320,90);
@@ -154,7 +131,7 @@ public class SettingsPanel extends JPanel {
 			}
 		});
 		
-		this.add(exitGameButton);
+
 		this.add(homeButton);
 		this.add(singlePlayerButton);
 		this.add(twoPlayerButton);
@@ -174,25 +151,20 @@ public class SettingsPanel extends JPanel {
 			// Create the button images
 			BufferedImage homeBufferedImage = ImageIO.read(new File("images/home.png"));
 			BufferedImage homeHoverBufferedImage = ImageIO.read(new File("images/homeHover.png"));
-			BufferedImage exitGameBufferedImage = ImageIO.read(new File("images/exitGame.png"));
-			BufferedImage exitGameHoverBufferedImage = ImageIO.read(new File("images/exitGameHover.png"));
+
 			BufferedImage singlePlayerBufferedImage = ImageIO.read(new File("images/singlePlayer.png"));
 			BufferedImage singlePlayerHoverBufferedImage = ImageIO.read(new File("images/singlePlayerHover.png"));
 			BufferedImage twoPlayerBufferedImage = ImageIO.read(new File("images/twoPlayer.png"));
 			BufferedImage twoPlayerHoverBufferedImage = ImageIO.read(new File("images/twoPlayerHover.png"));
 			
 			// Resize the images to correct sizes
-			Image exitGameImage = new ImageIcon(exitGameBufferedImage).getImage();
-			Image exitGameHoverImage = new ImageIcon(exitGameHoverBufferedImage).getImage();
 			Image homeImage = new ImageIcon(homeBufferedImage).getImage();
 			Image homeHoverImage = new ImageIcon(homeHoverBufferedImage).getImage();
 			Image singlePlayerImage = new ImageIcon(singlePlayerBufferedImage).getImage();
 			Image singlePlayerHoverImage = new ImageIcon(singlePlayerHoverBufferedImage).getImage();
 			Image twoPlayerImage = new ImageIcon(twoPlayerBufferedImage).getImage();
 			Image twoPlayerHoverImage = new ImageIcon(twoPlayerHoverBufferedImage).getImage();
-		
-			Image resizedExitGameImage = exitGameImage.getScaledInstance(180, 50, Image.SCALE_SMOOTH);
-			Image resizedExitGameHoverImage = exitGameHoverImage.getScaledInstance(180, 50, Image.SCALE_SMOOTH);
+
 			Image resizedHomeImage = homeImage.getScaledInstance(150, 50, Image.SCALE_SMOOTH);
 			Image resizedHomeHoverImage = homeHoverImage.getScaledInstance(150, 50, Image.SCALE_SMOOTH);
 			Image resizedSinglePlayerImage = singlePlayerImage.getScaledInstance(320, 90, Image.SCALE_SMOOTH);
@@ -201,8 +173,6 @@ public class SettingsPanel extends JPanel {
 			Image resizedTwoPlayerHoverImage = twoPlayerHoverImage.getScaledInstance(320, 90, Image.SCALE_SMOOTH);
 
 			// Creating icons for the button images
-			exitGameIcon = new ImageIcon(resizedExitGameImage);
-			exitGameHoverIcon = new ImageIcon(resizedExitGameHoverImage);
 			homeIcon = new ImageIcon(resizedHomeImage);
 			homeHoverIcon = new ImageIcon(resizedHomeHoverImage);
 			singlePlayerIcon = new ImageIcon(resizedSinglePlayerImage);
@@ -211,7 +181,6 @@ public class SettingsPanel extends JPanel {
 			twoPlayerHoverIcon = new ImageIcon(resizedTwoPlayerHoverImage);
 
 			// Set the button images to the buttons
-			exitGameButton.setIcon(exitGameIcon);
 			homeButton.setIcon(homeIcon);
 			singlePlayerButton.setIcon(singlePlayerIcon);
 			twoPlayerButton.setIcon(twoPlayerIcon);

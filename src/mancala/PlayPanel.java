@@ -68,7 +68,6 @@ public class PlayPanel extends JPanel {
 
 	public JButton homeButton = new JButton();
 	public JButton helpButton = new JButton();
-	public JButton exitGameButton = new JButton();
 
 	private Image resizedBackgroundImage;
 	private Image resizedTitleImage;
@@ -79,8 +78,7 @@ public class PlayPanel extends JPanel {
 	private ImageIcon homeHoverIcon;
 	private ImageIcon helpIcon;
 	private ImageIcon helpHoverIcon;
-	private ImageIcon exitGameIcon;
-	private ImageIcon exitGameHoverIcon;
+
 
 	/**
 	 * Creates a new gameplay panel for the Mancala game.
@@ -98,7 +96,7 @@ public class PlayPanel extends JPanel {
 		this.singlePlayer = singlePlayer;
 
 		// Create the instruction area underneath the game board
-		instructionsPane.setBounds(250, 410, 300, 70);
+		instructionsPane.setBounds(250, 410, 310, 80);
 		instructionsPane.setEditable(false);
 		// Changes the border around the instruction area
 		Border blackBorder = BorderFactory.createLineBorder(Color.black);
@@ -145,14 +143,16 @@ public class PlayPanel extends JPanel {
 		// Add the marble count display box to the panel
 		this.add(marbleCountDisplayLabel);
 		this.add(marbleCountLabel);
-
+		
 		resetBoardGraphics();
-
+		
 		// Create the "Home" Button
-		homeButton.setBounds(10, 10, 120, 40);
+		homeButton.setBounds(270, 500, 120,40);
 		homeButton.setBorderPainted(false);
 		homeButton.setContentAreaFilled(false);
-		homeButton.addMouseListener(new MouseListener() {
+		homeButton.addMouseListener(new MouseListener(){
+
+
 			public void mouseClicked(MouseEvent e) {
 			}
 
@@ -174,7 +174,8 @@ public class PlayPanel extends JPanel {
 		});
 
 		// Create the "Help" Button
-		helpButton.setBounds(340, 500, 90, 40);
+
+		helpButton.setBounds(440, 500, 90, 40);
 		helpButton.setBorderPainted(false);
 		helpButton.setContentAreaFilled(false);
 		helpButton.addMouseListener(new MouseListener() {
@@ -198,34 +199,10 @@ public class PlayPanel extends JPanel {
 			}
 		});
 
-		// Create the "Exit Game" Button
-		exitGameButton.setBounds(620, 10, 150, 40);
-		exitGameButton.setBorderPainted(false);
-		exitGameButton.setContentAreaFilled(false);
-		exitGameButton.addMouseListener(new MouseListener() {
-			public void mouseClicked(MouseEvent e) {
-			}
 
-			public void mousePressed(MouseEvent e) {
-			}
-
-			public void mouseReleased(MouseEvent e) {
-			}
-
-			public void mouseEntered(MouseEvent e) {
-				exitGameButton.setIcon(exitGameHoverIcon);
-				setCursor(new Cursor(Cursor.HAND_CURSOR));
-			}
-
-			public void mouseExited(MouseEvent e) {
-				exitGameButton.setIcon(exitGameIcon);
-				setCursor(new Cursor(Cursor.DEFAULT_CURSOR));
-			}
-		});
 
 		this.add(helpButton);
 		this.add(homeButton);
-		this.add(exitGameButton);
 
 		try {
 			// Create the background image
@@ -237,6 +214,7 @@ public class PlayPanel extends JPanel {
 			Image titleImage = ImageIO.read(new File("images/mancalaTitle.png"));
 			Image titleImageIcon = new ImageIcon(titleImage).getImage();
 			resizedTitleImage = titleImageIcon.getScaledInstance(500, 100, Image.SCALE_SMOOTH);
+
 
 			// Create the board image
 			BufferedImage mainImage = ImageIO.read(new File("images/mancalaImages.png"));
@@ -251,42 +229,36 @@ public class PlayPanel extends JPanel {
 			Image highlightImageIcon = new ImageIcon(highlightImage).getImage();
 			resizedHighlightImage = highlightImageIcon.getScaledInstance(100, 100, Image.SCALE_SMOOTH);
 
+
 			// Create the button images
 			BufferedImage homeBufferedImage = ImageIO.read(new File("images/home.png"));
 			BufferedImage homeHoverBufferedImage = ImageIO.read(new File("images/homeHover.png"));
 			BufferedImage helpBufferedImage = ImageIO.read(new File("images/help.png"));
 			BufferedImage helpHoverBufferedImage = ImageIO.read(new File("images/helpHover.png"));
-			BufferedImage exitGameBufferedImage = ImageIO.read(new File("images/exitGame.png"));
-			BufferedImage exitGameHoverBufferedImage = ImageIO.read(new File("images/exitGameHover.png"));
 
 			// Resize the images to correct sizes
 			Image helpImage = new ImageIcon(helpBufferedImage).getImage();
 			Image helpHoverImage = new ImageIcon(helpHoverBufferedImage).getImage();
-			Image exitGameImage = new ImageIcon(exitGameBufferedImage).getImage();
-			Image exitGameHoverImage = new ImageIcon(exitGameHoverBufferedImage).getImage();
+
 			Image homeImage = new ImageIcon(homeBufferedImage).getImage();
 			Image homeHoverImage = new ImageIcon(homeHoverBufferedImage).getImage();
 
 			Image resizedHelpImage = helpImage.getScaledInstance(90, 40, Image.SCALE_SMOOTH);
 			Image resizedHelpHoverImage = helpHoverImage.getScaledInstance(90, 40, Image.SCALE_SMOOTH);
-			Image resizedExitGameImage = exitGameImage.getScaledInstance(150, 40, Image.SCALE_SMOOTH);
-			Image resizedExitGameHoverImage = exitGameHoverImage.getScaledInstance(150, 40, Image.SCALE_SMOOTH);
+
 			Image resizedHomeImage = homeImage.getScaledInstance(120, 40, Image.SCALE_SMOOTH);
 			Image resizedHomeHoverImage = homeHoverImage.getScaledInstance(120, 40, Image.SCALE_SMOOTH);
 
 			// Creating icons for the button images
 			helpIcon = new ImageIcon(resizedHelpImage);
 			helpHoverIcon = new ImageIcon(resizedHelpHoverImage);
-			exitGameIcon = new ImageIcon(resizedExitGameImage);
-			exitGameHoverIcon = new ImageIcon(resizedExitGameHoverImage);
+
 			homeIcon = new ImageIcon(resizedHomeImage);
 			homeHoverIcon = new ImageIcon(resizedHomeHoverImage);
 
 			// Set the button images to the buttons
-			helpButton.setIcon(helpIcon);
-			exitGameButton.setIcon(exitGameIcon);
 			homeButton.setIcon(homeIcon);
-
+			helpButton.setIcon(helpIcon);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -302,10 +274,11 @@ public class PlayPanel extends JPanel {
 		super.paintComponent(graphics);
 		final Graphics2D g = (Graphics2D) graphics;
 
-		g.drawImage(resizedTitleImage, 200, 70, null);
+		
 		g.drawImage(resizedBackgroundImage, 0, 0, null);
 		g.drawImage(resizedBoard, 20, 150, null);
-
+		g.drawImage(resizedTitleImage, 140, 30, null);
+		
 		// Draw every marble on the board
 		for (Pit pit : game.getStoreList()) {
 			for (Marble marble : pit.getMarbleList()) {
@@ -327,6 +300,7 @@ public class PlayPanel extends JPanel {
 			g.drawImage(resizedHighlightImage, 408, 171, null);
 			g.drawImage(resizedHighlightImage, 488, 169, null);
 			g.drawImage(resizedHighlightImage, 569, 168, null);
+
 		}
 	}
 
@@ -446,6 +420,7 @@ public class PlayPanel extends JPanel {
 				}
 				pitButton.setFocusable(false);
 				this.add(pitButton);
+
 			} else if (i < 13) {
 				RoundButton pitButton = new RoundButton(i);
 				pitButton.setText(" ");
@@ -893,4 +868,5 @@ public class PlayPanel extends JPanel {
 	public boolean getHighlightHintsP2() {
 		return highlightHintsP2;
 	}
+
 }

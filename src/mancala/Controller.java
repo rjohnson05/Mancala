@@ -25,8 +25,9 @@ public class Controller extends JFrame implements MouseListener, KeyListener {
 	public PlayPanel play;
 	public EndGamePanel end;
 	public HelpPanel help;
-
+	
 	public List<String> keysTyped = new ArrayList<String>();
+
 
 	/**
 	 * Constructor for the Controller. This is how to program switches screens and
@@ -44,7 +45,7 @@ public class Controller extends JFrame implements MouseListener, KeyListener {
 
 		// set the layout
 		c.setLayout(card);
-
+		
 		// create welcome panel and adds mouse listeners
 		welcome = new WelcomePanel();
 		welcome.playGameButton.addMouseListener(this);
@@ -54,9 +55,7 @@ public class Controller extends JFrame implements MouseListener, KeyListener {
 
 		// create instructions panel and adds mouse listeners
 		instructions = new InstructionsPanel();
-		instructions.playGameButton.addMouseListener(this);
 		instructions.homeButton.addMouseListener(this);
-		instructions.exitGameButton.addMouseListener(this);
 		c.add("instructions", instructions);
 
 		// create settings panel and adds mouse listeners
@@ -64,16 +63,21 @@ public class Controller extends JFrame implements MouseListener, KeyListener {
 		settings.homeButton.addMouseListener(this);
 		settings.singlePlayerButton.addMouseListener(this);
 		settings.twoPlayerButton.addMouseListener(this);
-		settings.exitGameButton.addMouseListener(this);
 		c.add("settings", settings);
-
+		
+		// create play panel and adds mouse listeners to all the pit buttons
 		play = new PlayPanel(false);
-
+		for (RoundButton button : play.pitButtons) {
+			button.addMouseListener(this);
+		}
+		play.homeButton.addMouseListener(this);
+		play.helpButton.addMouseListener(this);
+		c.add("play", play);
+		
 		help = new HelpPanel();
-		help.exitGameButton.addMouseListener(this);
 		help.resumeButton.addMouseListener(this);
 		c.add("help", help);
-
+		
 		addKeyListener(this);
 		setFocusable(true);
 	}
@@ -93,6 +97,7 @@ public class Controller extends JFrame implements MouseListener, KeyListener {
 
 		// Function to set default operation of JFrame.
 		cl.setDefaultCloseOperation(EXIT_ON_CLOSE);
+
 	}
 
 	/**
@@ -110,9 +115,9 @@ public class Controller extends JFrame implements MouseListener, KeyListener {
 		}
 
 		play.homeButton.addMouseListener(this);
-		play.exitGameButton.addMouseListener(this);
 		play.helpButton.addMouseListener(this);
 		c.add("play", play);
+
 	}
 
 	/**
@@ -123,6 +128,7 @@ public class Controller extends JFrame implements MouseListener, KeyListener {
 				play.getGame().getStoreList().get(13).getMarbleList().size(), play.getSinglePlayer());
 		end.exitGameButton.addMouseListener(this);
 		end.playAgainButton.addMouseListener(this);
+		end.homeButton.addMouseListener(this);
 		c.add("end", end);
 	}
 
@@ -138,7 +144,8 @@ public class Controller extends JFrame implements MouseListener, KeyListener {
 				 * Sets a timer for moving the computer opponent. After 2 seconds, a random pit
 				 * index from its side of the board is chosen. If the selected pit is empty, a
 				 * new random pit is selected until a non-empty pit is selected.
-				 */
+				 */			
+
 				int bestPitIndex = play.chooseOpponentPit();
 				play.playerMove(bestPitIndex);
 				if (play.getGame().hasWinner()) {
@@ -150,7 +157,6 @@ public class Controller extends JFrame implements MouseListener, KeyListener {
 						e1.printStackTrace();
 					}
 					createEndGame();
-					// play.resetBoardGraphics();
 					card.show(c, "end");
 				}
 
@@ -169,7 +175,6 @@ public class Controller extends JFrame implements MouseListener, KeyListener {
 				e1.printStackTrace();
 			}
 			createEndGame();
-			// play.resetBoardGraphics();
 			card.show(c, "end");
 		}
 		// The computer opponent's timer is started as soon as the human player has
@@ -188,36 +193,32 @@ public class Controller extends JFrame implements MouseListener, KeyListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		JButton bclicked = (JButton) e.getSource();
-		if (this.end != null) {
-			if (bclicked == end.playAgainButton) {
-				play.singlePlayer = false;
-				play.resetBoardGraphics();
-				card.show(c, "settings");
-				end = null;
-			}
-		} else if (bclicked == welcome.instructionsButton) {
-			card.show(c, "instructions");
-		} else if (bclicked == welcome.playGameButton || bclicked == instructions.playGameButton) {
-			card.show(c, "settings");
-		} else if (bclicked == welcome.exitGameButton || bclicked == instructions.exitGameButton
-				|| bclicked == settings.exitGameButton || bclicked == help.exitGameButton
-				|| bclicked == play.exitGameButton) {
-			System.exit(1);
-		} else if (bclicked == instructions.homeButton || bclicked == settings.homeButton) {
-			card.show(c, "welcome");
-		} else if (bclicked == settings.twoPlayerButton || bclicked == help.resumeButton) {
-			createPlayPanel(false);
-			card.show(c, "play");
-		} else if (bclicked == settings.singlePlayerButton) {
-			createPlayPanel(true);
-			card.show(c, "play");
-		} else if (bclicked.getText() == " ") {
-			if (play.singlePlayer) {
-				singlePlayerMove();
-			}
-			if (play.getGame().hasWinner()) {
-				play.getGame().setWinner();
-				try {
+		if (bclicked == welcome.instructionsButton) {
+    		card.show(c, "instructions");
+    	}
+    	else if (bclicked == welcome.playGameButton ) {
+    		card.show(c, "settings");
+    	}
+    	else if (bclicked == welcome.exitGameButton) {
+    		System.exit(1);
+    	}
+    	else if (bclicked == instructions.homeButton || bclicked == settings.homeButton) {
+    		card.show(c, "welcome");
+    	}
+    	else if (bclicked == settings.twoPlayerButton || bclicked == help.resumeButton) {
+    		card.show(c, "play");
+    	}
+    	else if (bclicked == settings.singlePlayerButton) {
+    		play.singlePlayer = true;
+    		card.show(c, "play");
+    	}
+    	else if (bclicked.getText() == " ") {
+    		if (play.singlePlayer) {
+    			singlePlayerMove();
+    		}
+    		if (play.getGame().hasWinner()) {
+    			play.getGame().setWinner();
+    			try {
 					Thread.sleep(200);
 				} catch (InterruptedException e1) {
 					e1.printStackTrace();
@@ -226,10 +227,20 @@ public class Controller extends JFrame implements MouseListener, KeyListener {
 				card.show(c, "end");
 			}
 		} else if (bclicked == play.homeButton) {
+			play.singlePlayer = false;
+			play.resetBoardGraphics();
 			card.show(c, "welcome");
 		} else if (bclicked == play.helpButton) {
 			card.show(c, "help");
+		} else if (bclicked == end.homeButton) {
+			play.resetBoardGraphics();
+			play.singlePlayer = false;
+			card.show(c, "welcome");
+		} else if (bclicked == end.playAgainButton) {
+			play.resetBoardGraphics();
+			card.show(c, "play");
 		}
+		
 	}
 
 	@Override
@@ -321,6 +332,5 @@ public class Controller extends JFrame implements MouseListener, KeyListener {
 	@Override
 	public void keyReleased(KeyEvent e) {
 		// TODO Auto-generated method stub
-
 	}
 }

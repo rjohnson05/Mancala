@@ -29,16 +29,11 @@ import javax.swing.JTextArea;
 @SuppressWarnings("serial")
 public class InstructionsPanel extends JPanel {
 	public JButton homeButton = new JButton();
-	public JButton playGameButton = new JButton();
-	public JButton exitGameButton = new JButton();
+
 	
 	private Image resizedBackgroundImage;
 	private Image resizedTitleImage;
 	
-	private ImageIcon playGameIcon;
-	private ImageIcon playGameHoverIcon;
-	private ImageIcon exitGameIcon;
-	private ImageIcon exitGameHoverIcon;
 	private ImageIcon homeIcon;
 	private ImageIcon homeHoverIcon;
 
@@ -56,7 +51,8 @@ public class InstructionsPanel extends JPanel {
 				+ "     the board belong to Player 1, as well as the right-hand store. All of the \n"
 				+ "     upper pits and the left-hand store belong to Player 2.\n\n"
 				+ "2. The current player must click on one of their own pits. This will move\n"
-				+ "     the marbles from that pit around the board in a counter-clockwise direction.\n\n"
+				+ "     the marbles from that pit to the following pits in a counter-clockwise direction.\n"
+				+ "     dropping one marble in each pit until there are none left.\n\n"
 				+ "3. If the last marble from your selected pit lands in your store, you get\n"
 				+ "     another turn.\n\n"
 				+ "4. If the last marble from your selected pit lands in an empty pit across from\n"
@@ -79,29 +75,8 @@ public class InstructionsPanel extends JPanel {
 		rulesListed.setFont(new Font("Georgia", Font.BOLD , 13));
 		rulesListed.setBounds(130, 180, 800, 400);
 
-		// Create the "Play Game" Button
-		playGameButton.setBounds(130, 490, 180,50);
-		playGameButton.setBorderPainted(false);
-		playGameButton.setContentAreaFilled(false);
-		playGameButton.addMouseListener(new MouseListener(){
-			public void mouseClicked(MouseEvent e) {
-			}
 
-			public void mousePressed(MouseEvent e) {
-			}
 
-			public void mouseReleased(MouseEvent e) {
-			}
-
-			public void mouseEntered(MouseEvent e) {
-				playGameButton.setIcon(playGameHoverIcon);
-			}
-
-			public void mouseExited(MouseEvent e) {
-				playGameButton.setIcon(playGameIcon);
-			}
-		});
-		
 		// Create the "Home" Button
 		homeButton.setBounds(320, 490, 150,50);
 		homeButton.setBorderPainted(false);
@@ -109,7 +84,6 @@ public class InstructionsPanel extends JPanel {
 		homeButton.addMouseListener(new MouseListener(){
 			public void mouseClicked(MouseEvent e) {
 			}
-
 			public void mousePressed(MouseEvent e) {
 			}
 
@@ -125,32 +99,9 @@ public class InstructionsPanel extends JPanel {
 			}
 		});
 		
-		// Create the "Exit Game" Button
-		exitGameButton.setBounds(480, 490, 180,50);
-		exitGameButton.setBorderPainted(false);
-		exitGameButton.setContentAreaFilled(false);
-		exitGameButton.addMouseListener(new MouseListener(){
-			public void mouseClicked(MouseEvent e) {
-			}
 
-			public void mousePressed(MouseEvent e) {
-			}
-
-			public void mouseReleased(MouseEvent e) {
-			}
-
-			public void mouseEntered(MouseEvent e) {
-				exitGameButton.setIcon(exitGameHoverIcon);
-			}
-
-			public void mouseExited(MouseEvent e) {
-				exitGameButton.setIcon(exitGameIcon);
-			}
-		});
 		
 		this.add(rules);
-		this.add(exitGameButton);
-		this.add(playGameButton);
 		this.add(homeButton);
 		this.add(rulesListed);
 
@@ -168,37 +119,19 @@ public class InstructionsPanel extends JPanel {
 			// Create the button images
 			BufferedImage homeBufferedImage = ImageIO.read(new File("images/home.png"));
 			BufferedImage homeHoverBufferedImage = ImageIO.read(new File("images/homeHover.png"));
-			BufferedImage playGameBufferedImage = ImageIO.read(new File("images/playGame.png"));
-			BufferedImage playGameHoverBufferedImage = ImageIO.read(new File("images/playGameHover.png"));
-			BufferedImage exitGameBufferedImage = ImageIO.read(new File("images/exitGame.png"));
-			BufferedImage exitGameHoverBufferedImage = ImageIO.read(new File("images/exitGameHover.png"));
 			
 			// Resize the images to correct sizes
-			Image playGameImage = new ImageIcon(playGameBufferedImage).getImage();
-			Image playGameHoverImage = new ImageIcon(playGameHoverBufferedImage).getImage();
-			Image exitGameImage = new ImageIcon(exitGameBufferedImage).getImage();
-			Image exitGameHoverImage = new ImageIcon(exitGameHoverBufferedImage).getImage();
 			Image homeImage = new ImageIcon(homeBufferedImage).getImage();
 			Image homeHoverImage = new ImageIcon(homeHoverBufferedImage).getImage();
 		
-			Image resizedPlayGameImage = playGameImage.getScaledInstance(180, 50, Image.SCALE_SMOOTH);
-			Image resizedPlayGameHoverImage = playGameHoverImage.getScaledInstance(180, 50, Image.SCALE_SMOOTH);
-			Image resizedExitGameImage = exitGameImage.getScaledInstance(180, 50, Image.SCALE_SMOOTH);
-			Image resizedExitGameHoverImage = exitGameHoverImage.getScaledInstance(180, 50, Image.SCALE_SMOOTH);
 			Image resizedHomeImage = homeImage.getScaledInstance(150, 50, Image.SCALE_SMOOTH);
 			Image resizedHomeHoverImage = homeHoverImage.getScaledInstance(150, 50, Image.SCALE_SMOOTH);
 
 			// Creating icons for the button images
-			playGameIcon = new ImageIcon(resizedPlayGameImage);
-			playGameHoverIcon = new ImageIcon(resizedPlayGameHoverImage);
-			exitGameIcon = new ImageIcon(resizedExitGameImage);
-			exitGameHoverIcon = new ImageIcon(resizedExitGameHoverImage);
 			homeIcon = new ImageIcon(resizedHomeImage);
 			homeHoverIcon = new ImageIcon(resizedHomeHoverImage);
 
 			// Set the button images to the buttons
-			playGameButton.setIcon(playGameIcon);
-			exitGameButton.setIcon(exitGameIcon);
 			homeButton.setIcon(homeIcon);
 		} catch (IOException e) {
 			e.printStackTrace();
