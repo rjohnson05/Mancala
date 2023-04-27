@@ -65,19 +65,25 @@ public class EndGamePanel extends JPanel {
 		JLabel winLabel = new JLabel("You Won!");
 		JLabel player1winLabel = new JLabel("Player 1 Won!");
 		JLabel player2winLabel = new JLabel("Player 2 Won!");
+		JLabel topHorizontalLine = new JLabel("------------------------");
+		JLabel bottomHorizontalLine = new JLabel("------------------------");
 		JLabel score = new JLabel("Player 1: " + score1 + "     Player 2: " + score2);
 		JLabel restartLabel = new JLabel("Would you like to play again?");
-		loseLabel.setBounds(295, 330, 380, 50);
-		winLabel.setBounds(305, 330, 380, 50);
-		player1winLabel.setBounds(280, 330, 450, 50);
-		player2winLabel.setBounds(280, 330, 450, 50);
-		score.setBounds(165, 280, 450 ,50);
-		restartLabel.setBounds(120, 380, 600, 50);
+		loseLabel.setBounds(295, 280, 380, 50);
+		winLabel.setBounds(305, 280, 380, 50);
+		player1winLabel.setBounds(260, 280, 450, 50);
+		player2winLabel.setBounds(280, 280, 450, 50);
+		topHorizontalLine.setBounds(200, 305, 450, 50);
+		bottomHorizontalLine.setBounds(200, 360, 450, 50);
+		score.setBounds(155, 330, 500 ,50);
+		restartLabel.setBounds(120, 390, 600, 50);
 
 		loseLabel.setFont(new Font("Tahoma", Font.BOLD, 35));
 		winLabel.setFont(new Font("Tahoma", Font.BOLD, 35));
 		player1winLabel.setFont(new Font("Tahoma", Font.BOLD, 35));
 		player2winLabel.setFont(new Font("Tahoma", Font.BOLD, 35));
+		topHorizontalLine.setFont(new Font("Tahoma", Font.BOLD, 35));
+		bottomHorizontalLine.setFont(new Font("Tahoma", Font.BOLD, 35));
 		score.setFont(new Font("Tahoma", Font.BOLD, 35));
 		restartLabel.setFont(new Font("Tahoma", Font.BOLD, 35));
 
@@ -171,6 +177,8 @@ public class EndGamePanel extends JPanel {
 		}
 		
 		this.add(restartLabel);
+		this.add(topHorizontalLine);
+		this.add(bottomHorizontalLine);
 		this.add(score);
 		this.add(playAgainButton);
 		this.add(exitGameButton);

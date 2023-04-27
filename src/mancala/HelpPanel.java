@@ -68,8 +68,8 @@ public class HelpPanel extends JPanel {
 			rulesListed.setFont(new Font("Georgia", Font.BOLD , 13));
 			rulesListed.setBounds(130, 180, 800, 400);
 
-			// Create the "Play Game" Button
-			resumeButton.setBounds(320, 490, 180,50);
+			// Create the "Resume" Button
+			resumeButton.setBounds(320, 500, 180,50);
 			resumeButton.setBorderPainted(false);
 			resumeButton.setContentAreaFilled(false);
 			resumeButton.addMouseListener(new MouseListener(){

@@ -78,7 +78,7 @@ public class InstructionsPanel extends JPanel {
 
 
 		// Create the "Home" Button
-		homeButton.setBounds(320, 490, 150,50);
+		homeButton.setBounds(320, 500, 150,50);
 		homeButton.setBorderPainted(false);
 		homeButton.setContentAreaFilled(false);
 		homeButton.addMouseListener(new MouseListener(){
