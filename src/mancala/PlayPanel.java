@@ -74,7 +74,7 @@ public class PlayPanel extends JPanel {
 	private Image resizedTitleImage;
 	private Image resizedBoard;
 	private Image resizedHighlightImage;
-	
+
 	private ImageIcon homeIcon;
 	private ImageIcon homeHoverIcon;
 	private ImageIcon helpIcon;
@@ -245,7 +245,7 @@ public class PlayPanel extends JPanel {
 			// Display the board image
 			Image boardDisplayImage = new ImageIcon(boardImage).getImage();
 			resizedBoard = boardDisplayImage.getScaledInstance(800, 250, Image.SCALE_SMOOTH);
-			
+
 			// Create the background image
 			Image highlightImage = ImageIO.read(new File("images/highlight.png"));
 			Image highlightImageIcon = new ImageIcon(highlightImage).getImage();
@@ -286,8 +286,7 @@ public class PlayPanel extends JPanel {
 			helpButton.setIcon(helpIcon);
 			exitGameButton.setIcon(exitGameIcon);
 			homeButton.setIcon(homeIcon);
-			
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -306,7 +305,6 @@ public class PlayPanel extends JPanel {
 		g.drawImage(resizedTitleImage, 200, 70, null);
 		g.drawImage(resizedBackgroundImage, 0, 0, null);
 		g.drawImage(resizedBoard, 20, 150, null);
-		
 
 		// Draw every marble on the board
 		for (Pit pit : game.getStoreList()) {
@@ -314,7 +312,7 @@ public class PlayPanel extends JPanel {
 				g.drawImage(marble.getMarbleImage(), marble.getXcord(), marble.getYcord(), null);
 			}
 		}
-		
+
 		if (highlightHintsP1) {
 			g.drawImage(resizedHighlightImage, 112, 282, null);
 			g.drawImage(resizedHighlightImage, 197, 282, null);
@@ -330,6 +328,56 @@ public class PlayPanel extends JPanel {
 			g.drawImage(resizedHighlightImage, 488, 169, null);
 			g.drawImage(resizedHighlightImage, 569, 168, null);
 		}
+	}
+
+	/**
+	 * Makes sure that all marbles are visible at the start of the game.
+	 * 
+	 * @param pit the pit that is must have all marbles visible
+	 */
+	private void makeMarblesVisible(Pit pit) {
+		int marbleCount = 0;
+		for (Marble marble : pit.getMarbleList()) {
+			marbleCount++;
+			boolean hidden = true;
+			if (marbleCount == 4) {
+				marbleCount = 4;
+			}
+			while (hidden) {
+				marble.setXcord(rand.nextInt(((pit.getBoundary().getBounds().x + pit.getBoundary().getBounds().width
+						- marble.getMarbleImage().getWidth(getFocusCycleRootAncestor()) - 5))
+						- (pit.getBoundary().getBounds().x + 5)) + (pit.getBoundary().getBounds().x + 5));
+				marble.setYcord(rand.nextInt(((pit.getBoundary().getBounds().y + pit.getBoundary().getBounds().height
+						- marble.getMarbleImage().getHeight(getFocusCycleRootAncestor()) - 5))
+						- (pit.getBoundary().getBounds().y + 5)) + (pit.getBoundary().getBounds().y + 5));
+				if (isMarbleVisible(pit, marble)) {
+					hidden = false;
+				}
+			}
+		}
+	}
+
+	/**
+	 * Determines whether a given marble is visible in a given pit.
+	 * 
+	 * @param pit    the pit in which the marble must be visible
+	 * @param marble the Marble object that is being checked for visibility
+	 * @return true if the marble is visible over all other marbles and false
+	 *         otherwise
+	 */
+	private boolean isMarbleVisible(Pit pit, Marble marble) {
+		for (Marble currentMarble : pit.getMarbleList()) {
+			if (!marble.equals(currentMarble)) {
+				if (pit.getMarbleList().size() > 6) {
+					return true;
+				}
+				if (Math.abs(marble.getXcord() - currentMarble.getXcord()) < 10
+						&& Math.abs(marble.getYcord() - currentMarble.getYcord()) < 10) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	/**
@@ -427,15 +475,7 @@ public class PlayPanel extends JPanel {
 		// The coordinates of the marbles are random within the coordinates of their
 		// initial pit
 		for (Pit pit : game.getStoreList()) {
-			JButton pitBounds = pit.getBoundary();
-			for (Marble marble : pit.getMarbleList()) {
-				marble.setXcord(rand.nextInt(((pitBounds.getBounds().x + pitBounds.getBounds().width
-						- marble.getMarbleImage().getWidth(getFocusCycleRootAncestor()) - 5))
-						- (pitBounds.getBounds().x + 5)) + (pitBounds.getBounds().x + 5));
-				marble.setYcord(rand.nextInt(((pitBounds.getBounds().y + pitBounds.getBounds().height
-						- marble.getMarbleImage().getHeight(getFocusCycleRootAncestor()) - 5))
-						- (pitBounds.getBounds().y + 5)) + (pitBounds.getBounds().y + 5));
-			}
+			makeMarblesVisible(pit);
 		}
 
 		repaint();
@@ -480,18 +520,20 @@ public class PlayPanel extends JPanel {
 				// Changes the coordinates of each marble in the selected pit to a random
 				// coordinate within the pit the marble is being moved to
 				Pit nextPit = game.getStoreList().get(nextPitIndex);
-				marble.setXcord(rand
-						.nextInt(((nextPit.getBoundary().getBounds().x + nextPit.getBoundary().getBounds().width
-								- marble.getMarbleImage().getWidth(getFocusCycleRootAncestor()) - 5))
-								- (nextPit.getBoundary().getBounds().x + 5))
-						+ (nextPit.getBoundary().getBounds().x + 5));
-				marble.setYcord(rand
-						.nextInt(((nextPit.getBoundary().getBounds().y + nextPit.getBoundary().getBounds().height
-								- marble.getMarbleImage().getHeight(getFocusCycleRootAncestor()) - 5))
-								- (nextPit.getBoundary().getBounds().y + 5))
-						+ (nextPit.getBoundary().getBounds().y + 5));
-			}
 
+				do {
+					marble.setXcord(rand
+							.nextInt(((nextPit.getBoundary().getBounds().x + nextPit.getBoundary().getBounds().width
+									- marble.getMarbleImage().getWidth(getFocusCycleRootAncestor()) - 5))
+									- (nextPit.getBoundary().getBounds().x + 5))
+							+ (nextPit.getBoundary().getBounds().x + 5));
+					marble.setYcord(rand
+							.nextInt(((nextPit.getBoundary().getBounds().y + nextPit.getBoundary().getBounds().height
+									- marble.getMarbleImage().getHeight(getFocusCycleRootAncestor()) - 5))
+									- (nextPit.getBoundary().getBounds().y + 5))
+							+ (nextPit.getBoundary().getBounds().y + 5));
+				} while (!isMarbleVisible(nextPit, marble));
+			}
 		}
 
 		int endPitIndex = nextPitIndex;
@@ -836,16 +878,18 @@ public class PlayPanel extends JPanel {
 	public boolean getSinglePlayer() {
 		return singlePlayer;
 	}
-	
+
 	/**
-	 * Sets the boolean specifying whether the highlight hints should be shown on Player 2's side.
+	 * Sets the boolean specifying whether the highlight hints should be shown on
+	 * Player 2's side.
 	 * 
-	 * @param highlightHint true if hightlight hints should be shown over Player 2's pits and false otherwise
+	 * @param highlightHint true if hightlight hints should be shown over Player 2's
+	 *                      pits and false otherwise
 	 */
 	public void setHighlightHintsP2(boolean highlightHint) {
 		highlightHintsP2 = highlightHint;
 	}
-	
+
 	public boolean getHighlightHintsP2() {
 		return highlightHintsP2;
 	}
