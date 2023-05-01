@@ -5,6 +5,6 @@ the user should click on one of their pits to move marbles into their store. The
 of the game.
 
 In order to begin the program, 'image' and 'src' directories should be installed at the same level within the parent package. The program is then started by running
-the Controller.java file. This will initiate the program to your playing pleasure.
+the Controller.java file. This will initiate the Mancala program.
 
 Enjoy playing Mancala!
